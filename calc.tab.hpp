@@ -71,7 +71,13 @@ extern colorout errout;
     LP = 262,
     RP = 263,
     STOP = 264,
-    ASSIGN = 265
+    ASSIGN = 265,
+    AND = 266,
+    OR = 267,
+    GTH = 268,
+    LTH = 269,
+    EQ = 270,
+    NEQ = 271
   };
 #endif
 
@@ -86,7 +92,7 @@ union YYSTYPE
   char sym;
   char* id;
 
-#line 90 "calc.tab.hpp" /* yacc.c:1909  */
+#line 96 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -7,16 +7,73 @@
 /* This tells flex to quit when it reaches EOF */
 %option noyywrap
 
-%%          
-[a-zA-Z]+ { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
-[0-9]+    { yylval.val = atoi(yytext); return NUM; }
-[+-]      { yylval.sym = yytext[0]; return OPA; }
-[*/]      { yylval.sym = yytext[0]; return OPM; }
-"="       {return ASSIGN;}
-"("       { return LP; }
-")"       { return RP; }
-";"       { return STOP; }
-<<EOF>>   { return 0; }
-[ \t\n]+  { }
-.         { errout << "Unrecognized token starting with " << yytext[0] << endl; exit(1); }
+/* VARIABLES  */
+FLOAT [0-9]*\.[0-9]+f?|[0-9]+f
+INT [0-9]+
+BOOLEAN true|false
+STRING ["][^"\n]*["]
+/* BASIC KEYWORDS */
+COMMENT \/\/
+ASSIGN =
+SEMICOLON ;
+VARIABLE [a-zA-Z][a-zA-Z0-9_]*
+TYPE var|const
+/* LOGICAL OPERATORS */
+AND &&
+OR \|\|
+GTH >
+LTH <
+GTHEQ >=
+LTHEQ <=
+EQUALS ==
+NEQUALS !=
+/* ARITHMETIC OPERATORS */
+SUM \+
+SUB -
+MUL \*
+DIV \/
+REM %
+/* PARANTHESES */
+SOP \(
+EOP \)
+SOB \[
+EOB \]
+SOCB \{
+EOCB \}
+/*KEYWORDS*/
+KEYWORD kor|func|return|if|else|for|struct|range
+/*IGNORED*/
+IGNORED [ \n\r]+
+%%
+{SEMICOLON} { return STOP; }
+{TYPE} { printf("TYPE{%s} ", yytext ); }
+{FLOAT} { printf("FLOAT{%s} ", yytext ); }
+{INT} { yylval.val = atoi(yytext); return NUM; }
+{BOOLEAN} { printf("BOOLEAN{%s} ", yytext ); }
+{STRING} { printf("STRING{%s} ", yytext ); }
+{KEYWORD} {return yytext;}
+{AND} {return AND;}
+{OR} {return OR;}
+{GTH} {return GTH;}
+{LTH} {return LTH;}
+{GTHEQ} {return GTHEQ;}
+{LTHEQ} {return LTHEQ;}
+{EQUALS} {return EQ;}
+{NEQUALS} {return NEQ;}
+{SUM} { yylval.sym = yytext[0]; return OPA; }
+{SUB} { yylval.sym = yytext[0]; return OPA; }
+{MUL} { yylval.sym = yytext[0]; return OPM; }
+{DIV} { yylval.sym = yytext[0]; return OPM; }
+{REM} {printf("REMAINDER");}
+{SOP} {return SOP;}
+{EOP} {return EOP;}
+{SOB} {return SOB;}
+{EOB} {return EOB;}
+{SOCB} {return SOCB;}
+{EOCB} {return EOCB;}
+{COMMENT} {return COMMENT;}
+{ASSIGN} {return ASSIGN;}
+{VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
+{IGNORED} {printf("%s",yytext);}
+. { printf("SYNTAX ERROR: %s",yytext); }
 %%

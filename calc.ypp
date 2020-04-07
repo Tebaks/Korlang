@@ -58,6 +58,22 @@ void printbin(int n);
 %token <sym> OPA OPM 
 %token LP RP STOP 
 %token ASSIGN
+%token AND
+%token OR
+%token GTH
+%token LTH
+%token GTHEQ;
+%token LTHEQ;
+%token EQ
+%token EQ
+%token NEQ
+%token SOP
+%token EOP
+%token SOB
+%token EOB
+%token SOCB
+%token EOCB
+%token kor func return if else for struct range
   /* These are the non-terminal names that have values. */
 %type <val> exp term sfactor factor
 
