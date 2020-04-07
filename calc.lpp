@@ -1,0 +1,22 @@
+
+%{
+#include "calc.tab.hpp"
+#include <cstdlib> // for atoi
+%}
+
+/* This tells flex to quit when it reaches EOF */
+%option noyywrap
+
+%%          
+[a-zA-Z]+ { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
+[0-9]+    { yylval.val = atoi(yytext); return NUM; }
+[+-]      { yylval.sym = yytext[0]; return OPA; }
+[*/]      { yylval.sym = yytext[0]; return OPM; }
+"="       {return ASSIGN;}
+"("       { return LP; }
+")"       { return RP; }
+";"       { return STOP; }
+<<EOF>>   { return 0; }
+[ \t\n]+  { }
+.         { errout << "Unrecognized token starting with " << yytext[0] << endl; exit(1); }
+%%
