@@ -51,7 +51,7 @@ IGNORED [ \n\r]+
 {INT} { yylval.val = atoi(yytext); return NUM; }
 {BOOLEAN} { printf("BOOLEAN{%s} ", yytext ); }
 {STRING} { printf("STRING{%s} ", yytext ); }
-{KEYWORD} {return yytext;}
+{KEYWORD} 
 {AND} {return AND;}
 {OR} {return OR;}
 {GTH} {return GTH;}
@@ -71,7 +71,7 @@ IGNORED [ \n\r]+
 {EOB} {return EOB;}
 {SOCB} {return SOCB;}
 {EOCB} {return EOCB;}
-{COMMENT} {return COMMENT;}
+{COMMENT} 
 {ASSIGN} {return ASSIGN;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
 {IGNORED} {printf("%s",yytext);}

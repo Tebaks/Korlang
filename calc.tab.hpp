@@ -76,8 +76,16 @@ extern colorout errout;
     OR = 267,
     GTH = 268,
     LTH = 269,
-    EQ = 270,
-    NEQ = 271
+    GTHEQ = 270,
+    LTHEQ = 271,
+    EQ = 272,
+    NEQ = 273,
+    SOP = 274,
+    EOP = 275,
+    SOB = 276,
+    EOB = 277,
+    SOCB = 278,
+    EOCB = 279
   };
 #endif
 
@@ -92,7 +100,7 @@ union YYSTYPE
   char sym;
   char* id;
 
-#line 96 "calc.tab.hpp" /* yacc.c:1909  */
+#line 104 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
