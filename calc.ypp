@@ -80,7 +80,7 @@ void printbin(int n);
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <ival> exp term sfactor factor logic
+%type <ival> exp term sfactor factor logic if_else stmt
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
@@ -90,10 +90,13 @@ S: stmt { YYACCEPT; }
 
 stmt: exp STOP { resout << $1 << endl; }
 | assign_exp    {}
-| logic STOP    { resout << $1 << endl; }
+| logic   { resout << $1 << endl; }
+| if_else
 
 
 assign_exp : IDEN VAR ASSIGN exp STOP {driver->setInt($2,$4); }
+
+if_else: IF logic stmt ELSE stmt {if($2){ $$ = $3; }else{$$ = $5;}}
 
 exp: exp OPA term      { $$ = ($2 == '+' ? $1 + $3 : $1 - $3);}
 | term                 { $$ = $1; }
@@ -105,6 +108,7 @@ sfactor: OPA factor    { $$ = ($1 == '+' ? $2 : -$2); }
 | factor               { $$ = $1; }
 
 factor: INT            { $$ = $1; }
+| FLOAT                { $$ = $1; }
 | LP exp RP            { $$ = $2; }
 | VAR                  { $$ = driver->getInt($1); }
   
