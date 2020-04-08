@@ -1,15 +1,18 @@
 
 %{
 #include "calc.tab.hpp"
+#include "kvalue.hpp"
 #include <cstdlib> // for atoi
 %}
+
 
 /* This tells flex to quit when it reaches EOF */
 %option noyywrap
 
-%%          
-[a-zA-Z]+ { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
-[0-9]+    { yylval.val = atoi(yytext); return NUM; }
+%%    
+"var"     {return VAR;}      
+[a-zA-Z]+ { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VARNAME;  }
+[0-9]+    { float f = atof(yytext);k = KValue();k.number = f; yylval.val=k ;  return VAL; }
 [+-]      { yylval.sym = yytext[0]; return OPA; }
 [*/]      { yylval.sym = yytext[0]; return OPM; }
 "="       {return ASSIGN;}

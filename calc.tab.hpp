@@ -48,6 +48,7 @@ extern int yydebug;
 #include <map>
 #include "colorout.hpp"
 #include "driver.hpp"
+#include "kvalue.hpp"
 using namespace std;
 
 //-- Lexer prototype required by bison
@@ -57,21 +58,22 @@ int yylex();
 extern colorout resout;
 extern colorout errout;
 
-#line 61 "calc.tab.hpp" /* yacc.c:1909  */
+#line 62 "calc.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUM = 258,
-    VAR = 259,
+    KVAL = 258,
+    VARNAME = 259,
     OPA = 260,
     OPM = 261,
     LP = 262,
     RP = 263,
     STOP = 264,
-    ASSIGN = 265
+    ASSIGN = 265,
+    VAR = 266
   };
 #endif
 
@@ -80,13 +82,14 @@ extern colorout errout;
 
 union YYSTYPE
 {
-#line 48 "calc.ypp" /* yacc.c:1909  */
+#line 49 "calc.ypp" /* yacc.c:1909  */
 
-  int val; 
+  KValue kval; 
   char sym;
   char* id;
 
-#line 90 "calc.tab.hpp" /* yacc.c:1909  */
+
+#line 93 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

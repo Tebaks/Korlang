@@ -18,10 +18,10 @@ lex.yy.cpp: calc.lpp
 
 # The lex file includes the header from Bison.
 lex.yy.o: lex.yy.cpp calc.tab.hpp
-	g++ -c lex.yy.cpp
+	g++ -c lex.yy.cpp 
 
 calc.tab.o: calc.tab.cpp
-	g++ -c calc.tab.cpp
+	g++ -c calc.tab.cpp -fpermissive
 
 # The following line makes "make" automatically clean up these
 # files for you when they are no longer needed.

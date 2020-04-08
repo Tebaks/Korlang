@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <map>
 #include "scope.hpp"
+#include "kvalue.hpp"
 
 class Driver
 {
@@ -10,7 +11,7 @@ private:
   std::string message;
 
 public:
-  Driver(std::string msg) : message(msg), scope(new Scope()) {}
+  Driver() : scope(new Scope()) {}
   void echo(char *str)
   {
     std::cout << "HELLO:" << str << std::endl;
@@ -22,18 +23,32 @@ public:
    * @returns if an error occurs return false otherwise returns true
    * 
    */
-  bool setValue(std::string name, int val)
+  bool setValue(std::string name, KValue val)
   {
-    (*scope).insert(std::pair<std::string, int>(name, val));
+    (*scope).insert(std::pair<std::string, KValue>(name, val));
     return true;
   }
+
+  /**
+   * 
+   * @param name : name of the variable
+   * @param val : value of variable
+   * @returns if an error occurs return false otherwise returns true
+   * 
+   */
+  bool updateValue(std::string name, KValue val)
+  {
+    (*scope).insert(std::pair<std::string, KValue>(name, val));
+    return true;
+  }
+
   /**
    * @param name : name of the variable
    * @returns value of variable by default 0.
    */
-  int getValue(std::string name)
+  KValue getValue(std::string name)
   {
-    int val = (*scope)[name];
+    KValue val = (*scope)[name];
     return val;
   }
 };
