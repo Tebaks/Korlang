@@ -1,3 +1,6 @@
+#ifndef DRIVER_
+#define DRIVER_
+
 #include <iostream>
 #include <cstdlib>
 #include <map>
@@ -45,3 +48,5 @@ public:
     return true;
   }
 };
+
+#endif

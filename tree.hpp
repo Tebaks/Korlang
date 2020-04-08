@@ -10,6 +10,7 @@ enum OPERATIONS
     MULTIPLY,
     DIVIDE,
     SUB,
+    VARIABLE,
     CONSTANT,
     ROOT,
 };
@@ -41,6 +42,11 @@ public:
         this->secondChild = _n2;
         this->thirdChild = _n3;
         this->fourthChild = _n4;
+    }
+    TreeNode(value _val, OPERATIONS _ope)
+    {
+        this->val = _val;
+        this->operation = _ope;
     }
 };
 #endif

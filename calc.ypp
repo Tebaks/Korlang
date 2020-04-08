@@ -80,7 +80,7 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmt factor
+%type <tval> exp  stmt factor 
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
@@ -93,7 +93,15 @@ S: stmt {NOTHING
 |       { keepgoing = false; }
 
 stmt: exp STOP { $$ = $1; }
-
+| IDEN VAR ASSGN exp STOP {
+  struct value temp;
+  temp.use = "identifier";
+  struct value temp2;
+  temp2.v.s = $2;
+  temp2.use = "string";
+  TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
+  $$ = new TreeNode(temp,OPERATIONS(ASSIGN),NULL,second,$4,NULL);
+}
 
 exp: exp OPA factor      { 
   struct value temp;
@@ -106,7 +114,14 @@ factor: INT            {
   struct value temp;
   temp.v.i = $1;
   temp.use = "integer";
-  $$ = new TreeNode(temp,OPERATIONS(CONSTANT),NULL,NULL,NULL,NULL);
+  $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
+ }
+ | VAR {
+  struct value temp;
+  int val  = engine->driver->getInt($1);
+  temp.v.i = val;
+  temp.use = "integer";
+  $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
 
 

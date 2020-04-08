@@ -18,7 +18,6 @@ COMMENT \/\/
 ASSIGN =
 SEMICOLON ;
 VARIABLE [a-zA-Z][a-zA-Z0-9_]*
-TYPE var|const
 /* LOGICAL OPERATORS */
 AND &&
 OR \|\|
@@ -48,7 +47,6 @@ IDEN float|int|string|bool
 IGNORED [ \n\r]+
 %%
 {SEMICOLON} { return STOP; }
-{TYPE} { printf("TYPE{%s} ", yytext ); }
 {FLOAT} {yylval.fval = atof(yytext); return FLOAT;  }
 {INT} { yylval.ival = atoi(yytext); return INT; }
 {BOOLEAN} { if(strcmp(yytext,"true")){ yylval.ival = 1 ;} else { yylval.ival = 0; }   return BOOL;}

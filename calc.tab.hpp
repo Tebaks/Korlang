@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 8 "calc.ypp" /* yacc.c:1909  */
+#line 2 "calc.ypp" /* yacc.c:1909  */
 
 #include <cstdlib> // for atoi
 #include <iostream>
@@ -111,7 +111,7 @@ extern colorout errout;
 
 union YYSTYPE
 {
-#line 55 "calc.ypp" /* yacc.c:1909  */
+#line 47 "calc.ypp" /* yacc.c:1909  */
 
   int ival;
   float fval; 
