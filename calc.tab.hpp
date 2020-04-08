@@ -49,6 +49,7 @@ extern int yydebug;
 #include "colorout.hpp"
 #include "driver.hpp"
 #include "tree.hpp"
+#include "engine.hpp"
 #define NOTHING		struct value temp;temp.use="none";
 
 using namespace std;
@@ -60,7 +61,7 @@ int yylex();
 extern colorout resout;
 extern colorout errout;
 
-#line 64 "calc.tab.hpp" /* yacc.c:1909  */
+#line 65 "calc.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -110,7 +111,7 @@ extern colorout errout;
 
 union YYSTYPE
 {
-#line 54 "calc.ypp" /* yacc.c:1909  */
+#line 55 "calc.ypp" /* yacc.c:1909  */
 
   int ival;
   float fval; 
@@ -118,7 +119,7 @@ union YYSTYPE
   char* id;
   TreeNode *tval;
 
-#line 122 "calc.tab.hpp" /* yacc.c:1909  */
+#line 123 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

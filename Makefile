@@ -5,7 +5,7 @@
 # This is the executable that will run the calculator.
 # Since it is the first rule, it is also what will get made if
 # we call "make" with no arguments.
-calc: calc.tab.o lex.yy.o driver.hpp
+calc: calc.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp
 	g++ -o calc lex.yy.o calc.tab.o
 
 # Bison generates a C++ source file and a C++ header file.

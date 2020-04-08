@@ -102,6 +102,7 @@ extern int yydebug;
 #include "colorout.hpp"
 #include "driver.hpp"
 #include "tree.hpp"
+#include "engine.hpp"
 #define NOTHING		struct value temp;temp.use="none";
 
 using namespace std;
@@ -113,7 +114,7 @@ int yylex();
 extern colorout resout;
 extern colorout errout;
 
-#line 117 "calc.tab.cpp" /* yacc.c:355  */
+#line 118 "calc.tab.cpp" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -163,7 +164,7 @@ extern colorout errout;
 
 union YYSTYPE
 {
-#line 54 "calc.ypp" /* yacc.c:355  */
+#line 55 "calc.ypp" /* yacc.c:355  */
 
   int ival;
   float fval; 
@@ -171,7 +172,7 @@ union YYSTYPE
   char* id;
   TreeNode *tval;
 
-#line 175 "calc.tab.cpp" /* yacc.c:355  */
+#line 176 "calc.tab.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -188,13 +189,13 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 192 "calc.tab.cpp" /* yacc.c:358  */
+#line 193 "calc.tab.cpp" /* yacc.c:358  */
 /* Unqualified %code blocks.  */
-#line 29 "calc.ypp" /* yacc.c:359  */
+#line 30 "calc.ypp" /* yacc.c:359  */
 
 
 Driver* driver = new Driver();
-
+Engine* engine = new Engine();
 
 
 
@@ -211,7 +212,7 @@ bool keepgoing = true;
 void printbin(int n);
 
 
-#line 215 "calc.tab.cpp" /* yacc.c:359  */
+#line 216 "calc.tab.cpp" /* yacc.c:359  */
 
 #ifdef short
 # undef short
@@ -512,7 +513,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    95,    95,    97,    99,   102,   107,   109
+       0,    96,    96,   101,   103,   106,   111,   113
 };
 #endif
 
@@ -1284,53 +1285,56 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 95 "calc.ypp" /* yacc.c:1646  */
+#line 96 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
-   TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),NULL,NULL,NULL,NULL);}
-#line 1291 "calc.tab.cpp" /* yacc.c:1646  */
+  TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),(yyvsp[0].tval),NULL,NULL,NULL);
+  engine->execute(root);
+  YYACCEPT;
+}
+#line 1295 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 97 "calc.ypp" /* yacc.c:1646  */
+#line 101 "calc.ypp" /* yacc.c:1646  */
     { keepgoing = false; }
-#line 1297 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1301 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 99 "calc.ypp" /* yacc.c:1646  */
+#line 103 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[-1].tval); }
-#line 1303 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1307 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 102 "calc.ypp" /* yacc.c:1646  */
-    { { 
+#line 106 "calc.ypp" /* yacc.c:1646  */
+    { 
   struct value temp;
   temp.use = "identifier";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(SUM),(yyvsp[-2].tval),(yyvsp[0].tval),NULL,NULL);
- }}
-#line 1313 "calc.tab.cpp" /* yacc.c:1646  */
+ }
+#line 1317 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 107 "calc.ypp" /* yacc.c:1646  */
+#line 111 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[0].tval); }
-#line 1319 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1323 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 109 "calc.ypp" /* yacc.c:1646  */
+#line 113 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.v.i = (yyvsp[0].ival);
   temp.use = "integer";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(CONSTANT),NULL,NULL,NULL,NULL);
  }
-#line 1330 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1334 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1334 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1338 "calc.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1558,7 +1562,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 117 "calc.ypp" /* yacc.c:1906  */
+#line 121 "calc.ypp" /* yacc.c:1906  */
 
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');
