@@ -2,6 +2,7 @@
 %{
 #include "calc.tab.hpp"
 #include <cstdlib> // for atoi
+#include <string.h>
 %}
 
 /* This tells flex to quit when it reaches EOF */
@@ -42,16 +43,24 @@ SOCB \{
 EOCB \}
 /*KEYWORDS*/
 KEYWORD kor|func|return|if|else|for|struct|range
+IDEN float|int|string|bool
 /*IGNORED*/
 IGNORED [ \n\r]+
 %%
 {SEMICOLON} { return STOP; }
 {TYPE} { printf("TYPE{%s} ", yytext ); }
-{FLOAT} { printf("FLOAT{%s} ", yytext ); }
-{INT} { yylval.val = atoi(yytext); return NUM; }
-{BOOLEAN} { printf("BOOLEAN{%s} ", yytext ); }
-{STRING} { printf("STRING{%s} ", yytext ); }
-{KEYWORD} 
+{FLOAT} {yylval.fval = atof(yytext); return FLOAT;  }
+{INT} { yylval.ival = atoi(yytext); return INT; }
+{BOOLEAN} { if(strcmp(yytext,"true")){ yylval.ival = 1 ;} else { yylval.ival = 0; }   return BOOL;}
+{IDEN} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return IDEN; }
+"kor" {return KOR;}
+"func" {return FUNC;}
+"return" {return RETURN;}
+"if" {return IF;}
+"else" {return ELSE;}
+"for" {return FOR;}
+"struct" {return STRUCT;}
+"range" {return RANGE;} 
 {AND} {return AND;}
 {OR} {return OR;}
 {GTH} {return GTH;}

@@ -46,15 +46,20 @@ void printbin(int n);
 
   /* These are the different "semantic values" that a token can have. */
 %union {
-  int val; 
+  int ival;
+  float fval; 
   char sym;
   char* id;
 };
 
   /* These are the basic token types, organized by what kind
    * of semantic value they can have. */
-%token <val> NUM
-%token <id>  VAR
+%token <ival> INT
+%token <fval> FLOAT 
+%token <id> STRING
+%token <id> VAR
+%token <id> IDEN
+%token <ival> BOOL
 %token <sym> OPA OPM 
 %token LP RP STOP 
 %token ASSIGN
@@ -72,8 +77,10 @@ void printbin(int n);
 %token EOB
 %token SOCB
 %token EOCB
+%token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
+
   /* These are the non-terminal names that have values. */
-%type <val> exp term sfactor factor logic
+%type <ival> exp term sfactor factor logic
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
@@ -82,8 +89,11 @@ S: stmt { YYACCEPT; }
 |       { keepgoing = false; }
 
 stmt: exp STOP { resout << $1 << endl; }
-| VAR ASSIGN exp STOP {driver->setInt($1,$3); }
+| assign_exp    {}
 | logic STOP    { resout << $1 << endl; }
+
+
+assign_exp : IDEN VAR ASSIGN exp STOP {driver->setInt($2,$4); }
 
 exp: exp OPA term      { $$ = ($2 == '+' ? $1 + $3 : $1 - $3);}
 | term                 { $$ = $1; }
@@ -94,7 +104,7 @@ term: term OPM sfactor { $$ = ($2 == '*' ? $1 * $3 : $1 / $3); }
 sfactor: OPA factor    { $$ = ($1 == '+' ? $2 : -$2); }
 | factor               { $$ = $1; }
 
-factor: NUM            { $$ = $1; }
+factor: INT            { $$ = $1; }
 | LP exp RP            { $$ = $2; }
 | VAR                  { $$ = driver->getInt($1); }
   
@@ -102,7 +112,7 @@ logic: logic LTH logic     { $$ = ($1 < $3);}
 | logic GTH logic          { $$ = ($1 > $3);}
 | logic LTHEQ logic        { $$ = ($1 <= $3);}
 | logic GTHEQ logic        { $$ = ($1 >= $3);}
-| NUM                      { $$ = $1; }
+| INT                      { $$ = $1; }
 | VAR                      { $$ = driver->getInt($1); }
 %%
 // These are the colored output streams to make things all pretty.

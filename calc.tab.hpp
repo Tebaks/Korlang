@@ -64,28 +64,41 @@ extern colorout errout;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUM = 258,
-    VAR = 259,
-    OPA = 260,
-    OPM = 261,
-    LP = 262,
-    RP = 263,
-    STOP = 264,
-    ASSIGN = 265,
-    AND = 266,
-    OR = 267,
-    GTH = 268,
-    LTH = 269,
-    GTHEQ = 270,
-    LTHEQ = 271,
-    EQ = 272,
-    NEQ = 273,
-    SOP = 274,
-    EOP = 275,
-    SOB = 276,
-    EOB = 277,
-    SOCB = 278,
-    EOCB = 279
+    INT = 258,
+    FLOAT = 259,
+    STRING = 260,
+    VAR = 261,
+    IDEN = 262,
+    BOOL = 263,
+    OPA = 264,
+    OPM = 265,
+    LP = 266,
+    RP = 267,
+    STOP = 268,
+    ASSIGN = 269,
+    AND = 270,
+    OR = 271,
+    GTH = 272,
+    LTH = 273,
+    GTHEQ = 274,
+    LTHEQ = 275,
+    EQ = 276,
+    NEQ = 277,
+    SOP = 278,
+    EOP = 279,
+    SOB = 280,
+    EOB = 281,
+    SOCB = 282,
+    EOCB = 283,
+    RETURN = 284,
+    IF = 285,
+    FOR = 286,
+    ELSE = 287,
+    WHILE = 288,
+    FUNC = 289,
+    KOR = 290,
+    STRUCT = 291,
+    RANGE = 292
   };
 #endif
 
@@ -96,11 +109,12 @@ union YYSTYPE
 {
 #line 48 "calc.ypp" /* yacc.c:1909  */
 
-  int val; 
+  int ival;
+  float fval; 
   char sym;
   char* id;
 
-#line 104 "calc.tab.hpp" /* yacc.c:1909  */
+#line 118 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
