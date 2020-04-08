@@ -81,7 +81,7 @@ IGNORED [ \n\r]+
 {SOCB} {return SOCB;}
 {EOCB} {return EOCB;}
 {COMMENT} 
-{ASSIGN} {return ASSIGN;}
+{ASSIGN} {return ASSGN;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
 {IGNORED} {printf("%s",yytext);}
 . { printf("SYNTAX ERROR: %s",yytext); }

@@ -12,6 +12,9 @@
 #include <map>
 #include "colorout.hpp"
 #include "driver.hpp"
+#include "tree.hpp"
+#define NOTHING		struct value temp;temp.use="none";
+
 using namespace std;
 
 //-- Lexer prototype required by bison
@@ -26,6 +29,9 @@ extern colorout errout;
 %code {
 
 Driver* driver = new Driver();
+
+
+
 
 // Error function that bison will call
 void yyerror(const char *description) { 
@@ -50,6 +56,7 @@ void printbin(int n);
   float fval; 
   char sym;
   char* id;
+  TreeNode *tval;
 };
 
   /* These are the basic token types, organized by what kind
@@ -62,7 +69,7 @@ void printbin(int n);
 %token <ival> BOOL
 %token <sym> OPA OPM 
 %token LP RP STOP 
-%token ASSIGN
+%token ASSGN
 %token AND
 %token OR
 %token GTH
@@ -80,44 +87,33 @@ void printbin(int n);
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <ival> exp term sfactor factor logic if_else stmt
+%type <tval> exp  stmt factor
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
   /* Note: YYACCEPT is a macro that tells bison to stop parsing. */
-S: stmt { YYACCEPT; }
+S: stmt {NOTHING
+   TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),NULL,NULL,NULL,NULL);}
 |       { keepgoing = false; }
 
-stmt: exp STOP { resout << $1 << endl; }
-| assign_exp    {}
-| logic   { resout << $1 << endl; }
-| if_else
+stmt: exp STOP { $$ = $1; }
 
 
-assign_exp : IDEN VAR ASSIGN exp STOP {driver->setInt($2,$4); }
-
-if_else: IF logic stmt ELSE stmt {if($2){ $$ = $3; }else{$$ = $5;}}
-
-exp: exp OPA term      { $$ = ($2 == '+' ? $1 + $3 : $1 - $3);}
-| term                 { $$ = $1; }
-
-term: term OPM sfactor { $$ = ($2 == '*' ? $1 * $3 : $1 / $3); }
-| sfactor              { $$ = $1; }
-
-sfactor: OPA factor    { $$ = ($1 == '+' ? $2 : -$2); }
+exp: exp OPA factor      { { 
+  struct value temp;
+  temp.use = "identifier";
+  $$ = new TreeNode(temp,OPERATIONS(SUM),$1,$3,NULL,NULL);
+ }}
 | factor               { $$ = $1; }
 
-factor: INT            { $$ = $1; }
-| FLOAT                { $$ = $1; }
-| LP exp RP            { $$ = $2; }
-| VAR                  { $$ = driver->getInt($1); }
-  
-logic: logic LTH logic     { $$ = ($1 < $3);}
-| logic GTH logic          { $$ = ($1 > $3);}
-| logic LTHEQ logic        { $$ = ($1 <= $3);}
-| logic GTHEQ logic        { $$ = ($1 >= $3);}
-| INT                      { $$ = $1; }
-| VAR                      { $$ = driver->getInt($1); }
+factor: INT            { 
+  struct value temp;
+  temp.v.i = $1;
+  temp.use = "integer";
+  $$ = new TreeNode(temp,OPERATIONS(CONSTANT),NULL,NULL,NULL,NULL);
+ }
+
+
 %%
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');

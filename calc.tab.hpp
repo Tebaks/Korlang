@@ -48,6 +48,9 @@ extern int yydebug;
 #include <map>
 #include "colorout.hpp"
 #include "driver.hpp"
+#include "tree.hpp"
+#define NOTHING		struct value temp;temp.use="none";
+
 using namespace std;
 
 //-- Lexer prototype required by bison
@@ -57,7 +60,7 @@ int yylex();
 extern colorout resout;
 extern colorout errout;
 
-#line 61 "calc.tab.hpp" /* yacc.c:1909  */
+#line 64 "calc.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -75,7 +78,7 @@ extern colorout errout;
     LP = 266,
     RP = 267,
     STOP = 268,
-    ASSIGN = 269,
+    ASSGN = 269,
     AND = 270,
     OR = 271,
     GTH = 272,
@@ -107,14 +110,15 @@ extern colorout errout;
 
 union YYSTYPE
 {
-#line 48 "calc.ypp" /* yacc.c:1909  */
+#line 54 "calc.ypp" /* yacc.c:1909  */
 
   int ival;
   float fval; 
   char sym;
   char* id;
+  TreeNode *tval;
 
-#line 118 "calc.tab.hpp" /* yacc.c:1909  */
+#line 122 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
