@@ -175,7 +175,7 @@ int yyparse (void);
 #line 26 "calc.ypp" /* yacc.c:359  */
 
 
-Driver* driver = new Driver("Selam");
+Driver* driver = new Driver();
 
 // Error function that bison will call
 void yyerror(const char *description) { 
@@ -1301,7 +1301,7 @@ yyreduce:
 
   case 5:
 #line 85 "calc.ypp" /* yacc.c:1646  */
-    {driver->setValue((yyvsp[-3].id),(yyvsp[-1].val)); }
+    {driver->setInt((yyvsp[-3].id),(yyvsp[-1].val)); }
 #line 1306 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
@@ -1361,7 +1361,7 @@ yyreduce:
 
   case 15:
 #line 99 "calc.ypp" /* yacc.c:1646  */
-    { (yyval.val) = driver->getValue((yyvsp[0].id)); }
+    { (yyval.val) = driver->getInt((yyvsp[0].id)); }
 #line 1366 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
@@ -1397,7 +1397,7 @@ yyreduce:
 
   case 21:
 #line 106 "calc.ypp" /* yacc.c:1646  */
-    { (yyval.val) = driver->getValue((yyvsp[0].id)); }
+    { (yyval.val) = driver->getInt((yyvsp[0].id)); }
 #line 1402 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 

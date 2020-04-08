@@ -1,16 +1,30 @@
+#ifndef SCOPE
+#define SCOPE
 #include <iostream>
 #include <cstdlib>
 #include <map>
 #include <vector>
 
-class Scope : public std::map<std::string, int>
+#include "bucket.hpp"
+
+using namespace std;
+
+class Scope
 {
 private:
-  std::vector<Scope> inner;
+  vector<Scope> inner;
   Scope *parentScope;
 
 public:
-  Scope() : std::map<std::string, int>()
+  Bucket<float> floats;
+  Bucket<int> integers;
+  Bucket<string> strings;
+  Scope() : inner(vector<Scope>()),
+            floats(Bucket<float>()),
+            integers(Bucket<int>()),
+            strings(Bucket<string>())
   {
   }
 };
+
+#endif

@@ -1,39 +1,47 @@
 #include <iostream>
 #include <cstdlib>
 #include <map>
+#include <string>
 #include "scope.hpp"
+#include "bucket.hpp"
+
+using namespace std;
 
 class Driver
 {
 private:
   Scope *scope;
-  std::string message;
 
 public:
-  Driver(std::string msg) : message(msg), scope(new Scope()) {}
-  void echo(char *str)
+  Driver() : scope(new Scope()) {}
+
+  int getInt(string name)
   {
-    std::cout << "HELLO:" << str << std::endl;
+    return scope->integers.getValue(name);
   }
-  /**
-   * 
-   * @param name : name of the variable
-   * @param val : value of variable
-   * @returns if an error occurs return false otherwise returns true
-   * 
-   */
-  bool setValue(std::string name, int val)
+  bool setInt(string name, int val)
   {
-    (*scope).insert(std::pair<std::string, int>(name, val));
+    scope->integers.setValue(name, val);
     return true;
   }
-  /**
-   * @param name : name of the variable
-   * @returns value of variable by default 0.
-   */
-  int getValue(std::string name)
+
+  float getFloat(string name)
   {
-    int val = (*scope)[name];
-    return val;
+    return scope->floats.getValue(name);
+  }
+  bool setFloat(string name, float val)
+  {
+    scope->floats.setValue(name, val);
+    return true;
+  }
+
+  string getString(string name)
+  {
+    return scope->strings.getValue(name);
+  }
+  bool setInt(string name, string val)
+  {
+    scope->strings.setValue(name, val);
+    return true;
   }
 };

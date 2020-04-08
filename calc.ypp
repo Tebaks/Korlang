@@ -25,7 +25,7 @@ extern colorout errout;
   /* Everything in this block only goes in the bison file. */
 %code {
 
-Driver* driver = new Driver("Selam");
+Driver* driver = new Driver();
 
 // Error function that bison will call
 void yyerror(const char *description) { 
@@ -82,7 +82,7 @@ S: stmt { YYACCEPT; }
 |       { keepgoing = false; }
 
 stmt: exp STOP { resout << $1 << endl; }
-| VAR ASSIGN exp STOP {driver->setValue($1,$3); }
+| VAR ASSIGN exp STOP {driver->setInt($1,$3); }
 | logic STOP    { resout << $1 << endl; }
 
 exp: exp OPA term      { $$ = ($2 == '+' ? $1 + $3 : $1 - $3);}
@@ -96,14 +96,14 @@ sfactor: OPA factor    { $$ = ($1 == '+' ? $2 : -$2); }
 
 factor: NUM            { $$ = $1; }
 | LP exp RP            { $$ = $2; }
-| VAR                  { $$ = driver->getValue($1); }
-
+| VAR                  { $$ = driver->getInt($1); }
+  
 logic: logic LTH logic     { $$ = ($1 < $3);}
 | logic GTH logic          { $$ = ($1 > $3);}
 | logic LTHEQ logic        { $$ = ($1 <= $3);}
 | logic GTHEQ logic        { $$ = ($1 >= $3);}
 | NUM                      { $$ = $1; }
-| VAR                      { $$ = driver->getValue($1); }
+| VAR                      { $$ = driver->getInt($1); }
 %%
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');
