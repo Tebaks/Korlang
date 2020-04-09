@@ -15,7 +15,13 @@ BOOLEAN true|false
 STRING ["][^"\n]*["]
 /* BASIC KEYWORDS */
 COMMENT \/\/
+/* ASSIGN OPERATORS*/
 ASSIGN =
+ADD_ASSIGN \+=
+DIV_ASSIGN \/=
+MOD_ASSIGN %=
+MUL_ASSIGN \*=
+SUB_ASSIGN \-=
 SEMICOLON ;
 VARIABLE [a-zA-Z][a-zA-Z0-9_]*
 /* LOGICAL OPERATORS */
@@ -80,6 +86,11 @@ IGNORED [ \n\r]+
 {EOCB} {return EOCB;}
 {COMMENT} 
 {ASSIGN} {return ASSGN;}
+{ADD_ASSIGN} {return ADD_ASSIGN;}
+{SUB_ASSIGN} {return SUB_ASSIGN;}
+{DIV_ASSIGN} {return DIV_ASSIGN;}
+{MUL_ASSIGN} {return MUL_ASSIGN;}
+{MOD_ASSIGN} {return MOD_ASSIGN;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
 {IGNORED} {printf("%s",yytext);}
 . { printf("SYNTAX ERROR: %s",yytext); }

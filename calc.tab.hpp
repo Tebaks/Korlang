@@ -80,29 +80,34 @@ extern colorout errout;
     RP = 267,
     STOP = 268,
     ASSGN = 269,
-    AND = 270,
-    OR = 271,
-    GTH = 272,
-    LTH = 273,
-    GTHEQ = 274,
-    LTHEQ = 275,
-    EQ = 276,
-    NEQ = 277,
-    SOP = 278,
-    EOP = 279,
-    SOB = 280,
-    EOB = 281,
-    SOCB = 282,
-    EOCB = 283,
-    RETURN = 284,
-    IF = 285,
-    FOR = 286,
-    ELSE = 287,
-    WHILE = 288,
-    FUNC = 289,
-    KOR = 290,
-    STRUCT = 291,
-    RANGE = 292
+    MUL_ASSIGN = 270,
+    MOD_ASSIGN = 271,
+    DIV_ASSIGN = 272,
+    SUB_ASSIGN = 273,
+    ADD_ASSIGN = 274,
+    AND = 275,
+    OR = 276,
+    GTH = 277,
+    LTH = 278,
+    GTHEQ = 279,
+    LTHEQ = 280,
+    EQ = 281,
+    NEQ = 282,
+    SOP = 283,
+    EOP = 284,
+    SOB = 285,
+    EOB = 286,
+    SOCB = 287,
+    EOCB = 288,
+    RETURN = 289,
+    IF = 290,
+    FOR = 291,
+    ELSE = 292,
+    WHILE = 293,
+    FUNC = 294,
+    KOR = 295,
+    STRUCT = 296,
+    RANGE = 297
   };
 #endif
 
@@ -119,7 +124,7 @@ union YYSTYPE
   char* id;
   TreeNode *tval;
 
-#line 123 "calc.tab.hpp" /* yacc.c:1909  */
+#line 128 "calc.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

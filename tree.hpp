@@ -13,6 +13,7 @@ enum OPERATIONS
     VARIABLE,
     CONSTANT,
     ROOT,
+    ASSIGNMENT_OPERATOR,
 };
 struct value
 {

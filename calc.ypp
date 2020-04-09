@@ -62,7 +62,7 @@ bool keepgoing = true;
 %token <ival> BOOL
 %token <sym> OPA OPM 
 %token LP RP STOP 
-%token ASSGN
+%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN
 %token AND
 %token OR
 %token GTH
@@ -80,7 +80,7 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmt factor 
+%type <tval> exp  stmt factor assignment_operator
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
@@ -123,6 +123,51 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
+ assignment_operator :
+  ASSGN
+	{
+		struct value temp;
+		temp.v.s = "=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));
+	}
+	| MUL_ASSIGN
+	{
+		struct value temp;
+		temp.v.s = "*=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+	}
+	| DIV_ASSIGN
+	{
+		struct value temp;
+		temp.v.s = "/=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+	}
+	| MOD_ASSIGN
+	{
+		struct value temp;
+		temp.v.s = "%=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+	}
+	| ADD_ASSIGN
+	{
+		struct value temp;
+		temp.v.s = "+=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+	}
+	| SUB_ASSIGN
+	{
+		struct value temp;
+		temp.v.s = "-=";
+		temp.use = "string";
+		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+	}
+	;
+ 
 
 
 %%
