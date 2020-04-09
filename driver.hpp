@@ -7,6 +7,7 @@
 #include <string>
 #include "scope.hpp"
 #include "bucket.hpp"
+#include "tree.hpp"
 
 using namespace std;
 
@@ -45,6 +46,21 @@ public:
   bool setInt(string name, string val)
   {
     scope->strings.setValue(name, val);
+    return true;
+  }
+
+  void printValue(value val)
+  {
+    cout << val.v.i << endl;
+  }
+
+  value getValue(string name)
+  {
+    return scope->values.getValue(name);
+  }
+  bool setValue(string name, value val)
+  {
+    scope->values.setValue(name, val);
     return true;
   }
 };

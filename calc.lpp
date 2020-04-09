@@ -48,7 +48,7 @@ SOCB \{
 EOCB \}
 /*KEYWORDS*/
 KEYWORD kor|func|return|if|else|for|struct|range
-IDEN float|int|string|bool
+IDEN float|int|string|bool|var
 /*IGNORED*/
 IGNORED [ \n\r]+
 %%

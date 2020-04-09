@@ -1,11 +1,13 @@
 #ifndef SCOPE
 #define SCOPE
+
 #include <iostream>
 #include <cstdlib>
 #include <map>
 #include <vector>
 
 #include "bucket.hpp"
+#include "tree.hpp"
 
 using namespace std;
 
@@ -19,10 +21,12 @@ public:
   Bucket<float> floats;
   Bucket<int> integers;
   Bucket<string> strings;
+  Bucket<value> values;
   Scope() : inner(vector<Scope>()),
             floats(Bucket<float>()),
             integers(Bucket<int>()),
-            strings(Bucket<string>())
+            strings(Bucket<string>()),
+            values(Bucket<value>())
   {
   }
 };

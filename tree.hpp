@@ -3,10 +3,13 @@
 #include <cstdlib>
 #define tree
 
+using namespace std;
+
 enum OPERATIONS
 {
     ASSIGN,
     SUM,
+    EXPRESSION,
     MULTIPLY,
     DIVIDE,
     SUB,
@@ -49,6 +52,30 @@ public:
     {
         this->val = _val;
         this->operation = _ope;
+    }
+    value mergeValues(value x, value y)
+    {
+        struct value res;
+        switch (operation)
+        {
+        case OPERATIONS(SUM):
+            res.v.i = x.v.i + y.v.i;
+            res.v.f = x.v.f + y.v.f;
+            //TODO: add string summaiton
+            break;
+        case OPERATIONS(SUB):
+            res.v.i = x.v.i - y.v.i;
+            res.v.f = x.v.f - y.v.f;
+            break;
+        default:
+            break;
+        }
+        return res;
+    }
+
+    void log()
+    {
+        cout << this->val.v.i << "  " << this->val.v.f << "  " << this->operation << endl;
     }
 };
 #endif

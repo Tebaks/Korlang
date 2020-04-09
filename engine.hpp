@@ -2,6 +2,7 @@
 #define ENGINE
 
 #include <iostream>
+#include <string>
 #include "tree.hpp"
 #include "driver.hpp"
 
@@ -16,40 +17,81 @@ public:
   }
   void execute(TreeNode *root)
   {
-    cout << "gotcha" << endl;
-    /*
-    root = root->firstChild;
-    if (root->operation == OPERATIONS(ASSIGN))
-    {
-      resolveAssign(root);
-    }
-    else
-    {
-      int r = resolveIntegerTree(root);
-      cout << r << endl;
-    }*/
+    handleStatements(root);
   }
 
 private:
-  void resolveAssign(TreeNode *node)
+  void handleStatements(TreeNode *node)
   {
-    string name = node->secondChild->val.v.s;
-    int val;
-    if (node->thirdChild->operation == OPERATIONS(CONSTANT))
+    if (node == NULL)
     {
-      val = node->thirdChild->val.v.i;
+      return;
     }
-    else if (node->thirdChild->operation == OPERATIONS(VARIABLE))
+    if (node->firstChild == NULL && node->secondChild == NULL)
     {
-      string tname = node->thirdChild->val.v.s;
-      val = driver->getInt(tname);
+      return;
     }
-    else
-    {
-      val = resolveIntegerTree(node->thirdChild);
-    }
-    driver->setInt(name, val);
+    // Handle statements with bottom up prenciple
+    handleStatements(node->firstChild);
+    value val = handleStatement(node->secondChild);
+    string s = val.use;
+    if (s.compare("na") != 0)
+      driver->printValue(val);
   }
+  value handleStatement(TreeNode *node)
+  {
+    value res;
+    res.use = "na";
+    if (node == NULL)
+    {
+      return res;
+    }
+    // Handle statement type.
+    switch (node->operation)
+    {
+    case OPERATIONS(EXPRESSION):
+      res = resolveExpression(node->firstChild);
+      break;
+    case OPERATIONS(ASSIGN):
+      resolveAssignment(node);
+    default:
+      break;
+    }
+    return res;
+  }
+
+  value resolveExpression(TreeNode *node)
+  {
+
+    if (node->operation == OPERATIONS(CONSTANT))
+    {
+      return node->val;
+    }
+    if (node->operation == OPERATIONS(VARIABLE))
+    {
+      string name = node->val.v.s;
+      return driver->getValue(node->val.v.s);
+    }
+
+    value left = resolveExpression(node->firstChild);
+    value right = resolveExpression(node->secondChild);
+    value res = node->mergeValues(left, right);
+    return res;
+  }
+
+  void resolveAssignment(TreeNode *node)
+  {
+    if (node == NULL)
+    {
+      return;
+    }
+    string name = node->secondChild->val.v.s;
+    value val = resolveExpression(node->thirdChild);
+    driver->setValue(name, val);
+  }
+  /**
+   * @DEPRACETED
+  */
   int resolveIntegerTree(TreeNode *node)
   {
     if (node->operation == OPERATIONS(CONSTANT))

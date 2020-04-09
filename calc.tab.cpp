@@ -516,8 +516,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    95,    97,   101,   106,   110,   123,   128,
-     130,   136
+       0,    89,    89,    95,    97,   101,   106,   110,   123,   130,
+     132,   138
 };
 #endif
 
@@ -1332,7 +1332,7 @@ yyreduce:
   case 6:
 #line 107 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
-  (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[-1].tval),NULL,NULL,NULL);
+  (yyval.tval) = new TreeNode(temp,OPERATIONS(EXPRESSION),(yyvsp[-1].tval),NULL,NULL,NULL);
   }
 #line 1338 "calc.tab.cpp" /* yacc.c:1646  */
     break;
@@ -1356,42 +1356,43 @@ yyreduce:
     { 
   struct value temp;
   temp.use = "identifier";
-  (yyval.tval) = new TreeNode(temp,OPERATIONS(SUM),(yyvsp[-2].tval),(yyvsp[0].tval),NULL,NULL);
+  OPERATIONS op = OPERATIONS(SUM);
+  if (OPA == '-') op = OPERATIONS(SUB); 
+  (yyval.tval) = new TreeNode(temp,op,(yyvsp[-2].tval),(yyvsp[0].tval),NULL,NULL);
  }
-#line 1362 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1364 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 128 "calc.ypp" /* yacc.c:1646  */
+#line 130 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[0].tval); }
-#line 1368 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1370 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 130 "calc.ypp" /* yacc.c:1646  */
+#line 132 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.v.i = (yyvsp[0].ival);
   temp.use = "integer";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
-#line 1379 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1381 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 136 "calc.ypp" /* yacc.c:1646  */
+#line 138 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
-  int val  = engine->driver->getInt((yyvsp[0].id));
-  temp.v.i = val;
+  temp.v.s = (yyvsp[0].id);
   temp.use = "integer";
-  (yyval.tval) = new TreeNode(temp,OPERATIONS(CONSTANT));
+  (yyval.tval) = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
-#line 1391 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1392 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1395 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1396 "calc.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1619,7 +1620,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 192 "calc.ypp" /* yacc.c:1906  */
+#line 193 "calc.ypp" /* yacc.c:1906  */
 
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');
