@@ -40,6 +40,7 @@ private:
   }
   value handleStatement(TreeNode *node)
   {
+    cout << "GOT STATEMENT " << ((node == NULL) ? OPERATIONS(NULL) : (node->operation)) << endl;
     value res;
     res.use = "na";
     if (node == NULL)
@@ -54,6 +55,9 @@ private:
       break;
     case OPERATIONS(DECLARATION):
       resolveDeclaration(node);
+    case OPERATIONS(LOOP):
+      executeLoop(node);
+      break;
     default:
       break;
     }
@@ -89,6 +93,14 @@ private:
     value val = resolveExpression(node->thirdChild);
     driver->setValue(name, val);
   }
+
+  void executeLoop(TreeNode *node)
+  {
+    cout << "BEFORE LOOP" << endl;
+    handleStatements(node->firstChild);
+    cout << "AFTER LOOP" << endl;
+  }
+
   /**
    * @DEPRACETED
   */

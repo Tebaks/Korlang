@@ -7,6 +7,7 @@ using namespace std;
 
 enum OPERATIONS
 {
+    NIL,
     ASSIGN,
     DECLARATION,
     SUM,
@@ -19,6 +20,7 @@ enum OPERATIONS
     ROOT,
     ASSIGNMENT_OPERATOR,
     STMT_LIST,
+    LOOP,
 };
 struct value
 {
