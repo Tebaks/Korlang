@@ -455,18 +455,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  9
+#define YYFINAL  10
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   13
+#define YYLAST   15
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  43
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  9
+#define YYNRULES  11
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  16
+#define YYNSTATES  18
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -516,7 +516,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    88,    88,    93,    95,    96,   106,   111,   113,   119
+       0,    89,    89,    95,    97,   101,   106,   110,   123,   128,
+     130,   136
 };
 #endif
 
@@ -530,7 +531,7 @@ static const char *const yytname[] =
   "MOD_ASSIGN", "DIV_ASSIGN", "SUB_ASSIGN", "ADD_ASSIGN", "AND", "OR",
   "GTH", "LTH", "GTHEQ", "LTHEQ", "EQ", "NEQ", "SOP", "EOP", "SOB", "EOB",
   "SOCB", "EOCB", "RETURN", "IF", "FOR", "ELSE", "WHILE", "FUNC", "KOR",
-  "STRUCT", "RANGE", "$accept", "S", "stmt", "exp", "factor", YY_NULLPTR
+  "STRUCT", "RANGE", "$accept", "S", "stmts", "stmt", "exp", "factor", YY_NULLPTR
 };
 #endif
 
@@ -561,8 +562,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,    -9,    -9,     2,     9,    -9,    -8,    -9,    -2,    -9,
-       4,    -9,     4,    -9,    -7,    -9
+      -3,    -9,    -9,     2,     9,    -3,    -9,    -8,    -9,    -2,
+      -9,    -9,     4,    -9,     4,    -9,    -7,    -9
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -570,20 +571,20 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,     8,     9,     0,     0,     2,     0,     7,     0,     1,
-       0,     4,     0,     6,     0,     5
+       3,    10,    11,     0,     0,     2,     4,     0,     9,     0,
+       1,     5,     0,     6,     0,     8,     0,     7
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,    -9,    -1,     3
+      -9,    -9,    -9,     6,    -1,     3
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     4,     5,     6,     7
+      -1,     4,     5,     6,     7,     8
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -591,34 +592,36 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       1,    10,    10,     2,     3,    11,    15,     1,     8,     9,
-       2,    14,    12,    13
+       1,    12,    12,     2,     3,    13,    17,     1,     9,    10,
+       2,    11,    14,    16,     0,    15
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
        3,     9,     9,     6,     7,    13,    13,     3,     6,     0,
-       6,    12,    14,    10
+       6,     5,    14,    14,    -1,    12
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     6,     7,    44,    45,    46,    47,     6,     0,
-       9,    13,    14,    47,    46,    13
+       0,     3,     6,     7,    44,    45,    46,    47,    48,     6,
+       0,    46,     9,    13,    14,    48,    47,    13
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    43,    44,    44,    45,    45,    46,    46,    47,    47
+       0,    43,    44,    44,    45,    45,    46,    46,    47,    47,
+      48,    48
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     0,     2,     5,     3,     1,     1,     1
+       0,     2,     1,     0,     1,     2,     2,     5,     3,     1,
+       1,     1
 };
 
 
@@ -1295,29 +1298,47 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 88 "calc.ypp" /* yacc.c:1646  */
+#line 90 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
   TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),(yyvsp[0].tval),NULL,NULL,NULL);
   engine->execute(root);
   YYACCEPT;
 }
-#line 1305 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1308 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 93 "calc.ypp" /* yacc.c:1646  */
+#line 95 "calc.ypp" /* yacc.c:1646  */
     { keepgoing = false; }
-#line 1311 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1314 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 95 "calc.ypp" /* yacc.c:1646  */
-    { (yyval.tval) = (yyvsp[-1].tval); }
-#line 1317 "calc.tab.cpp" /* yacc.c:1646  */
+#line 98 "calc.ypp" /* yacc.c:1646  */
+    {NOTHING
+  (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[0].tval),NULL,NULL,NULL);
+  }
+#line 1322 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 96 "calc.ypp" /* yacc.c:1646  */
+#line 102 "calc.ypp" /* yacc.c:1646  */
+    {NOTHING
+(yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[-1].tval),(yyvsp[0].tval),NULL,NULL);
+}
+#line 1330 "calc.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 107 "calc.ypp" /* yacc.c:1646  */
+    {NOTHING
+  (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[-1].tval),NULL,NULL,NULL);
+  }
+#line 1338 "calc.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 110 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   temp.use = "identifier";
@@ -1327,38 +1348,38 @@ yyreduce:
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
   (yyval.tval) = new TreeNode(temp,OPERATIONS(ASSIGN),NULL,second,(yyvsp[-1].tval),NULL);
 }
-#line 1331 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1352 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 6:
-#line 106 "calc.ypp" /* yacc.c:1646  */
+  case 8:
+#line 123 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.use = "identifier";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(SUM),(yyvsp[-2].tval),(yyvsp[0].tval),NULL,NULL);
  }
-#line 1341 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1362 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 7:
-#line 111 "calc.ypp" /* yacc.c:1646  */
+  case 9:
+#line 128 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[0].tval); }
-#line 1347 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1368 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 8:
-#line 113 "calc.ypp" /* yacc.c:1646  */
+  case 10:
+#line 130 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.v.i = (yyvsp[0].ival);
   temp.use = "integer";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
-#line 1358 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1379 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 9:
-#line 119 "calc.ypp" /* yacc.c:1646  */
+  case 11:
+#line 136 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   int val  = engine->driver->getInt((yyvsp[0].id));
@@ -1366,11 +1387,11 @@ yyreduce:
   temp.use = "integer";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
-#line 1370 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1391 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1374 "calc.tab.cpp" /* yacc.c:1646  */
+#line 1395 "calc.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1598,7 +1619,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 173 "calc.ypp" /* yacc.c:1906  */
+#line 192 "calc.ypp" /* yacc.c:1906  */
 
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');

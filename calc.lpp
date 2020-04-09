@@ -92,6 +92,6 @@ IGNORED [ \n\r]+
 {MUL_ASSIGN} {return MUL_ASSIGN;}
 {MOD_ASSIGN} {return MOD_ASSIGN;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
-{IGNORED} {printf("%s",yytext);}
+{IGNORED} {}
 . { printf("SYNTAX ERROR: %s",yytext); }
 %%

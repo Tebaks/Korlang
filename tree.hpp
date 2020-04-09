@@ -14,6 +14,7 @@ enum OPERATIONS
     CONSTANT,
     ROOT,
     ASSIGNMENT_OPERATOR,
+    STMT_LIST,
 };
 struct value
 {

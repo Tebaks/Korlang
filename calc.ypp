@@ -80,19 +80,33 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmt factor assignment_operator
+%type <tval> exp  stmts factor assignment_operator stmt
+%start S
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
   /* Note: YYACCEPT is a macro that tells bison to stop parsing. */
-S: stmt {NOTHING
+S: stmts 
+  {NOTHING
   TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),$1,NULL,NULL,NULL);
   engine->execute(root);
   YYACCEPT;
 }
 |       { keepgoing = false; }
 
-stmt: exp STOP { $$ = $1; }
+stmts: stmt
+  {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(STMT_LIST),$1,NULL,NULL,NULL);
+  }
+|stmts stmt
+{NOTHING
+$$ = new TreeNode(temp,OPERATIONS(STMT_LIST),$1,$2,NULL,NULL);
+}
+
+stmt: exp STOP 
+  {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(STMT_LIST),$1,NULL,NULL,NULL);
+  }
 | IDEN VAR ASSGN exp STOP {
   struct value temp;
   temp.use = "identifier";
@@ -102,6 +116,9 @@ stmt: exp STOP { $$ = $1; }
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
   $$ = new TreeNode(temp,OPERATIONS(ASSIGN),NULL,second,$4,NULL);
 }
+
+
+
 
 exp: exp OPA factor      { 
   struct value temp;
@@ -123,48 +140,50 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
+
+
  assignment_operator :
   ASSGN
 	{
 		struct value temp;
 		temp.v.s = "=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));
 	}
 	| MUL_ASSIGN
 	{
 		struct value temp;
 		temp.v.s = "*=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	| DIV_ASSIGN
 	{
 		struct value temp;
 		temp.v.s = "/=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	| MOD_ASSIGN
 	{
 		struct value temp;
 		temp.v.s = "%=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	| ADD_ASSIGN
 	{
 		struct value temp;
 		temp.v.s = "+=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	| SUB_ASSIGN
 	{
 		struct value temp;
 		temp.v.s = "-=";
 		temp.use = "string";
-		$$ = TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
+		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	;
  

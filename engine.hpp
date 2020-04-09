@@ -16,6 +16,8 @@ public:
   }
   void execute(TreeNode *root)
   {
+    cout << "gotcha" << endl;
+    /*
     root = root->firstChild;
     if (root->operation == OPERATIONS(ASSIGN))
     {
@@ -25,7 +27,7 @@ public:
     {
       int r = resolveIntegerTree(root);
       cout << r << endl;
-    }
+    }*/
   }
 
 private:
@@ -54,7 +56,8 @@ private:
     {
       return node->val.v.i;
     }
-    if (node -> operation == OPERATIONS(VARIABLE)){
+    if (node->operation == OPERATIONS(VARIABLE))
+    {
       return driver->getInt(node->val.v.s);
     }
     int left = resolveIntegerTree(node->firstChild);
