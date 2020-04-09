@@ -8,6 +8,7 @@ using namespace std;
 enum OPERATIONS
 {
     ASSIGN,
+    DECLARATION,
     SUM,
     EXPRESSION,
     MULTIPLY,
@@ -55,21 +56,31 @@ public:
     }
     value mergeValues(value x, value y)
     {
-        struct value res;
-        switch (operation)
+        value res;
+        if (operation == OPERATIONS(SUM))
         {
-        case OPERATIONS(SUM):
             res.v.i = x.v.i + y.v.i;
             res.v.f = x.v.f + y.v.f;
             //TODO: add string summaiton
-            break;
-        case OPERATIONS(SUB):
+        }
+        if (operation == OPERATIONS(SUB))
+        {
             res.v.i = x.v.i - y.v.i;
             res.v.f = x.v.f - y.v.f;
-            break;
-        default:
-            break;
         }
+        if (operation == OPERATIONS(MULTIPLY))
+        {
+
+            res.v.i = x.v.i * y.v.i;
+            //res.v.f = x.v.f * y.v.f;
+        }
+        if (operation == OPERATIONS(DIVIDE))
+        {
+
+            res.v.i = x.v.i / y.v.i;
+            //res.v.f = x.v.f * y.v.f;
+        }
+
         return res;
     }
 
@@ -78,4 +89,5 @@ public:
         cout << this->val.v.i << "  " << this->val.v.f << "  " << this->operation << endl;
     }
 };
+
 #endif

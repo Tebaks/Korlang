@@ -80,7 +80,7 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmts factor assignment_operator stmt
+%type <tval> exp  stmts factor assignment_operator stmt term
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -114,20 +114,30 @@ stmt: exp STOP
   temp2.v.s = $2;
   temp2.use = "string";
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
-  $$ = new TreeNode(temp,OPERATIONS(ASSIGN),NULL,second,$4,NULL);
+  $$ = new TreeNode(temp,OPERATIONS(DECLARATION),NULL,second,$4,NULL);
 }
 
 
 
 
-exp: exp OPA factor      { 
+exp: exp OPA term      { 
   struct value temp;
   temp.use = "identifier";
   OPERATIONS op = OPERATIONS(SUM);
-  if (OPA == '-') op = OPERATIONS(SUB); 
+  if ($2 == '-') op = OPERATIONS(SUB); 
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
  }
-| factor               { $$ = $1; }
+| term               { $$ = $1; }
+
+term : term OPM factor {
+  struct value temp;
+  temp.use = "identifier";
+  OPERATIONS op = OPERATIONS(MULTIPLY);
+  if ($2 == '/') op = OPERATIONS(DIVIDE); 
+  $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
+
+}
+| factor
 
 factor: INT            { 
   struct value temp;
@@ -135,6 +145,7 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
+ | SOP exp EOP { $$ = $2;}
  | VAR {
   struct value temp;
   temp.v.s = $1;

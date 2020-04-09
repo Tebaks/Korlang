@@ -52,8 +52,8 @@ private:
     case OPERATIONS(EXPRESSION):
       res = resolveExpression(node->firstChild);
       break;
-    case OPERATIONS(ASSIGN):
-      resolveAssignment(node);
+    case OPERATIONS(DECLARATION):
+      resolveDeclaration(node);
     default:
       break;
     }
@@ -79,7 +79,7 @@ private:
     return res;
   }
 
-  void resolveAssignment(TreeNode *node)
+  void resolveDeclaration(TreeNode *node)
   {
     if (node == NULL)
     {
