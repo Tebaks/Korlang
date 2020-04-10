@@ -47,6 +47,7 @@ private:
     {
     case OPERATIONS(EXPRESSION):
       res = resolveExpression(node->firstChild);
+      res.use = "expression";
       break;
     case OPERATIONS(DECLARATION):
       resolveDeclaration(node);
@@ -56,6 +57,7 @@ private:
       break;
     case OPERATIONS(AND_LOGIC):
       res = resolveLogic(node);
+      res.use = "bool";
       break;
     case OPERATIONS(IF_LOGIC):
       executeIf(node);
@@ -90,7 +92,7 @@ private:
     value res = node->mergeValues(left, right);
     return res;
   }
-  value resolveAssignment(TreeNode *node)
+  void resolveAssignment(TreeNode *node)
   {
     TreeNode *tn = new TreeNode();
 
@@ -130,6 +132,7 @@ private:
 
   value resolveLogic(TreeNode *node)
   {
+
     if (node == NULL)
     {
       cout << "resolve logic null" << endl;
