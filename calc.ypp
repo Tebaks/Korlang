@@ -126,7 +126,10 @@ stmt: exp STOP
 |logical_and_operations STOP{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 }
-| IF  logical_and_operations SOCB stmts EOCB{NOTHING
+| IF logical_and_operations SOCB stmts EOCB{NOTHING
+$$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
+}
+| IF logical_and_operations SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
 }
 |IF logical_and_operations SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
@@ -185,6 +188,8 @@ factor: INT            {
  |exp{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(EXPRESSION),$1,NULL,NULL,NULL);
  }
+ |SOP logical_and_operations EOP {$$ = $2; }
+
 
  logical_and_operations:
  logical_or_operations{NOTHING
