@@ -54,6 +54,9 @@ private:
     case OPERATIONS(LOOP):
       executeLoop(node);
       break;
+    case OPERATIONS(AND_LOGIC):
+      res = resolveLogic(node);
+      break;
     default:
       break;
     }
@@ -77,6 +80,30 @@ private:
     value right = resolveExpression(node->secondChild);
     value res = node->mergeValues(left, right);
     return res;
+  }
+  value resolveLogic(TreeNode *node)
+  {
+    if (node == NULL)
+    {
+      cout << "resolve logic null" << endl;
+    }
+    if (node->operation == OPERATIONS(EXPRESSION))
+    {
+      return node->val;
+    }
+    if (node->secondChild == NULL)
+    {
+      return resolveLogic(node->firstChild);
+    }
+    if (node->operation != OPERATIONS(AND_LOGIC) && node->operation != OPERATIONS(OR_LOGIC))
+    {
+      value left = resolveExpression(node->firstChild);
+      value right = resolveExpression(node->secondChild);
+      return node->mergeLogic(left, right);
+    }
+    value left = resolveLogic(node->firstChild);
+    value right = resolveLogic(node->secondChild);
+    return node->mergeLogic(left, right);
   }
 
   void resolveDeclaration(TreeNode *node)

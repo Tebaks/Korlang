@@ -21,6 +21,13 @@ enum OPERATIONS
     ASSIGNMENT_OPERATOR,
     STMT_LIST,
     LOOP,
+    LOGIC,
+    LTH_LOGIC,
+    GTH_LOGIC,
+    GTHEQ_LOGIC,
+    LTHEQ_LOGIC,
+    AND_LOGIC,
+    OR_LOGIC,
 };
 struct value
 {
@@ -55,6 +62,36 @@ public:
     {
         this->val = _val;
         this->operation = _ope;
+    }
+    value mergeLogic(value x, value y)
+    {
+        value res;
+        res.v.i = 0;
+        if (operation == OPERATIONS(LTH_LOGIC) && x.v.i < y.v.i)
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(GTH_LOGIC) && x.v.i > y.v.i)
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(GTHEQ_LOGIC) && x.v.i >= y.v.i)
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(LTHEQ_LOGIC) && x.v.i <= y.v.i)
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(AND_LOGIC) && ((x.v.i > 0) && (y.v.i > 0)))
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(OR_LOGIC) && ((x.v.i > 0) || (y.v.i > 0)))
+        {
+            res.v.i = 1;
+        }
+        return res;
     }
     value mergeValues(value x, value y)
     {

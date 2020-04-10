@@ -80,7 +80,7 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmts factor assignment_operator stmt term
+%type <tval> exp  stmts factor assignment_operator stmt term logical_and_operations logical_or_operations logical_operations
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -123,9 +123,9 @@ stmt: exp STOP
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(LOOP),$3,NULL,NULL,NULL);
 }
-
-
-
+|logical_and_operations STOP{NOTHING
+$$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
+}
 
 
 exp: exp OPA term      { 
@@ -160,6 +160,40 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
+
+ logical_operations:
+ exp LTH exp {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(LTH_LOGIC),$1,$3,NULL,NULL);
+ }
+ |exp GTH exp {NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(GTH_LOGIC),$1,$3,NULL,NULL);
+ }
+ |exp LTHEQ exp {NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(LTHEQ_LOGIC),$1,$3,NULL,NULL);
+ }
+ |exp GTHEQ exp {NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(GTHEQ_LOGIC),$1,$3,NULL,NULL);
+ }
+ |exp{NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(EXPRESSION),$1,NULL,NULL,NULL);
+ }
+
+ logical_and_operations:
+ logical_or_operations{NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
+ }
+ | logical_and_operations AND logical_or_operations{NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,$3,NULL,NULL);
+ }
+
+ logical_or_operations:
+ logical_or_operations  OR logical_and_operations{NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(OR_LOGIC),$1,$3,NULL,NULL);
+ }
+ |logical_operations{NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(LOGIC),$1,NULL,NULL,NULL);
+ }
+
 
 
  assignment_operator :
