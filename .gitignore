@@ -1,3 +1,4 @@
-./calc
+./korlang
 *.o
 *.yy.*
+*.tab.*

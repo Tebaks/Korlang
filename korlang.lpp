@@ -1,6 +1,6 @@
 
 %{
-#include "calc.tab.hpp"
+#include "korlang.tab.hpp"
 #include <cstdlib> // for atoi
 #include <string.h>
 %}
