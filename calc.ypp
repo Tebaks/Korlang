@@ -94,14 +94,16 @@ S: stmts
 }
 |       { keepgoing = false; }
 
+
 stmts: stmt
   {NOTHING
-  $$ = new TreeNode(temp,OPERATIONS(STMT_LIST),$1,NULL,NULL,NULL);
+  $$ = new TreeNode(temp,OPERATIONS(STMT_LIST),NULL,$1,NULL,NULL);
   }
 |stmts stmt 
 {NOTHING
 $$ = new TreeNode(temp,OPERATIONS(STMT_LIST),$1,$2,NULL,NULL);
 }
+
 
 stmt: exp STOP 
   {NOTHING
@@ -121,6 +123,7 @@ stmt: exp STOP
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(LOOP),$3,NULL,NULL,NULL);
 }
+
 
 
 

@@ -27,10 +27,6 @@ private:
     {
       return;
     }
-    if (node->firstChild == NULL && node->secondChild == NULL)
-    {
-      return;
-    }
     // Handle statements with bottom up prenciple
     handleStatements(node->firstChild);
     value val = handleStatement(node->secondChild);
@@ -40,7 +36,6 @@ private:
   }
   value handleStatement(TreeNode *node)
   {
-    cout << "GOT STATEMENT " << ((node == NULL) ? OPERATIONS(NULL) : (node->operation)) << endl;
     value res;
     res.use = "na";
     if (node == NULL)
@@ -55,6 +50,7 @@ private:
       break;
     case OPERATIONS(DECLARATION):
       resolveDeclaration(node);
+      break;
     case OPERATIONS(LOOP):
       executeLoop(node);
       break;
@@ -97,7 +93,8 @@ private:
   void executeLoop(TreeNode *node)
   {
     cout << "BEFORE LOOP" << endl;
-    while(1) {
+    while (1)
+    {
       handleStatements(node->firstChild);
     }
     cout << "AFTER LOOP" << endl;

@@ -516,8 +516,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    95,    97,   101,   106,   110,   119,   128,
-     135,   137,   145,   147,   153,   154
+       0,    89,    89,    95,    98,   102,   108,   112,   121,   131,
+     138,   140,   148,   150,   156,   157
 };
 #endif
 
@@ -1322,15 +1322,15 @@ yyreduce:
     break;
 
   case 4:
-#line 98 "calc.ypp" /* yacc.c:1646  */
+#line 99 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
-  (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[0].tval),NULL,NULL,NULL);
+  (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),NULL,(yyvsp[0].tval),NULL,NULL);
   }
 #line 1330 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 102 "calc.ypp" /* yacc.c:1646  */
+#line 103 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
 (yyval.tval) = new TreeNode(temp,OPERATIONS(STMT_LIST),(yyvsp[-1].tval),(yyvsp[0].tval),NULL,NULL);
 }
@@ -1338,7 +1338,7 @@ yyreduce:
     break;
 
   case 6:
-#line 107 "calc.ypp" /* yacc.c:1646  */
+#line 109 "calc.ypp" /* yacc.c:1646  */
     {NOTHING
   (yyval.tval) = new TreeNode(temp,OPERATIONS(EXPRESSION),(yyvsp[-1].tval),NULL,NULL,NULL);
   }
@@ -1346,7 +1346,7 @@ yyreduce:
     break;
 
   case 7:
-#line 110 "calc.ypp" /* yacc.c:1646  */
+#line 112 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   temp.use = "identifier";
@@ -1360,7 +1360,7 @@ yyreduce:
     break;
 
   case 8:
-#line 119 "calc.ypp" /* yacc.c:1646  */
+#line 121 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   temp.use = "identifier";
@@ -1370,7 +1370,7 @@ yyreduce:
     break;
 
   case 9:
-#line 128 "calc.ypp" /* yacc.c:1646  */
+#line 131 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.use = "identifier";
@@ -1382,13 +1382,13 @@ yyreduce:
     break;
 
   case 10:
-#line 135 "calc.ypp" /* yacc.c:1646  */
+#line 138 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[0].tval); }
 #line 1388 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 137 "calc.ypp" /* yacc.c:1646  */
+#line 140 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   temp.use = "identifier";
@@ -1401,7 +1401,7 @@ yyreduce:
     break;
 
   case 13:
-#line 147 "calc.ypp" /* yacc.c:1646  */
+#line 150 "calc.ypp" /* yacc.c:1646  */
     { 
   struct value temp;
   temp.v.i = (yyvsp[0].ival);
@@ -1412,13 +1412,13 @@ yyreduce:
     break;
 
   case 14:
-#line 153 "calc.ypp" /* yacc.c:1646  */
+#line 156 "calc.ypp" /* yacc.c:1646  */
     { (yyval.tval) = (yyvsp[-1].tval);}
 #line 1418 "calc.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 154 "calc.ypp" /* yacc.c:1646  */
+#line 157 "calc.ypp" /* yacc.c:1646  */
     {
   struct value temp;
   temp.v.s = (yyvsp[0].id);
@@ -1657,7 +1657,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 209 "calc.ypp" /* yacc.c:1906  */
+#line 212 "calc.ypp" /* yacc.c:1906  */
 
 // These are the colored output streams to make things all pretty.
 colorout resout(1, 'u');
