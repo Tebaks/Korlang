@@ -118,6 +118,11 @@ stmt: exp STOP
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
   $$ = new TreeNode(temp,OPERATIONS(DECLARATION),NULL,second,$4,NULL);
 }
+| VAR assignment_operator exp STOP{
+  struct value temp;
+  temp.use =  "identifier";
+  temp.v.s = $1;
+$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT),NULL,$2,$3,NULL);}
 | FOR SOCB stmts EOCB {
   struct value temp;
   temp.use = "identifier";
@@ -206,6 +211,7 @@ factor: INT            {
  |logical_operations{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(LOGIC),$1,NULL,NULL,NULL);
  }
+
 
 
 

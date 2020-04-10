@@ -30,6 +30,7 @@ enum OPERATIONS
     OR_LOGIC,
     IF_LOGIC,
     IF_ELSE_LOGIC,
+    ASSIGNMENT,
 };
 struct value
 {
@@ -37,7 +38,9 @@ struct value
         int i;
         float f;
         char *s;
+
     } v;
+    bool init = 0;
     char *use;
 };
 
@@ -50,7 +53,7 @@ public:
     TreeNode *secondChild;
     TreeNode *thirdChild;
     TreeNode *fourthChild;
-
+    TreeNode() {}
     TreeNode(value _val, OPERATIONS _ope, TreeNode *_n1, TreeNode *_n2, TreeNode *_n3, TreeNode *_n4)
     {
         this->val = _val;
@@ -65,6 +68,7 @@ public:
         this->val = _val;
         this->operation = _ope;
     }
+
     value mergeLogic(value x, value y)
     {
         value res;

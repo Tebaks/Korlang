@@ -63,6 +63,9 @@ private:
     case OPERATIONS(IF_ELSE_LOGIC):
       executeIfElse(node);
       break;
+    case OPERATIONS(ASSIGNMENT):
+      resolveAssignment(node);
+      break;
     default:
       break;
     }
@@ -87,6 +90,44 @@ private:
     value res = node->mergeValues(left, right);
     return res;
   }
+  value resolveAssignment(TreeNode *node)
+  {
+    TreeNode *tn = new TreeNode();
+
+    value res = resolveExpression(node->thirdChild);
+    value cur = driver->getValue(node->val.v.s);
+    string temp = node->secondChild->val.v.s;
+    string name = node->val.v.s;
+    if (temp.compare("=") == 0)
+    {
+      driver->updateValue(name, res);
+    }
+    if (temp.compare("*=") == 0)
+    {
+      tn->operation = OPERATIONS(MULTIPLY);
+      res = tn->mergeValues(cur, res);
+      driver->updateValue(name, res);
+    }
+    if (temp.compare("/=") == 0)
+    {
+      tn->operation = OPERATIONS(DIVIDE);
+      res = tn->mergeValues(cur, res);
+      driver->updateValue(name, res);
+    }
+    if (temp.compare("-=") == 0)
+    {
+      tn->operation = OPERATIONS(SUB);
+      res = tn->mergeValues(cur, res);
+      driver->updateValue(name, res);
+    }
+    if (temp.compare("+=") == 0)
+    {
+      tn->operation = OPERATIONS(SUM);
+      res = tn->mergeValues(cur, res);
+      driver->updateValue(name, res);
+    }
+  }
+
   value resolveLogic(TreeNode *node)
   {
     if (node == NULL)

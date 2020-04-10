@@ -60,8 +60,19 @@ public:
   }
   bool setValue(string name, value val)
   {
-    scope->values.setValue(name, val);
-    return true;
+    if (!scope->values.isExist(name))
+    {
+      scope->values.setValue(name, val);
+      return true;
+    }
+    return false;
+  }
+  void updateValue(string name, value val)
+  {
+    if (scope->values.isExist(name))
+    {
+      scope->values.updateValue(name, val);
+    }
   }
 };
 

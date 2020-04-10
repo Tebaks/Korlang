@@ -25,7 +25,11 @@ public:
   }
   bool isExist(string name)
   {
-    return false;
+    return values.find(name) != values.end();
+  }
+  void updateValue(string name, T val)
+  {
+    values[name] = val;
   }
 };
 
