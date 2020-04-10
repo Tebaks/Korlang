@@ -57,6 +57,12 @@ private:
     case OPERATIONS(AND_LOGIC):
       res = resolveLogic(node);
       break;
+    case OPERATIONS(IF_LOGIC):
+      executeIf(node);
+      break;
+    case OPERATIONS(IF_ELSE_LOGIC):
+      executeIfElse(node);
+      break;
     default:
       break;
     }
@@ -125,6 +131,26 @@ private:
       handleStatements(node->firstChild);
     }
     cout << "AFTER LOOP" << endl;
+  }
+  void executeIf(TreeNode *node)
+  {
+    value v = resolveLogic(node->firstChild);
+    if (v.v.i > 0)
+    {
+      handleStatements(node->secondChild);
+    }
+  }
+  void executeIfElse(TreeNode *node)
+  {
+    value v = resolveLogic(node->firstChild);
+    if (v.v.i > 0)
+    {
+      handleStatements(node->secondChild);
+    }
+    else
+    {
+      handleStatements(node->thirdChild);
+    }
   }
 };
 

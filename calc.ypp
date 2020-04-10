@@ -126,6 +126,12 @@ stmt: exp STOP
 |logical_and_operations STOP{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 }
+| IF  logical_and_operations SOCB stmts EOCB{NOTHING
+$$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
+}
+|IF logical_and_operations SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
+$$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
+}
 
 
 exp: exp OPA term      { 
@@ -160,6 +166,8 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
+
+ 
 
  logical_operations:
  exp LTH exp {NOTHING

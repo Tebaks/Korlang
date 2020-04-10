@@ -28,6 +28,8 @@ enum OPERATIONS
     LTHEQ_LOGIC,
     AND_LOGIC,
     OR_LOGIC,
+    IF_LOGIC,
+    IF_ELSE_LOGIC,
 };
 struct value
 {
