@@ -99,37 +99,6 @@ private:
     }
     cout << "AFTER LOOP" << endl;
   }
-
-  /**
-   * @DEPRACETED
-  */
-  int resolveIntegerTree(TreeNode *node)
-  {
-    if (node->operation == OPERATIONS(CONSTANT))
-    {
-      return node->val.v.i;
-    }
-    if (node->operation == OPERATIONS(VARIABLE))
-    {
-      return driver->getInt(node->val.v.s);
-    }
-    int left = resolveIntegerTree(node->firstChild);
-    int right = resolveIntegerTree(node->secondChild);
-
-    switch (node->operation)
-    {
-    case OPERATIONS(SUM):
-      return left + right;
-    case OPERATIONS(MULTIPLY):
-      return left * right;
-    case OPERATIONS(DIVIDE):
-      return left / right;
-    case OPERATIONS(SUB):
-      return left - right;
-    default:
-      return 0;
-    }
-  }
 };
 
 #endif

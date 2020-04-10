@@ -59,6 +59,7 @@ public:
     value mergeValues(value x, value y)
     {
         value res;
+        //TODO : check value.use before operations.
         if (operation == OPERATIONS(SUM))
         {
             res.v.i = x.v.i + y.v.i;
@@ -80,7 +81,7 @@ public:
         {
 
             res.v.i = x.v.i / y.v.i;
-            //res.v.f = x.v.f * y.v.f;
+            //res.v.f = x.v.f / y.v.f;
         }
 
         return res;
