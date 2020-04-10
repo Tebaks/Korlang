@@ -1362,7 +1362,7 @@ yyreduce:
   case 8:
 #line 119 "calc.ypp" /* yacc.c:1646  */
     {
-  value temp;
+  struct value temp;
   temp.use = "identifier";
   (yyval.tval) = new TreeNode(temp,OPERATIONS(LOOP),(yyvsp[-1].tval),NULL,NULL,NULL);
 }

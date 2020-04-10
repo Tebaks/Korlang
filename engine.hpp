@@ -97,7 +97,9 @@ private:
   void executeLoop(TreeNode *node)
   {
     cout << "BEFORE LOOP" << endl;
-    handleStatements(node->firstChild);
+    while(1) {
+      handleStatements(node->firstChild);
+    }
     cout << "AFTER LOOP" << endl;
   }
 

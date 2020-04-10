@@ -116,7 +116,11 @@ stmt: exp STOP
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
   $$ = new TreeNode(temp,OPERATIONS(DECLARATION),NULL,second,$4,NULL);
 }
-
+| FOR SOCB stmts EOCB {
+  struct value temp;
+  temp.use = "identifier";
+  $$ = new TreeNode(temp,OPERATIONS(LOOP),$3,NULL,NULL,NULL);
+}
 
 
 
