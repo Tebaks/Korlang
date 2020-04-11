@@ -55,7 +55,7 @@ IGNORED [ \n\r]+
 {SEMICOLON} { return STOP; }
 {FLOAT} {yylval.fval = atof(yytext); return FLOAT;  }
 {INT} { yylval.ival = atoi(yytext); return INT; }
-{STRING} {yytext += 1;char buffer[yyleng-2];memcpy(buffer,yytext,yyleng-2); yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",buffer); return STRING; }
+{STRING} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return STRING; }
 {BOOLEAN} { if(strcmp(yytext,"true") == 0){ yylval.ival = 1 ;} else { yylval.ival = 0; }   return BOOL;}
 {IDEN} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return IDEN; }
 "kor" {return KOR;}

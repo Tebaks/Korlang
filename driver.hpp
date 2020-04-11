@@ -55,29 +55,35 @@ public:
 
   void printValue(value val)
   {
+    printValueInline(val);
+    cout << endl;
+  }
+
+  void printValueInline(value val)
+  {
     string s = val.use;
     if (s.compare("integer") == 0)
     {
-      cout << val.v.i << endl;
+      cout << val.v.i ;
     }
     else if (s.compare("boolean") == 0)
     {
       if (val.v.i > 0)
       {
-        cout << "true" << endl;
+        cout << "true";
       }
       else
       {
-        cout << "false" << endl;
+        cout << "false";
       }
     }
     else if (s.compare("string") == 0)
     {
-      cout << val.v.s << endl;
+      cout << val.v.s;
     }
     else
     {
-      cout << val.use << endl;
+      cout << val.use;
     }
   }
 

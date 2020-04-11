@@ -5,7 +5,7 @@
 #include <string>
 #include "tree.hpp"
 #include "driver.hpp"
-
+#include "util.hpp"
 using namespace std;
 
 class Engine
@@ -68,6 +68,9 @@ private:
       break;
     case OPERATIONS(FUNCTION):
       executeFunction(node, scope);
+      break;
+    case OPERATIONS(FUNCTION_DEC):
+      resolveFunctionDeclaration(node, scope);
       break;
     default:
       break;
@@ -163,6 +166,11 @@ private:
     value right = resolveLogic(node->secondChild, scope);
     return node->mergeLogic(left, right);
   }
+  void resolveFunctionDeclaration(TreeNode *node, Scope *scope)
+  {
+    string name = node->val.v.s;
+    scope->setFunction(name, node);
+  }
 
   void resolveDeclaration(TreeNode *node, Scope *scope)
   {
@@ -177,19 +185,58 @@ private:
   void executeFunction(TreeNode *node, Scope *scope)
   {
     string funcName = node->val.v.s;
-    // Check for system functions
 
+    // Check for system functions
     if (funcName.compare("print") == 0)
     {
-      korlang_print(node->firstChild, scope);
+      korlang_print(node, scope);
+    }
+    else
+    {
+      auto fnode = scope->getFunction(funcName);
+      if (fnode.isNil())
+      {
+        return;
+      }
+      auto childScope = scope->fork();
+      auto fi = ParamIterator(fnode.firstChild);
+      auto pi = ParamIterator(node->firstChild);
+      while (!pi.isEmpty() && !fi.isEmpty())
+      {
+
+        auto p = pi.get();
+        auto f = fi.get();
+
+        value lv = resolveExpression(&p, scope);
+        string ln = f.val.v.s;
+        childScope->setValue(ln, lv);
+
+        fi.done();
+        pi.done();
+      }
+
+      handleStatements(fnode.secondChild, childScope);
     }
   }
   void korlang_print(TreeNode *node, Scope *scope)
   {
-    if (node != NULL)
+    if (node->firstChild != NULL)
     {
-      value val = resolveExpression(node, scope);
-      driver->printValue(val);
+
+      auto it = ParamIterator(node->firstChild);
+
+      while (!it.isEmpty())
+      {
+        TreeNode t = it.get();
+        if (node != NULL)
+        {
+          value val = resolveExpression(&t, scope);
+          driver->printValueInline(val);
+          cout << "  ";
+        }
+        it.done();
+      }
+      cout << endl;
     }
     else
     {

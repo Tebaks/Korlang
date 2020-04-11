@@ -1,5 +1,5 @@
 
-korlang: korlang.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp
+korlang: korlang.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp util.hpp
 	g++ -o korlang lex.yy.o korlang.tab.o
 
 # Bison generates a C++ source file and a C++ header file.

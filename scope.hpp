@@ -76,12 +76,21 @@ public:
 
   TreeNode getFunction(string name)
   {
-    return this->functions.getValue(name);
+    if (functions.isExist(name))
+    {
+      auto res = this->functions.getValue(name);
+      return res;
+    }
+    else if (this->parentScope != NULL)
+    {
+      return this->parentScope->functions.getValue(name);
+    }
+    return NIL_TREE_NODE;
   }
 
-  void setFunction(string name, TreeNode node)
+  void setFunction(string name, TreeNode *node)
   {
-    this->functions.setValue(name, node);
+    this->functions.setValue(name, *node);
   }
 
   void destroy()

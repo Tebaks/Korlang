@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #define tree
+#define NIL_TREE_NODE TreeNode(true);
 
 using namespace std;
 
@@ -34,6 +35,9 @@ enum OPERATIONS
     IF_ELSE_LOGIC,
     ASSIGNMENT,
     FUNCTION,
+    FUNCTION_DEC,
+    VAR_NAME,
+    VAR_LIST,
     PARAMETERS,
 };
 struct value
@@ -50,6 +54,9 @@ struct value
 
 class TreeNode
 {
+private:
+    bool isNilNode = false;
+
 public:
     struct value val;
     OPERATIONS operation;
@@ -57,7 +64,9 @@ public:
     TreeNode *secondChild;
     TreeNode *thirdChild;
     TreeNode *fourthChild;
+
     TreeNode() {}
+    TreeNode(bool isNil) : isNilNode(isNil) {}
     TreeNode(value _val, OPERATIONS _ope, TreeNode *_n1, TreeNode *_n2, TreeNode *_n3, TreeNode *_n4)
     {
         this->val = _val;
@@ -147,6 +156,11 @@ public:
     void log()
     {
         cout << this->val.v.i << "  " << this->val.v.f << "  " << this->operation << endl;
+    }
+
+    bool isNil()
+    {
+        return this->isNilNode;
     }
 };
 
