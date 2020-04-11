@@ -1,5 +1,9 @@
 #ifndef SCOPE
 #define SCOPE
+#define NIL_VALUE \
+  {               \
+    0, "nil"      \
+  }
 
 #include <iostream>
 #include <cstdlib>
@@ -42,7 +46,16 @@ public:
 
   value getValue(string name)
   {
-    return this->values.getValue(name);
+    if (this->values.isExist(name))
+    {
+      return this->values.getValue(name);
+    }
+    else if (this->parentScope != NULL)
+    {
+      return this->parentScope->values.getValue(name);
+    }
+
+    return NIL_VALUE;
   }
   bool setValue(string name, value val)
   {

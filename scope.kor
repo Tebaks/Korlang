@@ -3,6 +3,7 @@ int a = 5;
 if a > 1 {
   int b = 3;
   print(b);
+  print(a);
 }
 
 print(b);
