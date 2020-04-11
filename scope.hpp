@@ -22,11 +22,14 @@ public:
   Bucket<int> integers;
   Bucket<string> strings;
   Bucket<value> values;
+  Bucket<TreeNode> functions;
   Scope() : inner(vector<Scope>()),
             floats(Bucket<float>()),
             integers(Bucket<int>()),
             strings(Bucket<string>()),
-            values(Bucket<value>())
+            values(Bucket<value>()),
+            functions(Bucket<TreeNode>())
+
   {
   }
 };

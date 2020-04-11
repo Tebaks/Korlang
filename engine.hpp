@@ -30,10 +30,7 @@ private:
     // Handle statements with bottom up prenciple
     handleStatements(node->firstChild);
     value val = handleStatement(node->secondChild);
-    string s = val.use;
-    if (s.compare("na") != 0)
-      driver->printValue(val);
-  }
+    }
   value handleStatement(TreeNode *node)
   {
     value res;
@@ -67,6 +64,9 @@ private:
       break;
     case OPERATIONS(ASSIGNMENT):
       resolveAssignment(node);
+      break;
+    case OPERATIONS(FUNCTION):
+      executeFunction(node);
       break;
     default:
       break;
@@ -166,15 +166,65 @@ private:
     value val = resolveExpression(node->thirdChild);
     driver->setValue(name, val);
   }
+  void executeFunction(TreeNode *node)
+  {
+    string funcName = node->val.v.s;
+    // Check for system functions
 
+    if (funcName.compare("print") == 0)
+    {
+      korlang_print(node->firstChild);
+    }
+  }
+  void korlang_print(TreeNode *node)
+  {
+    if (node != NULL)
+    {
+      value val = resolveExpression(node);
+      driver->printValue(val);
+    }
+    else
+    {
+      cout << endl;
+    }
+  }
   void executeLoop(TreeNode *node)
   {
-    cout << "BEFORE LOOP" << endl;
-    while (1)
+    // if second child is null, it's a infinite loop
+    if (node->secondChild == NULL)
     {
-      handleStatements(node->firstChild);
+      while (1)
+      {
+        handleStatements(node->firstChild);
+      }
     }
-    cout << "AFTER LOOP" << endl;
+    // if thirth child is null, it's a while loop
+    if (node->thirdChild == NULL)
+    {
+      value res = resolveLogic(node->firstChild);
+      while (res.v.i > 0)
+      {
+        handleStatements(node->secondChild);
+        res = resolveLogic(node->firstChild);
+      }
+    }
+    // otherwise, it's a for loop
+    else
+    {
+      // Execute initial statement.
+      handleStatement(node->firstChild);
+      // Execute logical expression.
+      value res = resolveLogic(node->secondChild);
+      while (res.v.i > 0)
+      {
+        // handle statements
+        handleStatements(node->fourthChild);
+        // Execute after loop statement.
+        handleStatement(node->thirdChild);
+        // Update logic state
+        res = resolveLogic(node->secondChild);
+      }
+    }
   }
   void executeIf(TreeNode *node)
   {

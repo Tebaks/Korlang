@@ -31,6 +31,8 @@ enum OPERATIONS
     IF_LOGIC,
     IF_ELSE_LOGIC,
     ASSIGNMENT,
+    FUNCTION,
+    PARAMETERS,
 };
 struct value
 {

@@ -62,6 +62,7 @@ bool keepgoing = true;
 %token <ival> BOOL
 %token <sym> OPA OPM 
 %token LP RP STOP 
+%token COMMA
 %token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN
 %token AND
 %token OR
@@ -80,7 +81,7 @@ bool keepgoing = true;
 %token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmts factor assignment_operator stmt term logical_and_operations logical_or_operations logical_operations
+%type <tval> exp  stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -128,18 +129,51 @@ $$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT),NULL,$2,$3,NULL);}
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(LOOP),$3,NULL,NULL,NULL);
 }
-|logical_and_operations STOP{NOTHING
+| FOR logical_operations SOCB stmts EOCB {
+  struct value temp;
+  temp.use = "identifier";
+  $$ = new TreeNode(temp,OPERATIONS(LOOP),$2,$4,NULL,NULL);
+}
+| FOR stmt  logical_operations STOP stmt  SOCB stmts EOCB {
+  struct value temp;
+  temp.use = "identifier";
+  $$ = new TreeNode(temp,OPERATIONS(LOOP),$2,$3,$5,$7);
+}
+|logical_operations STOP{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 }
-| IF logical_and_operations SOCB stmts EOCB{NOTHING
+| IF logical_operations SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
 }
-| IF logical_and_operations SOCB stmts EOCB{NOTHING
+| IF logical_operations SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
 }
-|IF logical_and_operations SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
+|IF logical_operations SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
 }
+| function_call STOP {  $$ = $1;}
+
+
+
+
+function_call : VAR SOP EOP {
+  struct value temp;
+  temp.v.s = $1;
+  $$ = new TreeNode(temp,OPERATIONS(FUNCTION));
+}
+| VAR SOP params EOP {
+  struct value temp;
+  temp.v.s = $1;
+  $$= new TreeNode(temp,OPERATIONS(FUNCTION),$3,NULL,NULL,NULL);
+}
+
+
+
+params : exp { $$ = $1; }
+| params COMMA exp { NOTHING 
+  $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),$1,$3,NULL,NULL);
+  }
+
 
 
 exp: exp OPA term      { 
@@ -177,7 +211,7 @@ factor: INT            {
 
  
 
- logical_operations:
+ logical_operators:
  exp LTH exp {NOTHING
   $$ = new TreeNode(temp,OPERATIONS(LTH_LOGIC),$1,$3,NULL,NULL);
  }
@@ -193,22 +227,22 @@ factor: INT            {
  |exp{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(EXPRESSION),$1,NULL,NULL,NULL);
  }
- |SOP logical_and_operations EOP {$$ = $2; }
+ |SOP logical_operations EOP {$$ = $2; }
 
 
- logical_and_operations:
+ logical_operations:
  logical_or_operations{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
  }
- | logical_and_operations AND logical_or_operations{NOTHING
+ | logical_operations AND logical_or_operations{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,$3,NULL,NULL);
  }
 
  logical_or_operations:
- logical_or_operations  OR logical_and_operations{NOTHING
+ logical_or_operations  OR logical_operations{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(OR_LOGIC),$1,$3,NULL,NULL);
  }
- |logical_operations{NOTHING
+ |logical_operators{NOTHING
  $$ = new TreeNode(temp,OPERATIONS(LOGIC),$1,NULL,NULL,NULL);
  }
 

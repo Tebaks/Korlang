@@ -65,6 +65,7 @@ IGNORED [ \n\r]+
 "for" {return FOR;}
 "struct" {return STRUCT;}
 "range" {return RANGE;} 
+"," {return COMMA;}
 {AND} {return AND;}
 {OR} {return OR;}
 {GTH} {return GTH;}

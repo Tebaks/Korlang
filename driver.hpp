@@ -74,6 +74,16 @@ public:
       scope->values.updateValue(name, val);
     }
   }
+
+  TreeNode getFunction(string name)
+  {
+    return scope->functions.getValue(name);
+  }
+
+  void setFunction(string name, TreeNode node)
+  {
+    scope->functions.setValue(name, node);
+  }
 };
 
 #endif
