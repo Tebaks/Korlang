@@ -11,3 +11,14 @@ for b < 5
     b += 1;
 }
 print (b == 5);
+
+var c = 0;
+
+for {
+    c += 1;
+    if c > 4 {
+        break;
+    }
+}
+
+print(c==5);
