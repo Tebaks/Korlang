@@ -23,7 +23,7 @@ int main()
         getline(cin, input_line);
         if (trim(input_line).compare("false") == 0)
         {
-            cout << "ERROR at line : " << lineCount << endl;
+            cout << "ERROR at print : " << lineCount << endl;
             cout << "Test Failed!" << endl
                  << endl;
             return 0;
