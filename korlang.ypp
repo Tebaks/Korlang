@@ -148,7 +148,6 @@ $$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
 |IF exp SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
 }
-| function_call STOP {  $$ = $1;}
 
 | FUNC VAR SOP variable_list EOP SOCB  stmts EOCB {
   struct value temp;
@@ -162,6 +161,10 @@ $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
 |
 RETURN_T STOP {NOTHING
   $$ = new TreeNode(temp,OPERATIONS(RETURN));
+}
+|
+RETURN_T exp STOP {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(RETURN),$2,NULL,NULL,NULL);
 }
 
 
@@ -239,8 +242,8 @@ factor: INT            {
   temp.use = "integer";
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
+ | function_call  {  $$ = $1;}
 
- 
 
  logical_operators:
  exp LTH exp {NOTHING

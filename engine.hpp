@@ -31,7 +31,7 @@ private:
 
       auto statement = it.get();
       v = handleStatement(&statement, scope);
-      if (v.br)
+      if (v.br > 0)
       {
         return v;
       }
@@ -83,6 +83,10 @@ private:
       res.br = 1;
       break;
     case OPERATIONS(RETURN):
+      if (node->firstChild != NULL)
+      {
+        res = resolveExpression(node->firstChild, scope);
+      }
       res.br = 2;
       break;
     default:
@@ -93,6 +97,10 @@ private:
 
   value resolveExpression(TreeNode *node, Scope *scope)
   {
+    if (node->operation == OPERATIONS(FUNCTION))
+    {
+      return executeFunction(node, scope);
+    }
     if (node->operation == OPERATIONS(AND_LOGIC))
     {
       return resolveLogic(node, scope);
@@ -236,7 +244,13 @@ private:
         pi.done();
       }
 
-      handleStatements(fnode.secondChild, childScope);
+      value v = handleStatements(fnode.secondChild, childScope);
+      if (v.br == 2)
+      {
+        v.br = 0;
+        cout << "Value" << v.v.i << endl;
+        return v;
+      }
     }
 
     return NIL_VALUE;

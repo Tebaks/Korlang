@@ -1,8 +1,0 @@
-int a = 5;
-int b = 7;
-if a > 1 {
-  int b = 3;
-  print(a,b);
-}
-
-print(b);
