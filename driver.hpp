@@ -19,6 +19,10 @@ private:
 public:
   Driver() : scope(new Scope()) {}
 
+  Scope *getScope()
+  {
+    return this->scope;
+  }
   int getInt(string name)
   {
     return scope->integers.getValue(name);

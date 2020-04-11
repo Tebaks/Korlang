@@ -17,21 +17,22 @@ public:
   }
   void execute(TreeNode *root)
   {
-    handleStatements(root);
+    auto scope = driver->getScope();
+    handleStatements(root, scope);
   }
 
 private:
-  void handleStatements(TreeNode *node)
+  void handleStatements(TreeNode *node, Scope *scope)
   {
     if (node == NULL)
     {
       return;
     }
     // Handle statements with bottom up prenciple
-    handleStatements(node->firstChild);
-    value val = handleStatement(node->secondChild);
-    }
-  value handleStatement(TreeNode *node)
+    handleStatements(node->firstChild, scope);
+    value val = handleStatement(node->secondChild, scope);
+  }
+  value handleStatement(TreeNode *node, Scope *scope)
   {
     value res;
     res.use = "na";
@@ -43,30 +44,30 @@ private:
     switch (node->operation)
     {
     case OPERATIONS(EXPRESSION):
-      res = resolveExpression(node->firstChild);
+      res = resolveExpression(node->firstChild, scope);
       res.use = "expression";
       break;
     case OPERATIONS(DECLARATION):
-      resolveDeclaration(node);
+      resolveDeclaration(node, scope);
       break;
     case OPERATIONS(LOOP):
-      executeLoop(node);
+      executeLoop(node, scope);
       break;
     case OPERATIONS(AND_LOGIC):
-      res = resolveLogic(node);
+      res = resolveLogic(node, scope);
       res.use = "bool";
       break;
     case OPERATIONS(IF_LOGIC):
-      executeIf(node);
+      executeIf(node, scope);
       break;
     case OPERATIONS(IF_ELSE_LOGIC):
-      executeIfElse(node);
+      executeIfElse(node, scope);
       break;
     case OPERATIONS(ASSIGNMENT):
-      resolveAssignment(node);
+      resolveAssignment(node, scope);
       break;
     case OPERATIONS(FUNCTION):
-      executeFunction(node);
+      executeFunction(node, scope);
       break;
     default:
       break;
@@ -74,7 +75,7 @@ private:
     return res;
   }
 
-  value resolveExpression(TreeNode *node)
+  value resolveExpression(TreeNode *node, Scope *scope)
   {
 
     if (node->operation == OPERATIONS(CONSTANT))
@@ -84,53 +85,53 @@ private:
     if (node->operation == OPERATIONS(VARIABLE))
     {
       string name = node->val.v.s;
-      return driver->getValue(node->val.v.s);
+      return scope->getValue(node->val.v.s);
     }
 
-    value left = resolveExpression(node->firstChild);
-    value right = resolveExpression(node->secondChild);
+    value left = resolveExpression(node->firstChild, scope);
+    value right = resolveExpression(node->secondChild, scope);
     value res = node->mergeValues(left, right);
     return res;
   }
-  void resolveAssignment(TreeNode *node)
+  void resolveAssignment(TreeNode *node, Scope *scope)
   {
     TreeNode *tn = new TreeNode();
 
-    value res = resolveExpression(node->thirdChild);
-    value cur = driver->getValue(node->val.v.s);
+    value res = resolveExpression(node->thirdChild, scope);
+    value cur = scope->getValue(node->val.v.s);
     string temp = node->secondChild->val.v.s;
     string name = node->val.v.s;
     if (temp.compare("=") == 0)
     {
-      driver->updateValue(name, res);
+      scope->updateValue(name, res);
     }
     if (temp.compare("*=") == 0)
     {
       tn->operation = OPERATIONS(MULTIPLY);
       res = tn->mergeValues(cur, res);
-      driver->updateValue(name, res);
+      scope->updateValue(name, res);
     }
     if (temp.compare("/=") == 0)
     {
       tn->operation = OPERATIONS(DIVIDE);
       res = tn->mergeValues(cur, res);
-      driver->updateValue(name, res);
+      scope->updateValue(name, res);
     }
     if (temp.compare("-=") == 0)
     {
       tn->operation = OPERATIONS(SUB);
       res = tn->mergeValues(cur, res);
-      driver->updateValue(name, res);
+      scope->updateValue(name, res);
     }
     if (temp.compare("+=") == 0)
     {
       tn->operation = OPERATIONS(SUM);
       res = tn->mergeValues(cur, res);
-      driver->updateValue(name, res);
+      scope->updateValue(name, res);
     }
   }
 
-  value resolveLogic(TreeNode *node)
+  value resolveLogic(TreeNode *node, Scope *scope)
   {
 
     if (node == NULL)
@@ -143,44 +144,44 @@ private:
     }
     if (node->secondChild == NULL)
     {
-      return resolveLogic(node->firstChild);
+      return resolveLogic(node->firstChild, scope);
     }
     if (node->operation != OPERATIONS(AND_LOGIC) && node->operation != OPERATIONS(OR_LOGIC))
     {
-      value left = resolveExpression(node->firstChild);
-      value right = resolveExpression(node->secondChild);
+      value left = resolveExpression(node->firstChild, scope);
+      value right = resolveExpression(node->secondChild, scope);
       return node->mergeLogic(left, right);
     }
-    value left = resolveLogic(node->firstChild);
-    value right = resolveLogic(node->secondChild);
+    value left = resolveLogic(node->firstChild, scope);
+    value right = resolveLogic(node->secondChild, scope);
     return node->mergeLogic(left, right);
   }
 
-  void resolveDeclaration(TreeNode *node)
+  void resolveDeclaration(TreeNode *node, Scope *scope)
   {
     if (node == NULL)
     {
       return;
     }
     string name = node->secondChild->val.v.s;
-    value val = resolveExpression(node->thirdChild);
-    driver->setValue(name, val);
+    value val = resolveExpression(node->thirdChild, scope);
+    scope->setValue(name, val);
   }
-  void executeFunction(TreeNode *node)
+  void executeFunction(TreeNode *node, Scope *scope)
   {
     string funcName = node->val.v.s;
     // Check for system functions
 
     if (funcName.compare("print") == 0)
     {
-      korlang_print(node->firstChild);
+      korlang_print(node->firstChild, scope);
     }
   }
-  void korlang_print(TreeNode *node)
+  void korlang_print(TreeNode *node, Scope *scope)
   {
     if (node != NULL)
     {
-      value val = resolveExpression(node);
+      value val = resolveExpression(node, scope);
       driver->printValue(val);
     }
     else
@@ -188,62 +189,63 @@ private:
       cout << endl;
     }
   }
-  void executeLoop(TreeNode *node)
+  void executeLoop(TreeNode *node, Scope *scope)
   {
     // if second child is null, it's a infinite loop
     if (node->secondChild == NULL)
     {
       while (1)
       {
-        handleStatements(node->firstChild);
+        handleStatements(node->firstChild, scope);
       }
     }
     // if thirth child is null, it's a while loop
     if (node->thirdChild == NULL)
     {
-      value res = resolveLogic(node->firstChild);
+      value res = resolveLogic(node->firstChild, scope);
       while (res.v.i > 0)
       {
-        handleStatements(node->secondChild);
-        res = resolveLogic(node->firstChild);
+        handleStatements(node->secondChild, scope);
+        res = resolveLogic(node->firstChild, scope);
       }
     }
     // otherwise, it's a for loop
     else
     {
       // Execute initial statement.
-      handleStatement(node->firstChild);
+      handleStatement(node->firstChild, scope);
       // Execute logical expression.
-      value res = resolveLogic(node->secondChild);
+      value res = resolveLogic(node->secondChild, scope);
       while (res.v.i > 0)
       {
         // handle statements
-        handleStatements(node->fourthChild);
+        handleStatements(node->fourthChild, scope);
         // Execute after loop statement.
-        handleStatement(node->thirdChild);
+        handleStatement(node->thirdChild, scope);
         // Update logic state
-        res = resolveLogic(node->secondChild);
+        res = resolveLogic(node->secondChild, scope);
       }
     }
   }
-  void executeIf(TreeNode *node)
+  void executeIf(TreeNode *node, Scope *scope)
   {
-    value v = resolveLogic(node->firstChild);
+    auto childScope = scope->fork();
+    value v = resolveLogic(node->firstChild, scope);
     if (v.v.i > 0)
     {
-      handleStatements(node->secondChild);
+      handleStatements(node->secondChild, childScope);
     }
   }
-  void executeIfElse(TreeNode *node)
+  void executeIfElse(TreeNode *node, Scope *scope)
   {
-    value v = resolveLogic(node->firstChild);
+    value v = resolveLogic(node->firstChild, scope);
     if (v.v.i > 0)
     {
-      handleStatements(node->secondChild);
+      handleStatements(node->secondChild, scope);
     }
     else
     {
-      handleStatements(node->thirdChild);
+      handleStatements(node->thirdChild, scope);
     }
   }
 };

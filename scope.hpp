@@ -32,6 +32,48 @@ public:
 
   {
   }
+
+  Scope *fork()
+  {
+    auto res = new Scope();
+    res->parentScope = this;
+    return res;
+  }
+
+  value getValue(string name)
+  {
+    return this->values.getValue(name);
+  }
+  bool setValue(string name, value val)
+  {
+    if (!this->values.isExist(name))
+    {
+      this->values.setValue(name, val);
+      return true;
+    }
+    return false;
+  }
+  void updateValue(string name, value val)
+  {
+    if (this->values.isExist(name))
+    {
+      this->values.updateValue(name, val);
+    }
+  }
+
+  TreeNode getFunction(string name)
+  {
+    return this->functions.getValue(name);
+  }
+
+  void setFunction(string name, TreeNode node)
+  {
+    this->functions.setValue(name, node);
+  }
+
+  void destroy()
+  {
+  }
 };
 
 #endif
