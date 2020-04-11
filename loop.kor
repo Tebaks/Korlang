@@ -1,7 +1,18 @@
-for int i = 0 ; i < 20 ; i+=1; {
-  if i < 10 {
-    print(1);
-  } else {
-    print(2);
+var a = 5;
+
+print(a);
+
+for {
+  a += 1;
+  print("In loop: a=",a);
+
+  if a < 12 {
+    break;
+    print("ELAAA");
   }
+  break;
+  print("BELA");
 }
+
+
+print("AMAAAA");

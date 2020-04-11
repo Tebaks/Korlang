@@ -6,18 +6,29 @@
 
 using namespace std;
 
-class ParamIterator
+class StatementsBreaker
+{
+public:
+  TreeNode *value;
+  bool isReturn;
+};
+
+class NodeIterator
 {
 private:
   stack<TreeNode> s;
 
 public:
-  ParamIterator(TreeNode *root)
+  NodeIterator(TreeNode *root)
   {
     s = stack<TreeNode>();
     while (root != NULL)
     {
-      s.push(*(root->secondChild));
+      if (root->secondChild != NULL)
+      {
+        s.push(*(root->secondChild));
+      }
+
       root = root->firstChild;
     }
   }

@@ -22,15 +22,22 @@ public:
   }
 
 private:
-  void handleStatements(TreeNode *node, Scope *scope)
+  value handleStatements(TreeNode *node, Scope *scope)
   {
-    if (node == NULL)
+    NodeIterator it = NodeIterator(node);
+    value v;
+    while (!it.isEmpty())
     {
-      return;
+
+      auto statement = it.get();
+      v = handleStatement(&statement, scope);
+      if (v.br)
+      {
+        return v;
+      }
+      it.done();
     }
-    // Handle statements with bottom up prenciple
-    handleStatements(node->firstChild, scope);
-    value val = handleStatement(node->secondChild, scope);
+    return v;
   }
   value handleStatement(TreeNode *node, Scope *scope)
   {
@@ -48,29 +55,35 @@ private:
       res.use = "expression";
       break;
     case OPERATIONS(DECLARATION):
-      resolveDeclaration(node, scope);
+      res = resolveDeclaration(node, scope);
       break;
     case OPERATIONS(LOOP):
-      executeLoop(node, scope);
+      res = executeLoop(node, scope);
       break;
     case OPERATIONS(AND_LOGIC):
       res = resolveLogic(node, scope);
       res.use = "bool";
       break;
     case OPERATIONS(IF_LOGIC):
-      executeIf(node, scope);
+      res = executeIf(node, scope);
       break;
     case OPERATIONS(IF_ELSE_LOGIC):
-      executeIfElse(node, scope);
+      res = executeIfElse(node, scope);
       break;
     case OPERATIONS(ASSIGNMENT):
-      resolveAssignment(node, scope);
+      res = resolveAssignment(node, scope);
       break;
     case OPERATIONS(FUNCTION):
-      executeFunction(node, scope);
+      res = executeFunction(node, scope);
       break;
     case OPERATIONS(FUNCTION_DEC):
-      resolveFunctionDeclaration(node, scope);
+      res = resolveFunctionDeclaration(node, scope);
+      break;
+    case OPERATIONS(BREAK):
+      res.br = 1;
+      break;
+    case OPERATIONS(RETURN):
+      res.br = 2;
       break;
     default:
       break;
@@ -99,7 +112,7 @@ private:
     value res = node->mergeValues(left, right);
     return res;
   }
-  void resolveAssignment(TreeNode *node, Scope *scope)
+  value resolveAssignment(TreeNode *node, Scope *scope)
   {
     TreeNode *tn = new TreeNode();
 
@@ -135,6 +148,7 @@ private:
       res = tn->mergeValues(cur, res);
       scope->updateValue(name, res);
     }
+    return NIL_VALUE;
   }
 
   value resolveLogic(TreeNode *node, Scope *scope)
@@ -171,23 +185,25 @@ private:
     value right = resolveLogic(node->secondChild, scope);
     return node->mergeLogic(left, right);
   }
-  void resolveFunctionDeclaration(TreeNode *node, Scope *scope)
+  value resolveFunctionDeclaration(TreeNode *node, Scope *scope)
   {
     string name = node->val.v.s;
     scope->setFunction(name, node);
+    return NIL_VALUE;
   }
 
-  void resolveDeclaration(TreeNode *node, Scope *scope)
+  value resolveDeclaration(TreeNode *node, Scope *scope)
   {
     if (node == NULL)
     {
-      return;
+      return NIL_VALUE;
     }
     string name = node->secondChild->val.v.s;
     value val = resolveExpression(node->thirdChild, scope);
     scope->setValue(name, val);
+    return NIL_VALUE;
   }
-  void executeFunction(TreeNode *node, Scope *scope)
+  value executeFunction(TreeNode *node, Scope *scope)
   {
     string funcName = node->val.v.s;
 
@@ -201,11 +217,11 @@ private:
       auto fnode = scope->getFunction(funcName);
       if (fnode.isNil())
       {
-        return;
+        return NIL_VALUE;
       }
       auto childScope = scope->fork();
-      auto fi = ParamIterator(fnode.firstChild);
-      auto pi = ParamIterator(node->firstChild);
+      auto fi = NodeIterator(fnode.firstChild);
+      auto pi = NodeIterator(node->firstChild);
       while (!pi.isEmpty() && !fi.isEmpty())
       {
 
@@ -222,13 +238,15 @@ private:
 
       handleStatements(fnode.secondChild, childScope);
     }
+
+    return NIL_VALUE;
   }
   void korlang_print(TreeNode *node, Scope *scope)
   {
     if (node->firstChild != NULL)
     {
 
-      auto it = ParamIterator(node->firstChild);
+      auto it = NodeIterator(node->firstChild);
 
       while (!it.isEmpty())
       {
@@ -248,14 +266,19 @@ private:
       cout << endl;
     }
   }
-  void executeLoop(TreeNode *node, Scope *scope)
+  value executeLoop(TreeNode *node, Scope *scope)
   {
     // if second child is null, it's a infinite loop
     if (node->secondChild == NULL)
     {
       while (1)
       {
-        handleStatements(node->firstChild, scope);
+        value tr = handleStatements(node->firstChild, scope);
+        if (tr.br == 1)
+        {
+          tr.br = 0;
+          return tr;
+        }
       }
     }
     // if thirth child is null, it's a while loop
@@ -264,7 +287,13 @@ private:
       value res = resolveLogic(node->firstChild, scope);
       while (res.v.i > 0)
       {
-        handleStatements(node->secondChild, scope);
+        value tr =
+            handleStatements(node->secondChild, scope);
+        if (tr.br == 1)
+        {
+          tr.br = 0;
+          return tr;
+        }
         res = resolveLogic(node->firstChild, scope);
       }
     }
@@ -278,24 +307,32 @@ private:
       while (res.v.i > 0)
       {
         // handle statements
-        handleStatements(node->fourthChild, scope);
+        value tr = handleStatements(node->fourthChild, scope);
+        if (tr.br == 1)
+        {
+          tr.br = 0;
+          return tr;
+        }
         // Execute after loop statement.
         handleStatement(node->thirdChild, scope);
         // Update logic state
         res = resolveLogic(node->secondChild, scope);
       }
     }
+    return NIL_VALUE;
   }
-  void executeIf(TreeNode *node, Scope *scope)
+  value executeIf(TreeNode *node, Scope *scope)
   {
     auto childScope = scope->fork();
     value v = resolveLogic(node->firstChild, scope);
     if (v.v.i > 0)
     {
-      handleStatements(node->secondChild, childScope);
+      value v = handleStatements(node->secondChild, childScope);
+      return v;
     }
+    return NIL_VALUE;
   }
-  void executeIfElse(TreeNode *node, Scope *scope)
+  value executeIfElse(TreeNode *node, Scope *scope)
   {
     value v = resolveLogic(node->firstChild, scope);
     if (v.v.i > 0)
@@ -306,6 +343,7 @@ private:
     {
       handleStatements(node->thirdChild, scope);
     }
+    return NIL_VALUE;
   }
 };
 

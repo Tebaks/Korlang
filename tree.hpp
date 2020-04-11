@@ -3,6 +3,10 @@
 #include <cstdlib>
 #define tree
 #define NIL_TREE_NODE TreeNode(true);
+#define NIL_VALUE      \
+    {                  \
+        0, "nil", 0, 1 \
+    }
 
 using namespace std;
 
@@ -39,6 +43,8 @@ enum OPERATIONS
     VAR_NAME,
     VAR_LIST,
     PARAMETERS,
+    BREAK,
+    RETURN,
 };
 struct value
 {
@@ -48,8 +54,9 @@ struct value
         const char *s;
 
     } v;
-    bool init = 0;
     string use;
+    int br = 0;
+    bool init = 0;
 };
 
 class TreeNode

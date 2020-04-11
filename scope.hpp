@@ -1,9 +1,5 @@
 #ifndef SCOPE
 #define SCOPE
-#define NIL_VALUE \
-  {               \
-    0, "nil"      \
-  }
 
 #include <iostream>
 #include <cstdlib>

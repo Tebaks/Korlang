@@ -60,12 +60,13 @@ IGNORED [ \n\r]+
 {IDEN} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return IDEN; }
 "kor" {return KOR;}
 "func" {return FUNC;}
-"return" {return RETURN;}
+"return" {return RETURN_T;}
 "if" {return IF;}
 "else" {return ELSE;}
 "for" {return FOR;}
 "struct" {return STRUCT;}
 "range" {return RANGE;} 
+"break" {return BREAK_T;}
 "," {return COMMA;}
 {AND} {return AND;}
 {OR} {return OR;}

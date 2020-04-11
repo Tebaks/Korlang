@@ -78,7 +78,7 @@ bool keepgoing = true;
 %token EOB
 %token SOCB
 %token EOCB
-%token RETURN IF FOR ELSE WHILE FUNC KOR STRUCT RANGE 
+%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T 
 
   /* These are the non-terminal names that have values. */
 %type <tval> exp  stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list
@@ -155,6 +155,13 @@ $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
   temp.v.s = $2;
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(FUNCTION_DEC),$4,$7,NULL,NULL);
+}
+| BREAK_T STOP {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(BREAK));
+}
+|
+RETURN_T STOP {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(RETURN));
 }
 
 
