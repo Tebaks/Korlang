@@ -55,7 +55,30 @@ public:
 
   void printValue(value val)
   {
-    cout << val.v.i << endl;
+    string s = val.use;
+    if (s.compare("integer") == 0)
+    {
+      cout << val.v.i << endl;
+    }
+    else if (s.compare("boolean") == 0)
+    {
+      if (val.v.i > 0)
+      {
+        cout << "true" << endl;
+      }
+      else
+      {
+        cout << "false" << endl;
+      }
+    }
+    else if (s.compare("string") == 0)
+    {
+      cout << val.v.s << endl;
+    }
+    else
+    {
+      cout << val.use << endl;
+    }
   }
 
   value getValue(string name)

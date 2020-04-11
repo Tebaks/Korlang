@@ -1,13 +1,12 @@
-
 var a = 10;
-a;
+print(a == 10);
 a = 4+5;
-a;
+print(a == 9);
 a -= 4;
-a;
+print(a == 5);
 a += 7;
-a;
+print(a == 12);
 a *= 8;
-a;
+print(a == 96);
 a /= 8;
-a;
+print(a == 12);

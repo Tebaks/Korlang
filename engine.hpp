@@ -77,7 +77,10 @@ private:
 
   value resolveExpression(TreeNode *node, Scope *scope)
   {
-
+    if (node->operation == OPERATIONS(AND_LOGIC))
+    {
+      return resolveLogic(node, scope);
+    }
     if (node->operation == OPERATIONS(CONSTANT))
     {
       return node->val;
@@ -137,6 +140,10 @@ private:
     if (node == NULL)
     {
       cout << "resolve logic null" << endl;
+    }
+    if (node->operation == OPERATIONS(CONSTANT))
+    {
+      return node->val;
     }
     if (node->operation == OPERATIONS(EXPRESSION))
     {

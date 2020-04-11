@@ -22,6 +22,8 @@ enum OPERATIONS
     STMT_LIST,
     LOOP,
     LOGIC,
+    EQ_LOGIC,
+    NEQ_LOGIC,
     LTH_LOGIC,
     GTH_LOGIC,
     GTHEQ_LOGIC,
@@ -91,6 +93,14 @@ public:
         {
             res.v.i = 1;
         }
+        if (operation == OPERATIONS(EQ_LOGIC) && x.v.i == y.v.i)
+        {
+            res.v.i = 1;
+        }
+        if (operation == OPERATIONS(NEQ_LOGIC) && x.v.i != y.v.i)
+        {
+            res.v.i = 1;
+        }
         if (operation == OPERATIONS(AND_LOGIC) && ((x.v.i > 0) && (y.v.i > 0)))
         {
             res.v.i = 1;
@@ -99,11 +109,13 @@ public:
         {
             res.v.i = 1;
         }
+        res.use = "boolean";
         return res;
     }
     value mergeValues(value x, value y)
     {
         value res;
+        res.use = x.use;
         //TODO : check value.use before operations.
         if (operation == OPERATIONS(SUM))
         {
