@@ -144,8 +144,13 @@ private:
     {
       cout << "resolve logic null" << endl;
     }
+    if (node->operation == OPERATIONS(VARIABLE))
+    {
+      return scope->getValue(node->val.v.s);
+    }
     if (node->operation == OPERATIONS(CONSTANT))
     {
+
       return node->val;
     }
     if (node->operation == OPERATIONS(EXPRESSION))

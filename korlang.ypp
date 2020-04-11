@@ -142,10 +142,10 @@ $$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT),NULL,$2,$3,NULL);}
 |logical_operations STOP{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 }
-| IF logical_operations SOCB stmts EOCB{NOTHING
+| IF exp SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_LOGIC),$2,$4,NULL,NULL);
 }
-|IF logical_operations SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
+|IF exp SOCB stmts EOCB ELSE SOCB stmts EOCB{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
 }
 | function_call STOP {  $$ = $1;}
