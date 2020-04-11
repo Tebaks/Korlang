@@ -19,6 +19,7 @@ enum OPERATIONS
     EXPRESSION,
     MULTIPLY,
     DIVIDE,
+    MOD,
     SUB,
     VARIABLE,
     CONSTANT,
@@ -155,6 +156,10 @@ public:
 
             res.v.i = x.v.i / y.v.i;
             //res.v.f = x.v.f / y.v.f;
+        }
+        if (operation == OPERATIONS(MOD))
+        {
+            res.v.i = x.v.i % y.v.i;
         }
 
         return res;

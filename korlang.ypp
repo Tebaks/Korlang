@@ -208,6 +208,7 @@ exp: exp OPA term      {
   temp.use = "identifier";
   OPERATIONS op = OPERATIONS(SUM);
   if ($2 == '-') op = OPERATIONS(SUB); 
+
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
  }
 | term               { $$ = $1; }
@@ -217,7 +218,8 @@ term : term OPM factor {
   struct value temp;
   temp.use = "identifier";
   OPERATIONS op = OPERATIONS(MULTIPLY);
-  if ($2 == '/') op = OPERATIONS(DIVIDE); 
+  if ($2 == '/') op = OPERATIONS(DIVIDE);
+  if ($2 == '%') op = OPERATIONS(MOD); 
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
 
 }

@@ -156,6 +156,12 @@ private:
       res = tn->mergeValues(cur, res);
       scope->updateValue(name, res);
     }
+    if (temp.compare("%=") == 0)
+    {
+      tn->operation = OPERATIONS(MOD);
+      res = tn->mergeValues(cur, res);
+      scope->updateValue(name, res);
+    }
     return NIL_VALUE;
   }
 

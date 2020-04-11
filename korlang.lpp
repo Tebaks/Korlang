@@ -38,7 +38,7 @@ SUM \+
 SUB -
 MUL \*
 DIV \/
-REM %
+MOD \%
 /* PARANTHESES */
 SOP \(
 EOP \)
@@ -80,7 +80,7 @@ IGNORED [ \n\r]+
 {SUB} { yylval.sym = yytext[0]; return OPA; }
 {MUL} { yylval.sym = yytext[0]; return OPM; }
 {DIV} { yylval.sym = yytext[0]; return OPM; }
-{REM} {printf("REMAINDER");}
+{MOD} { yylval.sym = yytext[0]; return OPM; }
 {SOP} {return SOP;}
 {EOP} {return EOP;}
 {SOB} {return SOB;}

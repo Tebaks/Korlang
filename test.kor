@@ -1,10 +1,2 @@
-func log (name) {
-  print("Before",name);
-  return 4;
-  print("After",name);
-}
 
-var a = log("Ahmet");
-
-print(a);
-print("Hello");
+print(5 % 4);
