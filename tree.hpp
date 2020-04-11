@@ -39,11 +39,11 @@ struct value
     union {
         int i;
         float f;
-        char *s;
+        const char *s;
 
     } v;
     bool init = 0;
-    char *use;
+    string use;
 };
 
 class TreeNode
