@@ -1,0 +1,5 @@
+func testFunction(boolean){
+    print(boolean == true);
+}
+
+testFunction(true);

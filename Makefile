@@ -2,6 +2,22 @@
 korlang: korlang.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp util.hpp
 	g++ -o korlang lex.yy.o korlang.tab.o
 
+test: if_else_test assign_operators_test logical_operators_test loops_test functions_test
+
+if_else_test: 
+	cat ./tests/if_else_test.kor | ./korlang
+
+assign_operators_test:
+	cat ./tests/assign_operators_test.kor | ./korlang
+
+logical_operators_test:
+	cat ./tests/logical_operators_test.kor | ./korlang
+
+loops_test:
+	cat ./tests/loops_test.kor | ./korlang
+
+functions_test:
+	cat ./tests/functions_test.kor | ./korlang
 # Bison generates a C++ source file and a C++ header file.
 korlang.tab.cpp korlang.tab.hpp: korlang.ypp
 	bison -d korlang.ypp

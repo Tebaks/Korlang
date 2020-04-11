@@ -1,0 +1,13 @@
+var a = 1 < 2;
+
+if a {
+    print(a == true);
+}
+
+var b = 1 > 2;
+
+if b{
+    print(b == true);
+}else {
+    print(b == false);
+}
