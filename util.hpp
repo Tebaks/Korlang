@@ -28,7 +28,6 @@ public:
       {
         s.push(*(root->secondChild));
       }
-
       root = root->firstChild;
     }
   }

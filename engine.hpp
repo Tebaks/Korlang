@@ -23,6 +23,8 @@ public:
   }
 
 private:
+  TreeNode *tempNode;
+
   value handleStatements(TreeNode *node, Scope *scope)
   {
     NodeIterator it = NodeIterator(node);
@@ -34,7 +36,13 @@ private:
       v = handleStatement(&statement, scope);
       if (v.br > 0)
       {
+
         return v;
+      }
+      if (tempNode != NULL)
+      {
+        handleStatement(tempNode, scope);
+        tempNode = NULL;
       }
       it.done();
     }
@@ -105,6 +113,10 @@ private:
     {
       return node->val;
     }
+    if (node->operation == OPERATIONS(INC_DEC))
+    {
+      return resolveIncDec(node, scope);
+    }
     if (node->operation == OPERATIONS(FUNCTION))
     {
       return executeFunction(node, scope);
@@ -141,6 +153,27 @@ private:
     }
     value res = node->mergeValues(left, right);
     return res;
+  }
+  value resolveIncDec(TreeNode *node, Scope *scope)
+  {
+    if (node->firstChild->operation == OPERATIONS(POST_INC))
+    {
+      struct value temp;
+      temp.v.s = "+=";
+      temp.use = "string";
+      TreeNode *tree1 = new TreeNode(temp, OPERATIONS(ASSIGNMENT_OPERATOR));
+
+      struct value temp1;
+      temp1.use = "integer";
+      temp1.v.i = 1;
+      TreeNode *tree2 = new TreeNode(temp1, OPERATIONS(CONSTANT));
+
+      struct value temp2;
+      temp2.use = "identifier";
+      temp2.v.s = node->val.v.s;
+      tempNode = new TreeNode(temp2, OPERATIONS(ASSIGNMENT), NULL, tree1, tree2, NULL);
+    }
+    return scope->getValue(node->val.v.s);
   }
   value resolveAssignment(TreeNode *node, Scope *scope)
   {
@@ -400,6 +433,11 @@ private:
         }
         // Execute after loop statement.
         handleStatement(node->thirdChild, scope);
+        if (tempNode != NULL)
+        {
+          handleStatement(tempNode, scope);
+          tempNode = NULL;
+        }
         // Update logic state
         res = resolveLogic(node->secondChild, scope);
       }

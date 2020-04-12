@@ -47,6 +47,8 @@ enum OPERATIONS
     PARAMETERS,
     BREAK,
     RETURN,
+    INC_DEC,
+    POST_INC,
 };
 struct value
 {

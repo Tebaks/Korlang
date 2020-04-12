@@ -63,13 +63,13 @@ bool keepgoing = true;
 %token <sym> OPA OPM 
 %token LP RP STOP 
 %token COMMA
-%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN
+%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH
 
   /* These are the non-terminal names that have values. */
-%type <tval> ar_exp exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt
+%type <tval> ar_exp exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -229,7 +229,16 @@ term : term OPM factor {
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
 
 }
-| factor { $$= $1;}
+| factor {$$= $1;}
+
+inc_dec_operations:
+  
+   VAR POST_INCRE {
+    struct value temp;
+    temp.v.s = $1;
+
+    $$ = new TreeNode(temp,OPERATIONS(POST_INC),NULL,NULL,NULL,NULL);
+  }
 
 factor: constant  {$$ = $1;}
  | SOP ar_exp EOP { $$ = $2;}
@@ -240,6 +249,10 @@ factor: constant  {$$ = $1;}
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
  | function_call  {  $$ = $1;}
+ |inc_dec_operations {NOTHING
+ $$ = new TreeNode(temp,OPERATIONS(INC_DEC),$1,NULL,NULL,NULL);
+ }
+
 
 constant : INT            { 
   struct value temp;

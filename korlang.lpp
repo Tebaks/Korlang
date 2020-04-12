@@ -22,6 +22,7 @@ DIV_ASSIGN \/=
 MOD_ASSIGN %=
 MUL_ASSIGN \*=
 SUB_ASSIGN \-=
+POST_INC \+\+
 SEMICOLON ;
 VARIABLE [a-zA-Z][a-zA-Z0-9_]*
 /* LOGICAL OPERATORS */
@@ -96,6 +97,7 @@ IGNORED [ \n\r]+
 {DIV_ASSIGN} {return DIV_ASSIGN;}
 {MUL_ASSIGN} {return MUL_ASSIGN;}
 {MOD_ASSIGN} {return MOD_ASSIGN;}
+{POST_INC} {return POST_INCRE;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
 {IGNORED} {}
 . { printf("SYNTAX ERROR: %s",yytext); }

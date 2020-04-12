@@ -1,5 +1,5 @@
 func isPrime(num) {
-  for var i = 2; i < num; i+=1; {
+  for var i = 2; i < num; i++; {
     if num % i == 0 {
       return false;
     }
@@ -28,10 +28,10 @@ func nthPrime(n){
 
 
 func printPrimes(n) {
-  for var i =1; i<= n;i+=1; {
+  for var i =1; i<= n;i++; {
     var num = nthPrime(i);
     print(num);
   }
 }
 
-printPrimes(5);
+printPrimes(20);
