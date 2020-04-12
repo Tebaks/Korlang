@@ -50,6 +50,7 @@ enum OPERATIONS
     INC_DEC,
     POST_INC,
     POST_DEC,
+    COMM,
 };
 struct value
 {

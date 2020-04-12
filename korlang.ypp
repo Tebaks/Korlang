@@ -67,6 +67,7 @@ bool keepgoing = true;
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH
+%token COMMENT
 
   /* These are the non-terminal names that have values. */
 %type <tval> ar_exp exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
@@ -121,6 +122,9 @@ $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 |func_stmt { $$ = $1;}
 |if_stmt  { $$ = $1;}
 |loop_stmt { $$ = $1;}
+|COMMENT {NOTHING
+$$ = new TreeNode(temp,OPERATIONS(COMM),NULL,NULL,NULL,NULL);
+}
 
 //FUNC STMT
 func_stmt:

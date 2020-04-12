@@ -1,3 +1,4 @@
+//check if is prime or not.
 func isPrime(num) {
   for var i = 2; i < num; i++; {
     if num % i == 0 {
@@ -7,6 +8,8 @@ func isPrime(num) {
   return true;
 }
 
+
+//printing nth prime number.
 func nthPrime(n){
   var i = 0;
   var num = 1;
@@ -26,7 +29,7 @@ func nthPrime(n){
   return num;
 }
 
-
+//printing n prime number.
 func printPrimes(n) {
   for var i =1; i<= n;i++; {
     var num = nthPrime(i);

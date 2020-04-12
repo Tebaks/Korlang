@@ -14,7 +14,7 @@ INT [0-9]+
 BOOLEAN true|false
 STRING ["][^"\n]*["]
 /* BASIC KEYWORDS */
-COMMENT \/\/
+COMMENT \/\/.*
 /* ASSIGN OPERATORS*/
 ASSIGN =
 ADD_ASSIGN \+=
@@ -91,7 +91,7 @@ IGNORED [ \n\r]+
 {EOB} {return EOB;}
 {SOCB} {return SOCB;}
 {EOCB} {return EOCB;}
-{COMMENT} 
+{COMMENT} {return COMMENT;} 
 {ASSIGN} {return ASSGN;}
 {ADD_ASSIGN} {return ADD_ASSIGN;}
 {SUB_ASSIGN} {return SUB_ASSIGN;}
