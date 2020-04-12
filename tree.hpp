@@ -37,17 +37,17 @@ enum OPERATIONS
     LTHEQ_LOGIC,
     AND_LOGIC,
     OR_LOGIC,
-    IF_LOGIC,
+    IF_LOGIC, //25
     IF_ELSE_LOGIC,
     ASSIGNMENT,
     FUNCTION,
     FUNCTION_DEC,
-    VAR_NAME,
+    VAR_NAME, //30
     VAR_LIST,
     PARAMETERS,
     BREAK,
     RETURN,
-    INC_DEC,
+    INC_DEC, //35
     POST_INC,
     POST_DEC,
     COMM,
