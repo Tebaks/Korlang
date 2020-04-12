@@ -1,10 +1,12 @@
 #ifndef DRIVER_
 #define DRIVER_
 
+#include <bits/stdc++.h>
 #include <iostream>
 #include <cstdlib>
 #include <map>
 #include <string>
+#include <sstream>
 #include "scope.hpp"
 #include "colorout.hpp"
 #include "bucket.hpp"
@@ -69,7 +71,16 @@ public:
       cout << val.v.s;
     }
   }
+  value korlang_input(value v, Scope *scope)
+  {
+    cin.ignore(INT_MAX);
+    string s;
+    getline(cin, s);
 
+    cout << "N" << s << endl;
+
+    return v;
+  }
   value korlang_toInt(value v, Scope *scope)
   {
 

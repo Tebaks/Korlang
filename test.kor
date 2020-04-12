@@ -1,12 +1,4 @@
-func fact(num) {
-  if num == 1 {
-    return 1;
-  }
-  return num * fact(num-1);
-}
 
-var number = int(arg1);
+print("Ahmetfom");
 
-var res = fact(number);
-
-print(res);
+var i = input("sen?:");

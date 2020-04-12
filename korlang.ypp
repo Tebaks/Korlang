@@ -25,7 +25,7 @@ extern colorout errout;
 
 Driver* driver = new Driver();
 Engine* engine = new Engine();
-
+TreeNode* root = NULL;
 
 
 // Error function that bison will call
@@ -78,9 +78,10 @@ bool keepgoing = true;
   /* Note: YYACCEPT is a macro that tells bison to stop parsing. */
 S: stmts 
   {NOTHING
-  TreeNode *root = new TreeNode(temp,OPERATIONS(ROOT),$1,NULL,NULL,NULL);
-  engine->execute(root);
+  root = new TreeNode(temp,OPERATIONS(ROOT),$1,NULL,NULL,NULL);
   YYACCEPT;
+ 
+  keepgoing = false;
 }
 |       { keepgoing = false; }
 
@@ -372,6 +373,7 @@ colorout errout(2, 'r');
 //-- FUNCTION DEFINITIONS ---------------------------------
 int main(int argc, char ** argv)
 {
+  
   // This checks whether the output is a terminal.
   bool tty = isatty(0) && isatty(2);
   argc--;
@@ -381,6 +383,8 @@ int main(int argc, char ** argv)
     if (tty) cerr << "> " << flush;
     yyparse();
   }
+  cout << "IM OUT";
+   engine->execute(root);
   if (tty) cerr << "Goodbye" << endl;
   return 0;
 }

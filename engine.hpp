@@ -346,6 +346,11 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_toInt(val, scope);
     }
+    else if (funcName.compare("input") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      val = driver->korlang_input(val, scope);
+    }
     else
     {
       auto fnode = scope->getFunction(funcName);
