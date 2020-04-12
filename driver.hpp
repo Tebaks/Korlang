@@ -64,7 +64,7 @@ public:
     string s = val.use;
     if (s.compare("integer") == 0)
     {
-      cout << val.v.i ;
+      cout << val.v.i;
     }
     else if (s.compare("boolean") == 0)
     {
