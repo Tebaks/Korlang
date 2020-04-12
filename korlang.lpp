@@ -99,7 +99,6 @@ IGNORED [ \n\r]+
 {MUL_ASSIGN} {return MUL_ASSIGN;}
 {MOD_ASSIGN} {return MOD_ASSIGN;}
 {POST_INC} {return POST_INCRE;}
-{POST_DEC} {return POST_DECRE;}
 {VARIABLE}  { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return VAR;  }
 {IGNORED} {}
 . { printf("SYNTAX ERROR: %s",yytext); }
