@@ -63,7 +63,7 @@ bool keepgoing = true;
 %token <sym> OPA OPM 
 %token LP RP STOP 
 %token COMMA
-%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE
+%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE POST_DECRE
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH
@@ -236,8 +236,12 @@ inc_dec_operations:
    VAR POST_INCRE {
     struct value temp;
     temp.v.s = $1;
-
     $$ = new TreeNode(temp,OPERATIONS(POST_INC),NULL,NULL,NULL,NULL);
+  }
+  | VAR POST_DECRE {
+    struct value temp;
+    temp.v.s = $1;
+    $$ = new TreeNode(temp,OPERATIONS(POST_DEC),NULL,NULL,NULL,NULL);
   }
 
 factor: constant  {$$ = $1;}

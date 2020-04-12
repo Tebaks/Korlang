@@ -1,0 +1,4 @@
+var b = 10;
+print(b--);
+print(b--);
+print(b--);

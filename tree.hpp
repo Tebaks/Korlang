@@ -49,6 +49,7 @@ enum OPERATIONS
     RETURN,
     INC_DEC,
     POST_INC,
+    POST_DEC,
 };
 struct value
 {

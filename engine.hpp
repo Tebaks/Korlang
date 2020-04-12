@@ -156,25 +156,25 @@ private:
   }
   value resolveIncDec(TreeNode *node, Scope *scope)
   {
-    if (node->firstChild->operation == OPERATIONS(POST_INC))
-    {
-      struct value temp;
-      temp.v.s = "+=";
-      temp.use = "string";
-      TreeNode *tree1 = new TreeNode(temp, OPERATIONS(ASSIGNMENT_OPERATOR));
+    struct value temp;
 
-      struct value temp1;
-      temp1.use = "integer";
-      temp1.v.i = 1;
-      TreeNode *tree2 = new TreeNode(temp1, OPERATIONS(CONSTANT));
+    temp.v.s = (node->operation == OPERATIONS(POST_INC)) ? "+=" : "-=";
+    temp.use = "string";
+    TreeNode *tree1 = new TreeNode(temp, OPERATIONS(ASSIGNMENT_OPERATOR));
 
-      struct value temp2;
-      temp2.use = "identifier";
-      temp2.v.s = node->val.v.s;
-      tempNode = new TreeNode(temp2, OPERATIONS(ASSIGNMENT), NULL, tree1, tree2, NULL);
-    }
+    struct value temp1;
+    temp1.use = "integer";
+    temp1.v.i = 1;
+    TreeNode *tree2 = new TreeNode(temp1, OPERATIONS(CONSTANT));
+
+    struct value temp2;
+    temp2.use = "identifier";
+    temp2.v.s = node->val.v.s;
+    tempNode = new TreeNode(temp2, OPERATIONS(ASSIGNMENT), NULL, tree1, tree2, NULL);
+
     return scope->getValue(node->val.v.s);
   }
+
   value resolveAssignment(TreeNode *node, Scope *scope)
   {
     TreeNode *tn = new TreeNode();
