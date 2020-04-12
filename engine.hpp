@@ -12,19 +12,39 @@ class Engine
 {
 public:
   Driver *driver;
-  Engine() : driver(new Driver())
+  Engine() : driver(new Driver()), args(vector<char *>())
   {
   }
   void execute(TreeNode *root)
   {
     auto scope = driver->getScope();
+
+    for (int i = 0; i < args.size(); ++i)
+    {
+      string name = "arg" + to_string(i + 1);
+      value val;
+      val.use = "string";
+      val.v.s = args[i];
+      scope->setValue(name, val);
+    }
+    value argc;
+    argc.use = "integer";
+    argc.v.i = args.size();
+    scope->setValue("argc", argc);
     value val = handleStatements(root, scope);
     driver->printValue(val);
+  }
+  void add(int argc, char **argv)
+  {
+    for (int i = 0; i < argc; ++i)
+    {
+      args.push_back(argv[i]);
+    }
   }
 
 private:
   TreeNode *tempNode;
-
+  vector<char *> args;
   value handleStatements(TreeNode *node, Scope *scope)
   {
     NodeIterator it = NodeIterator(node);

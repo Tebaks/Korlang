@@ -370,11 +370,13 @@ colorout resout(1, 'u');
 colorout errout(2, 'r');
 
 //-- FUNCTION DEFINITIONS ---------------------------------
-int main()
+int main(int argc, char ** argv)
 {
   // This checks whether the output is a terminal.
   bool tty = isatty(0) && isatty(2);
-
+  argc--;
+  argv++;
+  engine->add(argc,argv);
   while (keepgoing) {
     if (tty) cerr << "> " << flush;
     yyparse();
