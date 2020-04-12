@@ -14,6 +14,7 @@ enum OPERATIONS
 {
     NIL,
     ASSIGN,
+    TRY_CATCH,
     DECLARATION,
     SUM,
     EXPRESSION,

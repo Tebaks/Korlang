@@ -67,9 +67,11 @@ bool keepgoing = true;
 %token AND
 %token OR
 %token GTH
+%token TRY
+%token CATCH
 %token LTH
-%token GTHEQ;
-%token LTHEQ;
+%token GTHEQ
+%token LTHEQ
 %token EQ
 %token NEQ
 %token SOP
@@ -154,6 +156,9 @@ $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
   temp.v.s = $2;
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(FUNCTION_DEC),$4,$7,NULL,NULL);
+}
+| TRY SOCB stmts EOCB CATCH SOCB stmts EOCB {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(TRY_CATCH),$3,$7,NULL,NULL);
 }
 | FUNC VAR SOP  EOP SOCB  stmts EOCB {
   struct value temp;

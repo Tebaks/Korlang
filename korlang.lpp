@@ -67,6 +67,8 @@ IGNORED [ \n\r]+
 "struct" {return STRUCT;}
 "range" {return RANGE;} 
 "break" {return BREAK_T;}
+"try" {return TRY;}
+"catch" {return CATCH;}
 "," {return COMMA;}
 {AND} {return AND;}
 {OR} {return OR;}

@@ -12,4 +12,3 @@ print((1 <= 1) == true);
 print((1 >= 2) == false);
 print((2 >= 1) == true);
 print((1 >= 1) == true);
-print((true && true) == true);

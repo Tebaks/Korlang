@@ -1,3 +1,6 @@
+#ifndef COLORBUFF_C
+#define COLORBUFF_C
+
 /* colorout.hpp
  * (c) 2012 Daniel S. Roche, USNA
  *
@@ -16,34 +19,53 @@ out << "This is " << "all red!\n";
 #include <cstdlib>  // for exit
 #include <iostream>
 
-class colorbuf : public std::streambuf {
- private:
+class colorbuf : public std::streambuf
+{
+private:
   int filedes;
   std::streambuf *dest;
   bool tty;
   char magic[7];
- public:
-  colorbuf (int fd, char color) {
+
+public:
+  colorbuf(int fd, char color)
+  {
     filedes = fd;
-    if (filedes == 1) dest = std::cout.rdbuf();
-    else if (filedes == 2) dest = std::cerr.rdbuf();
-    else {
+    if (filedes == 1)
+      dest = std::cout.rdbuf();
+    else if (filedes == 2)
+      dest = std::cerr.rdbuf();
+    else
+    {
       std::cerr << "Illegal file descriptor in colorbuf constructor" << std::endl;
       exit(11);
     }
     tty = isatty(filedes);
 
     int colorcode;
-    switch(color) {
-      case 'b': colorcode = 30; break; // black
-      case 'r': colorcode = 31; break; // red
-      case 'g': colorcode = 32; break; // green
-      case 'y': colorcode = 33; break; // yellow
-      case 'u': colorcode = 34; break; // blue
-      case 'w': colorcode = 37; break; // white
-      default:
-        std::cerr << "Illegal color for colorbuf" << std::endl;
-        exit(12);
+    switch (color)
+    {
+    case 'b':
+      colorcode = 30;
+      break; // black
+    case 'r':
+      colorcode = 31;
+      break; // red
+    case 'g':
+      colorcode = 32;
+      break; // green
+    case 'y':
+      colorcode = 33;
+      break; // yellow
+    case 'u':
+      colorcode = 34;
+      break; // blue
+    case 'w':
+      colorcode = 37;
+      break; // white
+    default:
+      std::cerr << "Illegal color for colorbuf" << std::endl;
+      exit(12);
     }
 
     magic[0] = '\033';
@@ -55,19 +77,27 @@ class colorbuf : public std::streambuf {
     magic[6] = 'm';
   }
 
- protected:
-  virtual int overflow(int ch) {
-    if (tty) dest->sputn(magic, 7);
+protected:
+  virtual int overflow(int ch)
+  {
+    if (tty)
+      dest->sputn(magic, 7);
     dest->sputc(ch);
-    if (tty) dest->sputn("\033[0m", 4);
+    if (tty)
+      dest->sputn("\033[0m", 4);
   }
 };
 
-class colorout : public std::ostream {
- private:
+class colorout : public std::ostream
+{
+private:
   colorbuf buf;
- public:
+
+public:
   colorout(int fd, int cc)
-    :buf(fd,cc), std::ostream(&buf)
-    { }
+      : buf(fd, cc), std::ostream(&buf)
+  {
+  }
 };
+
+#endif

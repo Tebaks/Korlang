@@ -6,8 +6,11 @@
 #include <map>
 #include <string>
 #include "scope.hpp"
+#include "colorout.hpp"
 #include "bucket.hpp"
 #include "tree.hpp"
+
+extern colorout errout;
 
 using namespace std;
 
@@ -30,10 +33,23 @@ public:
     cout << endl;
   }
 
+  value createPanic(const char *message)
+  {
+    value res;
+    res.use = "string";
+    res.v.s = message;
+    res.br = 3;
+    return res;
+  }
+
   void printValueInline(value val)
   {
     string s = val.use;
-    if (s.compare("integer") == 0)
+    if (val.br == 3)
+    {
+      errout << "ERR! " << val.v.s << endl;
+    }
+    else if (s.compare("integer") == 0)
     {
       cout << val.v.i;
     }
@@ -52,6 +68,7 @@ public:
     {
       cout << val.v.s;
     }
+
     else
     {
       cout << val.use;

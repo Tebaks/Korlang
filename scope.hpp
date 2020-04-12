@@ -56,16 +56,18 @@ public:
     }
     return false;
   }
-  void updateValue(string name, value val)
+  bool updateValue(string name, value val)
   {
     if (this->values.isExist(name))
     {
       this->values.updateValue(name, val);
+      return true;
     }
     else if (this->parentScope != NULL)
     {
       this->parentScope->values.updateValue(name, val);
     }
+    return false;
   }
 
   TreeNode getFunction(string name)
@@ -82,9 +84,14 @@ public:
     return NIL_TREE_NODE;
   }
 
-  void setFunction(string name, TreeNode *node)
+  bool setFunction(string name, TreeNode *node)
   {
-    this->functions.setValue(name, *node);
+    if (!functions.isExist(name))
+    {
+      this->functions.setValue(name, *node);
+      return true;
+    }
+    return false;
   }
 
   void destroy()

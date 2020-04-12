@@ -18,7 +18,8 @@ public:
   void execute(TreeNode *root)
   {
     auto scope = driver->getScope();
-    handleStatements(root, scope);
+    value val = handleStatements(root, scope);
+    driver->printValue(val);
   }
 
 private:
@@ -60,6 +61,9 @@ private:
     case OPERATIONS(LOOP):
       res = executeLoop(node, scope);
       break;
+    case OPERATIONS(TRY_CATCH):
+      res = executeTryCatch(node, scope);
+      break;
     case OPERATIONS(AND_LOGIC):
       res = resolveLogic(node, scope);
       res.use = "bool";
@@ -97,6 +101,10 @@ private:
 
   value resolveExpression(TreeNode *node, Scope *scope)
   {
+    if (node->val.br > 0)
+    {
+      return node->val;
+    }
     if (node->operation == OPERATIONS(FUNCTION))
     {
       return executeFunction(node, scope);
@@ -112,11 +120,25 @@ private:
     if (node->operation == OPERATIONS(VARIABLE))
     {
       string name = node->val.v.s;
-      return scope->getValue(node->val.v.s);
+      value val = scope->getValue(node->val.v.s);
+      if (val.use.compare("nil") == 0)
+      {
+        auto panic = driver->createPanic("Variable not found");
+        return panic;
+      }
+      return val;
     }
 
     value left = resolveExpression(node->firstChild, scope);
+    if (left.br > 0)
+    {
+      return left;
+    }
     value right = resolveExpression(node->secondChild, scope);
+    if (right.br > 0)
+    {
+      return right;
+    }
     value res = node->mergeValues(left, right);
     return res;
   }
@@ -130,37 +152,55 @@ private:
     string name = node->val.v.s;
     if (temp.compare("=") == 0)
     {
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     if (temp.compare("*=") == 0)
     {
       tn->operation = OPERATIONS(MULTIPLY);
       res = tn->mergeValues(cur, res);
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     if (temp.compare("/=") == 0)
     {
       tn->operation = OPERATIONS(DIVIDE);
       res = tn->mergeValues(cur, res);
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     if (temp.compare("-=") == 0)
     {
       tn->operation = OPERATIONS(SUB);
       res = tn->mergeValues(cur, res);
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     if (temp.compare("+=") == 0)
     {
       tn->operation = OPERATIONS(SUM);
       res = tn->mergeValues(cur, res);
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     if (temp.compare("%=") == 0)
     {
       tn->operation = OPERATIONS(MOD);
       res = tn->mergeValues(cur, res);
-      scope->updateValue(name, res);
+      if (!scope->updateValue(name, res))
+      {
+        return driver->createPanic("assign a undefined variable.");
+      }
     }
     return NIL_VALUE;
   }
@@ -214,7 +254,11 @@ private:
     }
     string name = node->secondChild->val.v.s;
     value val = resolveExpression(node->thirdChild, scope);
-    scope->setValue(name, val);
+    if (!scope->setValue(name, val))
+    {
+      value pnc = driver->createPanic("Variable allready declared.");
+      return pnc;
+    }
     return NIL_VALUE;
   }
   value executeFunction(TreeNode *node, Scope *scope)
@@ -351,6 +395,26 @@ private:
     }
     return NIL_VALUE;
   }
+
+  value executeTryCatch(TreeNode *node, Scope *scope)
+  {
+
+    //Execute try
+    auto childScope = scope->fork();
+    value val = handleStatements(node->firstChild, childScope);
+    if (val.br == 3)
+    {
+      auto childScope = scope->fork();
+      val.br = 0;
+      childScope->setValue("err", val);
+      value resv = handleStatements(node->secondChild, childScope);
+      cout << "br : " << resv.br << endl;
+      return resv;
+    }
+
+    return val;
+  }
+
   value executeIf(TreeNode *node, Scope *scope)
   {
     auto childScope = scope->fork();

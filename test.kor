@@ -1,26 +1,15 @@
-func isPrime(num){
-  for var i = 2; i < num; i+=1; {
-    if num % i == 0 {
-      return false;
-    }
-  }
-  return true;
+var b = 5;
+var c = 0;
+print(b);
+
+try {
+  print("HE");
+  c = 4;
+  b = a;
+} catch {
+  print("found error",err);
 }
 
-
-func nthPrime(n) {
-  print("Hİ");
-  var i = 0;
-  var num = 2;
-  for {
-    var a = isPrime(num);
-    var b = i >= n;
-    print(a,b);
-    if x {
-      return num;
-    }
-    num +=1;
-  }
-}
-
-print(nthPrime(3));
+print(c);
+print(b);
+print("SELAM");
