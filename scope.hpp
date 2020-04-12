@@ -42,7 +42,7 @@ public:
     }
     else if (this->parentScope != NULL)
     {
-      return this->parentScope->values.getValue(name);
+      return this->parentScope->getValue(name);
     }
 
     return NIL_VALUE;
@@ -65,7 +65,7 @@ public:
     }
     else if (this->parentScope != NULL)
     {
-      this->parentScope->values.updateValue(name, val);
+      return this->parentScope->updateValue(name, val);
     }
     return false;
   }
@@ -79,7 +79,7 @@ public:
     }
     else if (this->parentScope != NULL)
     {
-      return this->parentScope->functions.getValue(name);
+      return this->parentScope->getFunction(name);
     }
     return NIL_TREE_NODE;
   }

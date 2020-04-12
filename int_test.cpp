@@ -21,7 +21,8 @@ int main()
         lineCount++;
         string input_line;
         getline(cin, input_line);
-        if (trim(input_line).compare("false") == 0)
+        auto l = trim(input_line);
+        if ((l.compare("true") != 0) && (l.compare("") != 0))
         {
             cout << "ERROR at print : " << lineCount << endl;
             cout << "Test Failed!" << endl

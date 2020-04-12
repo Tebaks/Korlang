@@ -68,12 +68,7 @@ public:
     {
       cout << val.v.s;
     }
-
-    else
-    {
-      cout << val.use;
     }
-  }
 };
 
 #endif

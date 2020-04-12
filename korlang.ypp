@@ -69,7 +69,7 @@ bool keepgoing = true;
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH
 
   /* These are the non-terminal names that have values. */
-%type <tval> exp  stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt
+%type <tval> ar_exp exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -206,9 +206,11 @@ params : exp {NOTHING $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),NULL,$1,NULL
   $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),$1,$3,NULL,NULL);
   }
 
+exp : ar_exp {$$ = $1;}
+|logical_operations  { $$ = $1; }
 
 
-exp: exp OPA term      { 
+ar_exp: ar_exp OPA term      { 
   struct value temp;
   temp.use = "identifier";
   OPERATIONS op = OPERATIONS(SUM);
@@ -217,7 +219,6 @@ exp: exp OPA term      {
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
  }
 | term               { $$ = $1; }
-|logical_operations  { $$ = $1; }
 
 term : term OPM factor {
   struct value temp;
@@ -228,9 +229,19 @@ term : term OPM factor {
   $$ = new TreeNode(temp,op,$1,$3,NULL,NULL);
 
 }
-| factor
+| factor { $$= $1;}
 
-factor: INT            { 
+factor: constant  {$$ = $1;}
+ | SOP ar_exp EOP { $$ = $2;}
+ | VAR {
+  struct value temp;
+  temp.v.s = $1;
+  temp.use = "integer";
+  $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
+ }
+ | function_call  {  $$ = $1;}
+
+constant : INT            { 
   struct value temp;
   temp.v.i = $1;
   temp.use = "integer";
@@ -242,14 +253,6 @@ factor: INT            {
    temp.use = "string";
    $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
- | SOP exp EOP { $$ = $2;}
- | VAR {
-  struct value temp;
-  temp.v.s = $1;
-  temp.use = "integer";
-  $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
- }
- | function_call  {  $$ = $1;}
 
 
 // LOGICAL OPERATORS
@@ -276,9 +279,7 @@ factor: INT            {
    temp.v.i = $1;
    $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
- |exp{NOTHING
- $$ = new TreeNode(temp,OPERATIONS(EXPRESSION),$1,NULL,NULL,NULL);
- }
+ | ar_exp  { $$ = $1;}
  |SOP logical_operations EOP {$$ = $2; }
 
 

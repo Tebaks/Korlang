@@ -17,22 +17,22 @@ enum OPERATIONS
     TRY_CATCH,
     DECLARATION,
     SUM,
-    EXPRESSION,
+    EXPRESSION, //5
     MULTIPLY,
     DIVIDE,
     MOD,
     SUB,
-    VARIABLE,
+    VARIABLE, //10
     CONSTANT,
     ROOT,
     ASSIGNMENT_OPERATOR,
     STMT_LIST,
-    LOOP,
+    LOOP, //15
     LOGIC,
     EQ_LOGIC,
     NEQ_LOGIC,
     LTH_LOGIC,
-    GTH_LOGIC,
+    GTH_LOGIC, //20
     GTHEQ_LOGIC,
     LTHEQ_LOGIC,
     AND_LOGIC,

@@ -207,23 +207,26 @@ private:
 
   value resolveLogic(TreeNode *node, Scope *scope)
   {
-
     if (node == NULL)
     {
       cout << "resolve logic null" << endl;
     }
     if (node->operation == OPERATIONS(VARIABLE))
     {
-      return scope->getValue(node->val.v.s);
+      auto v = scope->getValue(node->val.v.s);
+      if (v.use.compare("nil") == 0)
+      {
+        return driver->createPanic("Logic resolve error: variable not found.");
+      }
+      return v;
     }
     if (node->operation == OPERATIONS(CONSTANT))
     {
-
       return node->val;
     }
     if (node->operation == OPERATIONS(EXPRESSION))
     {
-      return node->val;
+      return resolveExpression(node, scope);
     }
     if (node->secondChild == NULL)
     {
@@ -232,7 +235,15 @@ private:
     if (node->operation != OPERATIONS(AND_LOGIC) && node->operation != OPERATIONS(OR_LOGIC))
     {
       value left = resolveExpression(node->firstChild, scope);
+      if (left.br > 0)
+      {
+        return left;
+      }
       value right = resolveExpression(node->secondChild, scope);
+      if (right.br > 0)
+      {
+        return right;
+      }
       return node->mergeLogic(left, right);
     }
     value left = resolveLogic(node->firstChild, scope);
