@@ -254,7 +254,6 @@ private:
       if (v.br == 2)
       {
         v.br = 0;
-        cout << "Value" << v.v.i << endl;
         return v;
       }
     }
@@ -293,7 +292,8 @@ private:
     {
       while (1)
       {
-        value tr = handleStatements(node->firstChild, scope);
+        auto childScope = scope->fork();
+        value tr = handleStatements(node->firstChild, childScope);
         if (tr.br == 1)
         {
           tr.br = 0;
@@ -307,11 +307,16 @@ private:
       value res = resolveLogic(node->firstChild, scope);
       while (res.v.i > 0)
       {
+        auto childScope = scope->fork();
         value tr =
-            handleStatements(node->secondChild, scope);
+            handleStatements(node->secondChild, childScope);
         if (tr.br == 1)
         {
           tr.br = 0;
+          return tr;
+        }
+        else if (tr.br > 0)
+        {
           return tr;
         }
         res = resolveLogic(node->firstChild, scope);
@@ -326,11 +331,16 @@ private:
       value res = resolveLogic(node->secondChild, scope);
       while (res.v.i > 0)
       {
+        auto childScope = scope->fork();
         // handle statements
-        value tr = handleStatements(node->fourthChild, scope);
+        value tr = handleStatements(node->fourthChild, childScope);
         if (tr.br == 1)
         {
           tr.br = 0;
+          return tr;
+        }
+        else if (tr.br > 0)
+        {
           return tr;
         }
         // Execute after loop statement.

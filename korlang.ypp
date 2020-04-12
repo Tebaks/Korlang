@@ -155,6 +155,12 @@ $$ = new TreeNode(temp,OPERATIONS(IF_ELSE_LOGIC),$2,$4,$8,NULL);
   temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(FUNCTION_DEC),$4,$7,NULL,NULL);
 }
+| FUNC VAR SOP  EOP SOCB  stmts EOCB {
+  struct value temp;
+  temp.v.s = $2;
+  temp.use = "identifier";
+  $$ = new TreeNode(temp,OPERATIONS(FUNCTION_DEC),NULL,$6,NULL,NULL);
+}
 | BREAK_T STOP {NOTHING
   $$ = new TreeNode(temp,OPERATIONS(BREAK));
 }

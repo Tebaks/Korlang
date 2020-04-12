@@ -68,6 +68,10 @@ public:
     {
       this->values.updateValue(name, val);
     }
+    else if (this->parentScope != NULL)
+    {
+      this->parentScope->values.updateValue(name, val);
+    }
   }
 
   TreeNode getFunction(string name)
