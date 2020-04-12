@@ -68,7 +68,29 @@ public:
     {
       cout << val.v.s;
     }
+  }
+
+  value korlang_toInt(value v, Scope *scope)
+  {
+
+    // if value is a string;
+    if (v.use.compare("string") == 0)
+    {
+      auto c = v.v.s;
+      int i = atoi(c);
+      v.v.i = i;
+      v.use = "integer";
+      return v;
     }
+    else if (v.use.compare("float") == 0)
+    {
+    }
+    else if (v.use.compare("nil") == 0)
+    {
+    }
+
+    return v;
+  }
 };
 
 #endif

@@ -50,14 +50,20 @@ SOCB \{
 EOCB \}
 /*KEYWORDS*/
 KEYWORD kor|func|return|if|else|for|struct|range
-IDEN float|int|string|bool|var
+IDEN var
 /*IGNORED*/
 IGNORED [ \n\r]+
 %%
 {SEMICOLON} { return STOP; }
 {FLOAT} {yylval.fval = atof(yytext); return FLOAT;  }
 {INT} { yylval.ival = atoi(yytext); return INT; }
-{STRING} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return STRING; }
+{STRING} {
+    yylval.id = (char * )calloc(strlen(yytext)-1, sizeof(char));
+    strncpy(yylval.id, &yytext[1], strlen(yytext-2));
+    yylval.id[strlen(yytext)-2] = '\0';
+    
+    return STRING   ;
+   }
 {BOOLEAN} { if(strcmp(yytext,"true") == 0){ yylval.ival = 1 ;} else { yylval.ival = 0; }   return BOOL;}
 {IDEN} { yylval.id = (char *)malloc(yyleng);sprintf(yylval.id,"%s",yytext); return IDEN; }
 "kor" {return KOR;}

@@ -248,7 +248,7 @@ factor: constant  {$$ = $1;}
  | VAR {
   struct value temp;
   temp.v.s = $1;
-  temp.use = "integer";
+  temp.use = "identifier";
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
  | function_call  {  $$ = $1;}

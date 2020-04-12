@@ -37,4 +37,12 @@ func printPrimes(n) {
   }
 }
 
-printPrimes(20);
+var n = 0;
+
+try{
+  n = int(arg1);
+} catch {
+  n = 20;
+}
+
+printPrimes(n);
