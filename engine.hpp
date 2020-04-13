@@ -353,6 +353,11 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_input(val, scope);
     }
+    else if (funcName.compare("panic") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      return driver->korlang_invokePanic(val, scope);
+    }
     else
     {
       auto fnode = scope->getFunction(funcName);
@@ -378,9 +383,12 @@ private:
       }
 
       value v = handleStatements(fnode.secondChild, childScope);
-      if (v.br == 2)
+      
+      if (v.br > 0)
       {
-        v.br = 0;
+        if(v.br == 2 ) {
+          v.br = 0;
+        }
         return v;
       }
     }

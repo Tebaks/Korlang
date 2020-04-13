@@ -90,6 +90,17 @@ public:
     res.sval = s;
     return res;
   }
+  value korlang_invokePanic(value v, Scope *scope)
+  {
+    if (v.use.compare("string") == 0)
+    {
+      return createPanic(v.v.s);
+    }else {
+      return createPanic("");
+    }
+
+    
+  }
   value korlang_toInt(value v, Scope *scope)
   {
 
@@ -101,7 +112,9 @@ public:
       {
         auto c = v.v.s;
         i = atoi(c);
-      }else{
+      }
+      else
+      {
         string s = v.sval;
         i = stoi(s);
       }

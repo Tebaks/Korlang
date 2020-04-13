@@ -9,7 +9,7 @@ int_test: int_test.cpp
 	g++ ./int_test.cpp -o int_test
 
 if_else_test: 
-	cat ./tests/if_else_test.kor | ./korlang | ./int_test
+	./tests/if_else_test.kor | ./korlang | ./int_test
 
 assign_operators_test:
 	cat ./tests/assign_operators_test.kor | ./korlang | ./int_test

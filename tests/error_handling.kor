@@ -1,0 +1,15 @@
+func f(arg) {
+  // invokes an error en stop execution of scope.
+  // untill err is handled.
+  panic("error");
+  print(false);
+}
+
+
+try {
+  print(true);
+  f();
+  print(false);
+} catch {
+  print(true);
+}
