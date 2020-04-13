@@ -1,6 +1,5 @@
+var arr = ["ahmet",0,"veli",true];
 
-var a = 1;
-
-print(a++);
-print(a++);
-print(a);
+for var i = 0; i < len(arr); i++; {
+  print(arr[i]);
+}

@@ -16,6 +16,11 @@ class Scope
 private:
   vector<Scope> inner;
   Scope *parentScope;
+  string createArrayValueName(string base, int index)
+  {
+    string s = to_string(index);
+    return base + "$" + s;
+  }
 
 public:
   Bucket<value> values;
@@ -46,7 +51,6 @@ public:
     {
       return this->parentScope->getValue(name);
     }
-
     return NIL_VALUE;
   }
   bool setValue(string name, value val)
@@ -98,8 +102,20 @@ public:
     return false;
   }
 
-  void destroy()
+  bool setArrayValue(string name, int index, value val)
   {
+    string n = createArrayValueName(name, index);
+    return setValue(n, val);
+  }
+  bool updateArrayValue(string name, int index, value val)
+  {
+    string n = createArrayValueName(name, index);
+    return updateValue(n, val);
+  }
+  value getArrayValue(string name, int index)
+  {
+    string n = createArrayValueName(name, index);
+    return getValue(n);
   }
 };
 

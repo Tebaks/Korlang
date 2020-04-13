@@ -51,6 +51,8 @@ enum OPERATIONS
     POST_INC,
     POST_DEC,
     COMM,
+    ARRAY_DEF,
+    ARRAY_ELEM,
 };
 struct value
 {

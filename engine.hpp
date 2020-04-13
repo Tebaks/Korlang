@@ -114,6 +114,9 @@ private:
     case OPERATIONS(FUNCTION):
       res = executeFunction(node, scope);
       break;
+    case OPERATIONS(ARRAY_DEF):
+      res = resolveArrayDef(node, scope);
+      break;
     case OPERATIONS(FUNCTION_DEC):
       res = resolveFunctionDeclaration(node, scope);
       break;
@@ -142,6 +145,10 @@ private:
     if (node->operation == OPERATIONS(INC_DEC))
     {
       return resolveIncDec(node, scope);
+    }
+    if (node->operation == OPERATIONS(ARRAY_ELEM))
+    {
+      return resolveArrayElem(node, scope);
     }
     if (node->operation == OPERATIONS(FUNCTION))
     {
@@ -180,6 +187,40 @@ private:
     value res = node->mergeValues(left, right);
     return res;
   }
+
+  value resolveArrayDef(TreeNode *node, Scope *scope)
+  {
+    string name = node->val.v.s;
+    int i = 0;
+    auto it = NodeIterator(node->firstChild);
+    while (!it.isEmpty())
+    {
+      auto n = it.get();
+
+      value v = resolveExpression(&n, scope);
+      scope->setArrayValue(name, i, v);
+      it.done();
+      i++;
+    }
+    // set base value as an array value
+    value t;
+    t.use = "array";
+    t.v.i = i;
+    scope->setValue(name, t);
+    return t;
+  }
+  value resolveArrayElem(TreeNode *node, Scope *scope)
+  {
+    string name = node->val.v.s;
+    value ind = resolveExpression(node->firstChild, scope);
+    if (ind.use.compare("integer") == 0)
+    {
+      return scope->getArrayValue(name, ind.v.i);
+    }
+    cout << "not int " << ind.use << endl;
+    return NIL_VALUE;
+  }
+
   value resolveIncDec(TreeNode *node, Scope *scope)
   {
     if (node->firstChild->operation == OPERATIONS(POST_INC))
@@ -358,6 +399,11 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_invokePanic(val, scope);
     }
+    else if (funcName.compare("len") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      return driver->korlang_len(val, scope);
+    }
     else
     {
       auto fnode = scope->getFunction(funcName);
@@ -383,10 +429,11 @@ private:
       }
 
       value v = handleStatements(fnode.secondChild, childScope);
-      
+
       if (v.br > 0)
       {
-        if(v.br == 2 ) {
+        if (v.br == 2)
+        {
           v.br = 0;
         }
         return v;

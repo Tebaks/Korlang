@@ -95,11 +95,24 @@ public:
     if (v.use.compare("string") == 0)
     {
       return createPanic(v.v.s);
-    }else {
+    }
+    else
+    {
       return createPanic("");
     }
+  }
 
-    
+  value korlang_len(value v, Scope *scope)
+  {
+    if (v.use.compare("array") == 0)
+    {
+      value temp;
+      temp.v.i = v.v.i;
+      temp.use = "integer";
+      return temp;
+    }
+
+    return NIL_VALUE;
   }
   value korlang_toInt(value v, Scope *scope)
   {

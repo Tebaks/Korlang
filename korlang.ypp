@@ -74,7 +74,7 @@ bool keepgoing = true;
 %token COMMENT
 
   /* These are the non-terminal names that have values. */
-%type <tval> ar_exp exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
+%type <tval> ar_exp  exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
 %start S
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -113,6 +113,12 @@ stmt: exp STOP
   TreeNode* second = new TreeNode(temp2,OPERATIONS(VARIABLE));
   $$ = new TreeNode(temp,OPERATIONS(DECLARATION),NULL,second,$4,NULL);
 }
+|IDEN VAR ASSGN SOB params EOB STOP {
+  struct value temp;
+  temp.v.s = $2;
+  temp.use ="identifier";
+  $$ = new TreeNode(temp,OPERATIONS(ARRAY_DEF),$5,NULL,NULL,NULL);
+ }
 | VAR assignment_operator exp STOP{
   struct value temp;
   temp.use =  "identifier";
@@ -257,6 +263,12 @@ factor: constant  {$$ = $1;}
   $$ = new TreeNode(temp,OPERATIONS(VARIABLE));
  }
  | function_call  {  $$ = $1;}
+ | VAR SOB ar_exp EOB {
+   struct value temp;
+   temp.v.s = $1;
+   temp.use = "identifier";
+   $$= new TreeNode(temp,OPERATIONS(ARRAY_ELEM),$3,NULL,NULL,NULL);
+ }
  |inc_dec_operations {NOTHING
  $$ = new TreeNode(temp,OPERATIONS(INC_DEC),$1,NULL,NULL,NULL);
  }
