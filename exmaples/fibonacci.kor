@@ -1,0 +1,18 @@
+func calculateFibonacci(num) {
+  // Create an array
+  var arr = array(num);
+  // Asign first two variable.
+  arr[0] = 1;
+  arr[1] = 1;
+  for var i = 2; i < num; i++; {
+    arr[i] = arr[i-1] + arr[i-2];
+  }
+  // Log whole array.
+  print(arr);
+  return arr[num-1];
+}
+// Ask for a number.
+var n = int( input("Bir sayı giriniz: ") );
+
+// Print result.
+print(calculateFibonacci(n));

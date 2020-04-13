@@ -1,4 +1,4 @@
-func f(arg) {
+func f(name) {
   // invokes an error en stop execution of scope.
   // untill err is handled.
   panic("error");

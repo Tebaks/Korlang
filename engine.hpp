@@ -111,6 +111,9 @@ private:
     case OPERATIONS(ASSIGNMENT):
       res = resolveAssignment(node, scope);
       break;
+    case OPERATIONS(ARR_ASSIGNMENT):
+      res = resolveArrAssignment(node, scope);
+      break;
     case OPERATIONS(FUNCTION):
       res = executeFunction(node, scope);
       break;
@@ -191,6 +194,7 @@ private:
   value resolveArrayDef(TreeNode *node, Scope *scope)
   {
     string name = node->val.v.s;
+    string arrName = driver->generatingArrID();
     int i = 0;
     auto it = NodeIterator(node->firstChild);
     while (!it.isEmpty())
@@ -198,20 +202,23 @@ private:
       auto n = it.get();
 
       value v = resolveExpression(&n, scope);
-      scope->setArrayValue(name, i, v);
+      scope->setArrayValue(arrName, i, v);
       it.done();
       i++;
     }
     // set base value as an array value
     value t;
     t.use = "array";
+    t.sval = arrName;
     t.v.i = i;
     scope->setValue(name, t);
     return t;
   }
   value resolveArrayElem(TreeNode *node, Scope *scope)
   {
-    string name = node->val.v.s;
+    string vname = node->val.v.s;
+    value hnd = scope->getValue(vname);
+    string name = hnd.sval;
     value ind = resolveExpression(node->firstChild, scope);
     if (ind.use.compare("integer") == 0)
     {
@@ -244,14 +251,40 @@ private:
     return scope->getValue(node->val.v.s);
   }
 
+  value resolveArrAssignment(TreeNode *node, Scope *scope)
+  {
+
+    string pn = scope->getValue(node->firstChild->val.v.s).sval;
+    value v = resolveExpression(node->firstChild->firstChild, scope);
+    value res = resolveExpression(node->thirdChild, scope);
+    string temp = node->secondChild->val.v.s;
+    if (res.use.compare("integer") == 0)
+    {
+      string name = scope->createArrayValueName(pn, v.v.i);
+      value cur = scope->getValue(name);
+      if (cur.use.compare("nil") == 0)
+      {
+        return driver->createPanic("Index out of bounds.");
+      }
+      return makeAssignment(cur, res, name, temp, scope);
+    }
+    return NIL_VALUE;
+  }
+
   value resolveAssignment(TreeNode *node, Scope *scope)
   {
-    TreeNode *tn = new TreeNode();
 
     value res = resolveExpression(node->thirdChild, scope);
     value cur = scope->getValue(node->val.v.s);
     string temp = node->secondChild->val.v.s;
     string name = node->val.v.s;
+    return makeAssignment(cur, res, name, temp, scope);
+  }
+
+  value makeAssignment(value cur, value res, string name, string temp, Scope *scope)
+  {
+    TreeNode *tn = new TreeNode();
+
     if (temp.compare("=") == 0)
     {
       if (!scope->updateValue(name, res))
@@ -404,6 +437,12 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_len(val, scope);
     }
+    else if (funcName.compare("array") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      return driver->korlang_makeArray(val, scope);
+    }
+
     else
     {
       auto fnode = scope->getFunction(funcName);
@@ -455,6 +494,17 @@ private:
         if (node != NULL)
         {
           value val = resolveExpression(&t, scope);
+          if (val.use.compare("array") == 0)
+          {
+            string aname = val.sval;
+            cout << "[ ";
+            for (int x = 0; x < val.v.i; x++)
+            {
+              driver->printValueInline(scope->getArrayValue(aname, x));
+              cout << "  ";
+            }
+            cout << " ]" << endl;
+          }
           driver->printValueInline(val);
         }
         it.done();
@@ -506,15 +556,16 @@ private:
     // otherwise, it's a for loop
     else
     {
+      auto childScope = scope->fork();
       // Execute initial statement.
-      handleStatement(node->firstChild, scope);
+      handleStatement(node->firstChild, childScope);
       // Execute logical expression.
-      value res = resolveLogic(node->secondChild, scope);
+      value res = resolveLogic(node->secondChild, childScope);
       while (res.v.i > 0)
       {
-        auto childScope = scope->fork();
+        auto cscope = childScope->fork();
         // handle statements
-        value tr = handleStatements(node->fourthChild, childScope);
+        value tr = handleStatements(node->fourthChild, cscope);
         if (tr.br == 1)
         {
           tr.br = 0;
@@ -525,14 +576,14 @@ private:
           return tr;
         }
         // Execute after loop statement.
-        handleStatement(node->thirdChild, scope);
+        handleStatement(node->thirdChild, cscope);
         if (tempNode != NULL)
         {
-          handleStatement(tempNode, scope);
+          handleStatement(tempNode, cscope);
           tempNode = NULL;
         }
         // Update logic state
-        res = resolveLogic(node->secondChild, scope);
+        res = resolveLogic(node->secondChild, childScope);
       }
     }
     return NIL_VALUE;

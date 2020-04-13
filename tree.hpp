@@ -3,9 +3,9 @@
 #include <cstdlib>
 #define tree
 #define NIL_TREE_NODE TreeNode(true);
-#define NIL_VALUE      \
-    {                  \
-        0, "nil","", 0, 1 \
+#define NIL_VALUE          \
+    {                      \
+        0, "nil", "", 0, 1 \
     }
 
 using namespace std;
@@ -53,6 +53,7 @@ enum OPERATIONS
     COMM,
     ARRAY_DEF,
     ARRAY_ELEM,
+    ARR_ASSIGNMENT,
 };
 struct value
 {

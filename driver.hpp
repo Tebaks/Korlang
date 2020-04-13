@@ -20,9 +20,16 @@ class Driver
 {
 private:
   Scope *scope;
+  int arr = 0;
 
 public:
   Driver() : scope(new Scope()) {}
+
+  string generatingArrID()
+  {
+    arr++;
+    return "arr" + to_string(arr);
+  }
 
   Scope *getScope()
   {
@@ -78,6 +85,30 @@ public:
       }
     }
   }
+
+  value korlang_makeArray(value v, Scope *scope)
+  {
+    if (v.use.compare("integer") != 0)
+    {
+      return NIL_VALUE;
+    }
+    value temp;
+    temp.use = "integer";
+    temp.v.i = 0;
+    int n = v.v.i;
+    string id = generatingArrID();
+    for (int i = 0; i < n; i++)
+    {
+      string vn = scope->createArrayValueName(id, i);
+      scope->setValue(vn, temp);
+    }
+    value res;
+    res.use = "array";
+    res.sval = id;
+    res.v.i = n;
+    return res;
+  }
+
   value korlang_input(value v, Scope *scope)
   {
     value res;

@@ -16,11 +16,6 @@ class Scope
 private:
   vector<Scope> inner;
   Scope *parentScope;
-  string createArrayValueName(string base, int index)
-  {
-    string s = to_string(index);
-    return base + "$" + s;
-  }
 
 public:
   Bucket<value> values;
@@ -31,7 +26,11 @@ public:
 
   {
   }
-
+  string createArrayValueName(string base, int index)
+  {
+    string s = to_string(index);
+    return base + "$" + s;
+  }
   Scope *fork()
   {
     auto res = new Scope();
