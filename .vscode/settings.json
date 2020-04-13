@@ -42,6 +42,9 @@
     "xutility": "cpp",
     "*.tcc": "cpp",
     "deque": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "bitset": "cpp",
+    "complex": "cpp",
+    "iomanip": "cpp"
   }
 }

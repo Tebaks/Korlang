@@ -1,3 +1,32 @@
 
-var i = input("sen?:");
-print(i);
+print("Please enter -1 to exit.");
+
+
+func isPrime(num){
+  for var i = 2;i<num;i++;{
+    if num % i == 0 {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+for {
+  print();
+  var n = int(input("Enter a number: "));
+  
+  if n < 0 {
+    break;
+  }
+  
+  var isp = isPrime(n);
+  if isp {
+    print("Prime number");
+  } else {
+    print("Not a prime number");
+  }
+  
+  
+
+}

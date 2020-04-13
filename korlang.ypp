@@ -377,10 +377,13 @@ colorout errout(2, 'r');
 //-- FUNCTION DEFINITIONS ---------------------------------
 int main(int argc, char ** argv)
 {
+  argc--;
+  argv++;
 
+  char* filename = argv[0];
   
   // open a file handle to a particular file:
-  FILE *myfile = fopen("test.kor", "r");
+  FILE *myfile = fopen(filename, "r");
   // make sure it's valid:
   if (!myfile) {
     cout << "I can't open a.snazzle.file!" << endl;

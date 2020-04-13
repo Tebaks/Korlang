@@ -91,7 +91,6 @@ private:
       break;
     case OPERATIONS(DECLARATION):
       res = resolveDeclaration(node, scope);
-      cout << res.use << endl;
       break;
     case OPERATIONS(LOOP):
       res = executeLoop(node, scope);
@@ -159,9 +158,7 @@ private:
     if (node->operation == OPERATIONS(VARIABLE))
     {
       string name = node->val.v.s;
-      cout << "test " << node->val.v.s << endl;
       value val = scope->getValue(node->val.v.s);
-      cout << val.v.s << endl;
       if (val.use.compare("nil") == 0)
       {
         auto panic = driver->createPanic("Variable not found");
@@ -329,7 +326,6 @@ private:
     }
     string name = node->secondChild->val.v.s;
     value val = resolveExpression(node->thirdChild, scope);
-    cout << "resolvedec " << val.v.s << endl;
     if (!scope->setValue(name, val))
     {
       value pnc = driver->createPanic("Variable allready declared.");
@@ -404,9 +400,7 @@ private:
         if (node != NULL)
         {
           value val = resolveExpression(&t, scope);
-          cout << "deneme " << val.use << " " << val.v.s << endl;
           driver->printValueInline(val);
-          cout << "  ";
         }
         it.done();
       }
@@ -501,7 +495,6 @@ private:
       val.br = 0;
       childScope->setValue("err", val);
       value resv = handleStatements(node->secondChild, childScope);
-      cout << "br : " << resv.br << endl;
       return resv;
     }
 

@@ -68,18 +68,26 @@ public:
     }
     else if (s.compare("string") == 0)
     {
-      cout << val.v.s;
+      if (val.sval == "")
+      {
+        cout << val.v.s;
+      }
+      else
+      {
+        cout << val.sval;
+      }
     }
   }
   value korlang_input(value v, Scope *scope)
   {
     value res;
-    char s[256];
-    cout << v.v.s;
-    cin >> s;
-    res.v.s = s;
-    res.use = "string";
 
+    string s;
+    cout << v.v.s;
+    getline(cin, s);
+
+    res.use = "string";
+    res.sval = s;
     return res;
   }
   value korlang_toInt(value v, Scope *scope)
@@ -88,8 +96,15 @@ public:
     // if value is a string;
     if (v.use.compare("string") == 0)
     {
-      auto c = v.v.s;
-      int i = atoi(c);
+      int i = 0;
+      if (v.sval == "")
+      {
+        auto c = v.v.s;
+        i = atoi(c);
+      }else{
+        string s = v.sval;
+        i = stoi(s);
+      }
       v.v.i = i;
       v.use = "integer";
       return v;

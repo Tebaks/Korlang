@@ -39,10 +39,7 @@ public:
 
     if (this->values.isExist(name))
     {
-      cout << "name  " << name << endl;
       value val = this->values.getValue(name);
-      cout << "getVAlue " << val.v.s << endl;
-      cout << "getVAlue2 " << val.use << endl;
       return val;
     }
     else if (this->parentScope != NULL)
@@ -57,11 +54,7 @@ public:
 
     if (!this->values.isExist(name))
     {
-      cout << "setValue " << name << endl;
-      if (name != "argc")
-      {
-        cout << "setValue " << val.v.s << endl;
-      }
+
       this->values.setValue(name, val);
       return true;
     }

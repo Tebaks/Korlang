@@ -5,7 +5,7 @@
 #define NIL_TREE_NODE TreeNode(true);
 #define NIL_VALUE      \
     {                  \
-        0, "nil", 0, 1 \
+        0, "nil","", 0, 1 \
     }
 
 using namespace std;
@@ -61,6 +61,7 @@ struct value
 
     } v;
     string use;
+    string sval;
     int br = 0;
     bool init = 0;
 };
