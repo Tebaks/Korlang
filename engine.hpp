@@ -21,18 +21,18 @@ public:
 
     for (int i = 0; i < args.size(); ++i)
     {
-      string name = "arg" + to_string(i + 1);
+      string name = "argv";
       value val;
       val.use = "string";
       val.v.s = args[i];
-      scope->setValue(name, val);
+      scope->setArrayValue(name, i, val);
     }
-    value argc;
-    argc.use = "integer";
-    argc.v.i = args.size();
-    scope->setValue("argc", argc);
+    value argv;
+    argv.use = "array";
+    argv.v.i = args.size();
+    scope->setValue("argv", argv);
     value val = handleStatements(root, scope);
-    driver->printValue(val);
+    //driver->printValue(val);
   }
   void add(int argc, char **argv)
   {

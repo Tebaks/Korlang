@@ -1,5 +1,3 @@
-var arr = ["ahmet",0,"veli",true];
-
-for var i = 0; i < len(arr); i++; {
-  print(arr[i]);
+for var i = 0; i < len(argv) ;  i++; {
+  print(argv[i]);
 }
