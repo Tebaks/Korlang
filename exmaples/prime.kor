@@ -37,12 +37,9 @@ func printPrimes(n) {
   }
 }
 
-var n = 0;
 
-try{
-  n = int(arg1);
-} catch {
-  n = 20;
-}
 
-printPrimes(n);
+var n = int(input("Kaçıncı  asal sayıyı yazdıralım: "));
+
+print(nthPrime(n));
+
