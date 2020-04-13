@@ -53,11 +53,6 @@ private:
     {
 
       auto statement = it.get();
-      if (statement.operation == OPERATIONS(COMM))
-      {
-        it.done();
-        statement = it.get();
-      }
       v = handleStatement(&statement, scope);
       if (v.br > 0)
       {
