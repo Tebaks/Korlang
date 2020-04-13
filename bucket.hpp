@@ -21,6 +21,7 @@ public:
   }
   void setValue(string name, T val)
   {
+    cout << "bucket " << name << endl;
     values.insert(pair<string, T>(name, val));
   }
   bool isExist(string name)

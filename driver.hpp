@@ -73,13 +73,14 @@ public:
   }
   value korlang_input(value v, Scope *scope)
   {
-    cin.ignore(INT_MAX);
-    string s;
-    getline(cin, s);
+    value res;
+    char s[256];
+    cout << v.v.s;
+    cin >> s;
+    res.v.s = s;
+    res.use = "string";
 
-    cout << "N" << s << endl;
-
-    return v;
+    return res;
   }
   value korlang_toInt(value v, Scope *scope)
   {

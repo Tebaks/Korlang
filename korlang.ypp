@@ -9,6 +9,10 @@
 #include "tree.hpp"
 #include "engine.hpp"
 #define NOTHING		struct value temp;temp.use="none";
+#define YYDEBUG 1
+
+extern "C++" int yylex();
+extern "C++" FILE *yyin;
 
 using namespace std;
 
@@ -373,6 +377,20 @@ colorout errout(2, 'r');
 //-- FUNCTION DEFINITIONS ---------------------------------
 int main(int argc, char ** argv)
 {
+
+  
+  // open a file handle to a particular file:
+  FILE *myfile = fopen("test.kor", "r");
+  // make sure it's valid:
+  if (!myfile) {
+    cout << "I can't open a.snazzle.file!" << endl;
+    return -1;
+  }
+  yydebug = 0;
+  // set lex to read from it instead of defaulting to STDIN:
+  yyin = myfile;
+  
+
   
   // This checks whether the output is a terminal.
   bool tty = isatty(0) && isatty(2);
@@ -380,12 +398,11 @@ int main(int argc, char ** argv)
   argv++;
   engine->add(argc,argv);
   while (keepgoing) {
-    if (tty) cerr << "> " << flush;
+    if (tty) cerr  << flush;
     yyparse();
   }
-  cout << "IM OUT";
    engine->execute(root);
-  if (tty) cerr << "Goodbye" << endl;
+  if (tty) cerr << endl;
   return 0;
 }
 

@@ -1,4 +1,3 @@
 
-print("Ahmetfom");
-
 var i = input("sen?:");
+print(i);
