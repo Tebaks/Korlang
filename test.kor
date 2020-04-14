@@ -1,0 +1,15 @@
+if true {
+  kor {
+  if true {
+    for {
+      var a = 5;
+      extern a;
+      break;
+    }
+  }
+}
+extern a;
+
+}
+
+print(a);

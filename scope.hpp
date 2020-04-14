@@ -18,6 +18,7 @@ private:
   Scope *parentScope;
 
 public:
+  bool isKorScope;
   Bucket<value> values;
   Bucket<TreeNode> functions;
   Scope() : inner(vector<Scope>()),
@@ -26,6 +27,20 @@ public:
 
   {
   }
+
+  Scope *getKorScope()
+  {
+    if (isKorScope)
+    {
+      return this;
+    }
+    else if (parentScope != NULL)
+    {
+      return parentScope->getKorScope();
+    }
+    return this;
+  }
+
   string createArrayValueName(string base, int index)
   {
     string s = to_string(index);
@@ -77,6 +92,20 @@ public:
     return false;
   }
 
+  bool deleteValue(string name)
+  {
+    if (values.isExist(name))
+    {
+      values.deleteValue(name);
+      return true;
+    }
+    else if (parentScope != NULL)
+    {
+      return parentScope->deleteValue(name);
+    }
+
+    return false;
+  }
   TreeNode getFunction(string name)
   {
     if (functions.isExist(name))

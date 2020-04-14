@@ -118,6 +118,12 @@ private:
     case OPERATIONS(FUNCTION_DEC):
       res = resolveFunctionDeclaration(node, scope);
       break;
+    case OPERATIONS(KOR_STMT):
+      resolveKorStatement(node, scope);
+      break;
+    case OPERATIONS(EXTERN_STMT):
+      resolveExternStatement(node, scope);
+      break;
     case OPERATIONS(BREAK):
       res.br = 1;
       break;
@@ -244,6 +250,30 @@ private:
     }
 
     return scope->getValue(node->val.v.s);
+  }
+
+  value resolveKorStatement(TreeNode *node, Scope *scope)
+  {
+    auto sn = node->firstChild;
+    scope->isKorScope = true;
+    Scope *cs = scope->fork();
+    value v = handleStatements(sn, cs);
+    scope->isKorScope = false;
+    if (v.br > 0)
+    {
+      return v;
+    }
+    return NIL_VALUE;
+  }
+
+  value resolveExternStatement(TreeNode *node, Scope *scope)
+  {
+    auto sc = scope->getKorScope();
+    string name = node->val.sval;
+    value val = scope->getValue(name);
+    scope->deleteValue(name);
+    sc->setValue(name, val);
+    return NIL_VALUE;
   }
 
   value resolveArrAssignment(TreeNode *node, Scope *scope)

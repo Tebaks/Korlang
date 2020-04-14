@@ -27,6 +27,10 @@ public:
   {
     return values.find(name) != values.end();
   }
+  void deleteValue(string name)
+  {
+    values.erase(name);
+  }
   void updateValue(string name, T val)
   {
     values[name] = val;

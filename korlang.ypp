@@ -70,7 +70,7 @@ bool keepgoing = true;
 %token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
-%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH
+%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTERN
 
   /* These are the non-terminal names that have values. */
 %type <tval> ar_exp arr_call exp constant stmts factor assignment_operator stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
@@ -139,7 +139,14 @@ $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
 |func_stmt { $$ = $1;}
 |if_stmt  { $$ = $1;}
 |loop_stmt { $$ = $1;}
-
+| KOR SOCB stmts EOCB {NOTHING
+  $$ = new TreeNode(temp,OPERATIONS(KOR_STMT),$3,NULL,NULL,NULL);
+}
+| EXTERN VAR STOP {
+  struct value temp;
+  temp.sval = $2;
+  $$ = new TreeNode(temp,OPERATIONS(EXTERN_STMT));
+}
 
 //FUNC STMT
 func_stmt:
