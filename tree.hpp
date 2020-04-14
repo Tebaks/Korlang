@@ -103,37 +103,254 @@ public:
     {
         value res;
         res.v.i = 0;
-        if (operation == OPERATIONS(LTH_LOGIC) && x.v.i < y.v.i)
+
+        if (operation == OPERATIONS(LTH_LOGIC))
         {
-            res.v.i = 1;
+
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f < y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i < y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f < y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i < y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(GTH_LOGIC) && x.v.i > y.v.i)
+        if (operation == OPERATIONS(GTH_LOGIC))
         {
-            res.v.i = 1;
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f > y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i > y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f > y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i > y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(GTHEQ_LOGIC) && x.v.i >= y.v.i)
+        if (operation == OPERATIONS(GTHEQ_LOGIC))
         {
-            res.v.i = 1;
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f >= y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i >= y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f >= y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i >= y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(LTHEQ_LOGIC) && x.v.i <= y.v.i)
+        if (operation == OPERATIONS(LTHEQ_LOGIC))
         {
-            res.v.i = 1;
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f <= y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i <= y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f <= y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i <= y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(EQ_LOGIC) && x.v.i == y.v.i)
+        if (operation == OPERATIONS(EQ_LOGIC))
         {
-            res.v.i = 1;
+            if (x.use.compare("boolean") == 0 && y.use.compare("boolean") == 0)
+            {
+                if (x.v.i == y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("string") == 0 && y.use.compare("string") == 0)
+            {
+
+                if (x.sval == "")
+                {
+                    x.sval = x.v.s;
+                }
+                if (y.sval == "")
+                {
+                    y.sval = y.v.s;
+                }
+                if (x.sval.compare(y.sval) == 0)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f == y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i == y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f == y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i == y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(NEQ_LOGIC) && x.v.i != y.v.i)
+        if (operation == OPERATIONS(NEQ_LOGIC))
         {
-            res.v.i = 1;
+            if (x.use.compare("boolean") == 0 && y.use.compare("boolean") == 0)
+            {
+                if (x.v.i != y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("string") == 0 && y.use.compare("string") == 0)
+            {
+
+                if (x.sval == "")
+                {
+                    x.sval = x.v.s;
+                }
+                if (y.sval == "")
+                {
+                    y.sval = y.v.s;
+                }
+                if (x.sval.compare(y.sval) == 1)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.f != y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                if (x.v.i != y.v.f)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.f != y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                if (x.v.i != y.v.i)
+                {
+                    res.v.i = 1;
+                }
+            }
         }
-        if (operation == OPERATIONS(AND_LOGIC) && ((x.v.i > 0) && (y.v.i > 0)))
+        if (operation == OPERATIONS(AND_LOGIC))
         {
-            res.v.i = 1;
+
+            if (x.v.i && y.v.i)
+            {
+                res.v.i = 1;
+            }
         }
-        if (operation == OPERATIONS(OR_LOGIC) && ((x.v.i > 0) || (y.v.i > 0)))
+        if (operation == OPERATIONS(OR_LOGIC))
         {
-            res.v.i = 1;
+            if (x.v.i || y.v.i)
+            {
+                res.v.i = 1;
+            }
         }
         res.use = "boolean";
         return res;
@@ -142,32 +359,99 @@ public:
     {
         value res;
         res.use = x.use;
+        if (x.use.compare("string") == 0 || y.use.compare("string") == 0)
+        {
+            res.use = "string";
+        }
         //TODO : check value.use before operations.
         if (operation == OPERATIONS(SUM))
         {
-            res.v.i = x.v.i + y.v.i;
-            res.v.f = x.v.f + y.v.f;
-            //TODO: add string summaiton
+            if (res.use.compare("string") == 0)
+            {
+                //cout << "x.v.s: " << x.v.s << " y.v.s: " << y.v.s << endl;
+                x.sval = x.v.s;
+                y.sval = y.v.s;
+                //TODO : solve integer concat bug
+                if (x.use.compare("integer") == 0)
+                {
+                    x.sval = to_string(x.v.i);
+                    x.use = "string";
+                }
+                if (y.use.compare("integer") == 0)
+                {
+                    y.sval = to_string(y.v.i);
+                    y.use = "string";
+                }
+                //cout << "x.sval: " << x.sval << " y.sval: " << y.sval << endl;
+                res.sval = x.sval + y.sval;
+                //cout << "res.sval: " << res.sval << endl;
+            }
+            else if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i + y.v.i;
+            }
+            else
+            {
+                res.v.f = x.v.f + y.v.f;
+            }
         }
         if (operation == OPERATIONS(SUB))
         {
-            res.v.i = x.v.i - y.v.i;
-            res.v.f = x.v.f - y.v.f;
+            if ((x.use.compare("integer") != 0 && x.use.compare("float") != 0) && (y.use.compare("integer") != 0 && y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Subtraction with incompatible type.");
+            }
+            if (res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i - y.v.i;
+            }
+            else
+            {
+                res.v.f = x.v.f - y.v.f;
+            }
         }
         if (operation == OPERATIONS(MULTIPLY))
         {
 
-            res.v.i = x.v.i * y.v.i;
-            //res.v.f = x.v.f * y.v.f;
+            if ((x.use.compare("integer") != 0 && x.use.compare("float") != 0) && (y.use.compare("integer") != 0 && y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Multiplication with incompatible type.");
+            }
+            if (res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i * y.v.i;
+            }
+            else
+            {
+                res.v.f = x.v.f * y.v.f;
+            }
         }
         if (operation == OPERATIONS(DIVIDE))
         {
 
-            res.v.i = x.v.i / y.v.i;
-            //res.v.f = x.v.f / y.v.f;
+            if ((x.use.compare("integer") != 0 && x.use.compare("float") != 0) && (y.use.compare("integer") != 0 && y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Division with incompatible type.");
+            }
+            if (y.v.i == 0)
+            {
+                return NIL_VALUE; //driver->createPanic("Division with zero.");
+            }
+            if (res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i / y.v.i;
+            }
+            else
+            {
+                res.v.f = x.v.f / y.v.f;
+            }
         }
         if (operation == OPERATIONS(MOD))
         {
+            if ((x.use.compare("integer") != 0 && x.use.compare("float") != 0) && (y.use.compare("integer") != 0 && y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Modulus with incompatible type.");
+            }
             res.v.i = x.v.i % y.v.i;
         }
 

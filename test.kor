@@ -1,0 +1,2 @@
+
+print(("kenan" == "kenan") == true);
