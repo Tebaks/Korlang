@@ -142,32 +142,107 @@ public:
     {
         value res;
         res.use = x.use;
+        if (x.use.compare("string") == 0 || y.use.compare("string") == 0)
+        {
+            res.use = "string";
+        }
+        else 
+        {
+            res.use = x.use;
+        }
         //TODO : check value.use before operations.
         if (operation == OPERATIONS(SUM))
         {
-            res.v.i = x.v.i + y.v.i;
-            res.v.f = x.v.f + y.v.f;
-            //TODO: add string summaiton
+            if (res.use.compare("string") == 0)
+            {
+                //cout << "x.v.s: " << x.v.s << " y.v.s: " << y.v.s << endl;
+                x.sval = x.v.s;
+                y.sval = y.v.s;
+                //TODO : solve integer concat bug
+                if (x.use.compare("integer") == 0)
+                {
+                    x.sval = to_string(x.v.i);
+                    x.use = "string";
+                }
+                if (y.use.compare("integer") == 0)
+                {
+                    y.sval = to_string(y.v.i);
+                    y.use = "string";
+                }
+                //cout << "x.sval: " << x.sval << " y.sval: " << y.sval << endl;
+                res.sval = x.sval + y.sval;
+                //cout << "res.sval: " << res.sval << endl;
+            }
+            else if (x.use.compare("string") == 0 && y.use.compare("string") == 0)
+            {
+                res.v.i = x.v.i + y.v.i;
+            }
+            else
+            {
+                res.v.i = x.v.i + y.v.i;
+                res.v.f = x.v.f + y.v.f;
+            }
         }
         if (operation == OPERATIONS(SUB))
         {
-            res.v.i = x.v.i - y.v.i;
-            res.v.f = x.v.f - y.v.f;
+            if ((x.use.compare("integer") != 0 || x.use.compare("float") != 0) && (y.use.compare("integer") != 0 || y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Subtraction with incompatible type.");
+            }
+            if (res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i - y.v.i;
+            }
+            else
+            {
+                res.v.i = x.v.i - y.v.i;
+                res.v.f = x.v.f - y.v.f;
+            }
         }
         if (operation == OPERATIONS(MULTIPLY))
         {
 
-            res.v.i = x.v.i * y.v.i;
-            //res.v.f = x.v.f * y.v.f;
+            if ((x.use.compare("integer") != 0 || x.use.compare("float") != 0) && (y.use.compare("integer") != 0 || y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Multiplication with incompatible type.");
+            }
+            if(res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i * y.v.i;
+            }
+            else
+            {
+                res.v.i = x.v.i * y.v.i;
+                res.v.f = x.v.f * y.v.f;
+            }
         }
         if (operation == OPERATIONS(DIVIDE))
         {
 
-            res.v.i = x.v.i / y.v.i;
-            //res.v.f = x.v.f / y.v.f;
+            if ((x.use.compare("integer") != 0 || x.use.compare("float") != 0) && (y.use.compare("integer") != 0 || y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Division with incompatible type.");
+            }
+            if (y.v.i == 0)
+            {
+                return NIL_VALUE; //driver->createPanic("Division with zero.");
+            }
+            if (res.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i / y.v.i;
+            }
+            else
+            {
+                res.v.i = x.v.i / y.v.i;
+                res.v.f = x.v.f / y.v.f;
+            }
         }
         if (operation == OPERATIONS(MOD))
         {
+            if ((x.use.compare("integer") != 0 || x.use.compare("float") != 0) && (y.use.compare("integer") != 0 || y.use.compare("float") != 0))
+            {
+                return NIL_VALUE; //driver->createPanic("Modulus with incompatible type.");
+            }
             res.v.i = x.v.i % y.v.i;
         }
 
