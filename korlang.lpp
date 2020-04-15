@@ -81,6 +81,7 @@ IGNORED [ \n\r]+
 "kor" { return KOR;}
 "extract" {return EXTRACT;}
 "," {return COMMA;}
+":" {return COLON;}
 {AND} {return AND;}
 {OR} {return OR;}
 {GTH} {return GTH;}

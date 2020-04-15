@@ -1,20 +1,11 @@
-<<<<<<< HEAD
-if true {
-  kor {
-  if true {
-    for {
-      var a = 5;
-      extern a;
-      break;
-    }
-  }
-}
-extern a;
+func NewUser(name,age) {
 
+  var obj = {
+    name : name,
+    age : age
+  };
+  return obj;
 }
 
-print(a);
-=======
-
-print(("kenan" == "kenan") == true);
->>>>>>> 3011fcaeb18059135f661f900975caa7826eae4a
+var ahmet = NewUser("Ahmet",13);
+print(ahmet["name"]);

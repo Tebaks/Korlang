@@ -56,6 +56,9 @@ enum OPERATIONS
     ARR_ASSIGNMENT,
     KOR_STMT,
     EXTRACT_STMT,
+    OBJECT_DEF,
+    PAIR,
+    PAIRS,
 };
 struct value
 {

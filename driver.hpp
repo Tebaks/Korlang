@@ -21,6 +21,7 @@ class Driver
 private:
   Scope *scope;
   int arr = 0;
+  int obj = 0;
 
 public:
   Driver() : scope(new Scope()) {}
@@ -29,6 +30,12 @@ public:
   {
     arr++;
     return "arr" + to_string(arr);
+  }
+
+  string generatingObjectID()
+  {
+    obj++;
+    return "obj" + to_string(obj);
   }
 
   Scope *getScope()

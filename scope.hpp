@@ -17,6 +17,15 @@ private:
   vector<Scope> inner;
   Scope *parentScope;
 
+  Scope *getMostParentScope()
+  {
+    if (parentScope == NULL)
+    {
+      return this;
+    }
+    return parentScope->getMostParentScope();
+  }
+
 public:
   bool isKorScope;
   Bucket<value> values;
@@ -46,6 +55,11 @@ public:
     string s = to_string(index);
     return base + "$" + s;
   }
+  string createObjectValueName(string base, string val)
+  {
+    return base + "$" + val;
+  }
+
   Scope *fork()
   {
     auto res = new Scope();
@@ -133,7 +147,7 @@ public:
   bool setArrayValue(string name, int index, value val)
   {
     string n = createArrayValueName(name, index);
-    return setValue(n, val);
+    return getMostParentScope()->setValue(n, val);
   }
   bool updateArrayValue(string name, int index, value val)
   {
@@ -143,6 +157,22 @@ public:
   value getArrayValue(string name, int index)
   {
     string n = createArrayValueName(name, index);
+    return getValue(n);
+  }
+
+  bool setObjectValue(string name, string index, value val)
+  {
+    string n = createObjectValueName(name, index);
+    return getMostParentScope()->setValue(n, val);
+  }
+  bool updateObjectValue(string name, string index, value val)
+  {
+    string n = createObjectValueName(name, index);
+    return updateValue(n, val);
+  }
+  value getObjectValue(string name, string index)
+  {
+    string n = createObjectValueName(name, index);
     return getValue(n);
   }
 };

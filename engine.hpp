@@ -124,6 +124,9 @@ private:
     case OPERATIONS(EXTRACT_STMT):
       resolveExternStatement(node, scope);
       break;
+    case OPERATIONS(OBJECT_DEF):
+      resolveObjectDef(node, scope);
+      break;
     case OPERATIONS(BREAK):
       res.br = 1;
       break;
@@ -194,6 +197,27 @@ private:
     return res;
   }
 
+  value resolveObjectDef(TreeNode *node, Scope *scope)
+  {
+    string name = node->val.v.s;
+    string objName = driver->generatingObjectID();
+
+    auto it = NodeIterator(node->firstChild);
+    while (!it.isEmpty())
+    {
+      auto n = it.get();
+      value v = resolveExpression(n.firstChild, scope);
+      string vn = n.val.v.s;
+      scope->setObjectValue(objName, vn, v);
+      it.done();
+    }
+    value t;
+    t.use = "object";
+    t.sval = objName;
+    scope->setValue(name, t);
+    return t;
+  }
+
   value resolveArrayDef(TreeNode *node, Scope *scope)
   {
     string name = node->val.v.s;
@@ -226,6 +250,10 @@ private:
     if (ind.use.compare("integer") == 0)
     {
       return scope->getArrayValue(name, ind.v.i);
+    }
+    if (ind.use.compare("string") == 0)
+    {
+      return scope->getObjectValue(name, ind.v.s);
     }
     cout << "not int " << ind.use << endl;
     return NIL_VALUE;
@@ -285,9 +313,23 @@ private:
     value v = resolveExpression(node->firstChild->firstChild, scope);
     value res = resolveExpression(node->thirdChild, scope);
     string temp = node->secondChild->val.v.s;
-    if (res.use.compare("integer") == 0)
+    if (v.use.compare("integer") == 0)
     {
       string name = scope->createArrayValueName(pn, v.v.i);
+      value cur = scope->getValue(name);
+      if (cur.use.compare("nil") == 0)
+      {
+        return driver->createPanic("Index out of bounds.");
+      }
+      return makeAssignment(cur, res, name, temp, scope);
+    }
+    if (v.use.compare("string") == 0)
+    {
+      if (v.sval == "")
+      {
+        v.sval = v.v.s;
+      }
+      string name = scope->createObjectValueName(pn, v.sval);
       value cur = scope->getValue(name);
       if (cur.use.compare("nil") == 0)
       {
