@@ -204,3 +204,21 @@ print("a equals : ",a);
     }
     ```
 
+## Example Programs
+
+- Factorial
+```bash
+make factorial
+```
+- Fibonacci
+```bash
+make fibonacci
+```
+- Prime
+```bash
+make prime
+```
+- All Examples
+```bash
+make examples
+ ````
