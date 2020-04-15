@@ -333,6 +333,12 @@ private:
       value cur = scope->getValue(name);
       if (cur.use.compare("nil") == 0)
       {
+        if (temp.compare("=") == 0)
+        {
+          scope->setObjectValue(pn, v.sval, res);
+          return scope->getValue(name);
+        }
+
         return driver->createPanic("Index out of bounds.");
       }
       return makeAssignment(cur, res, name, temp, scope);

@@ -1,11 +1,14 @@
 func NewUser(name,age) {
-
-  var obj = {
+  var re = {
     name : name,
     age : age
   };
-  return obj;
+  return re;
 }
 
-var ahmet = NewUser("Ahmet",13);
-print(ahmet["name"]);
+var users = [ NewUser("Ahmet",21), NewUser("Kenan",15) ];
+
+for var i = 0; i < len(users); i++; {
+  var user = users[i];
+  print(user["name"]);
+}

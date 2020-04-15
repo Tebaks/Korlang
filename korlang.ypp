@@ -170,6 +170,7 @@ key_value_pairs : key_value_pair {NOTHING
 | key_value_pairs COMMA key_value_pair { NOTHING
   $$ = new TreeNode(temp,OPERATIONS(PAIRS),$1,$3,NULL,NULL);
 }
+| {NOTHING $$ = new TreeNode(temp,OPERATIONS(PAIRS));  }
 
 //FUNC STMT
 func_stmt:
@@ -235,6 +236,7 @@ struct value temp1;
   auto tn = new TreeNode(temp1,OPERATIONS(VAR_NAME));
   $$ = new TreeNode(temp,OPERATIONS(VAR_LIST),$1,tn,NULL,NULL);
 }
+| {NOTHING $$ = new TreeNode(temp,OPERATIONS(VAR_LIST));}
 
  // FUNCION CALL
 function_call : VAR SOP EOP {
