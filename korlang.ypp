@@ -7,9 +7,9 @@
 #include "colorout.hpp"
 #include "driver.hpp"
 #include "tree.hpp"
-#include "engine.hpp"
 #define NOTHING		struct value temp;temp.use="none";
 #define YYDEBUG 1
+TreeNode* getRoot(FILE*);
 
 extern "C++" int yylex();
 extern "C++" FILE *yyin;
@@ -28,7 +28,6 @@ extern colorout errout;
 %code {
 
 Driver* driver = new Driver();
-Engine* engine = new Engine();
 TreeNode* root = NULL;
 
 
@@ -39,7 +38,6 @@ void yyerror(const char *description) {
 
 // Global variable to indicate done-ness
 bool keepgoing = true;
-
 
 
 }
@@ -67,24 +65,25 @@ bool keepgoing = true;
 %token <sym> OPA OPM 
 %token LP RP STOP 
 %token COMMA COLON
-%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE
+%token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE 
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
-%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT
+%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT IMPORT_K
 
   /* These are the non-terminal names that have values. */
 %type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
-%start S
+%start program
 
 //-- GRAMMAR RULES ---------------------------------------
 %%
   /* Note: YYACCEPT is a macro that tells bison to stop parsing. */
+
+program : S {}
+
 S: stmts 
   {NOTHING
   root = new TreeNode(temp,OPERATIONS(ROOT),$1,NULL,NULL,NULL);
   YYACCEPT;
- 
-  keepgoing = false;
 }
 |       { keepgoing = false; }
 
@@ -137,6 +136,13 @@ stmt: exp STOP
   temp.use =  "identifier";
   temp.v.s = $1;
 $$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT),NULL,$2,$3,NULL);}
+
+| IMPORT_K STRING STOP{
+  struct value temp;
+  temp.use = "import";
+  temp.v.s = $2;
+  $$ = new TreeNode(temp,OPERATIONS(IMPORT_STMT));
+}
 
 |logical_operations STOP{NOTHING
 $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
@@ -432,38 +438,27 @@ colorout resout(1, 'u');
 colorout errout(2, 'r');
 
 //-- FUNCTION DEFINITIONS ---------------------------------
-int main(int argc, char ** argv)
+TreeNode* getRoot(FILE* myfile)
 {
-  argc--;
-  argv++;
-
-  char* filename = argv[0];
-  
-  // open a file handle to a particular file:
-  FILE *myfile = fopen(filename, "r");
   // make sure it's valid:
   if (!myfile) {
-    cout << "I can't open a.snazzle.file!" << endl;
-    return -1;
+    return NULL;
   }
   yydebug = 0;
   // set lex to read from it instead of defaulting to STDIN:
   yyin = myfile;
-  
-
-  
   // This checks whether the output is a terminal.
   bool tty = isatty(0) && isatty(2);
-  argc--;
-  argv++;
-  engine->add(argc,argv);
+  keepgoing = true;
   while (keepgoing) {
     if (tty) cerr  << flush;
     yyparse();
   }
-   engine->execute(root);
-  if (tty) cerr << endl;
-  return 0;
+  TreeNode *res = root;
+  root = NULL;
+  yydebug = 1;
+  return res;
+
 }
 
 void printbin(int n) {

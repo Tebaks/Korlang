@@ -1,10 +1,5 @@
-func NewUser(name,age) {
-  var re = {
-    name : name,
-    age : age
-  };
-  return re;
-}
+import "f.kor" ;
+
 
 var users = [ NewUser("Ahmet",21), NewUser("Kenan",15) ];
 
@@ -12,3 +7,4 @@ for var i = 0; i < len(users); i++; {
   var user = users[i];
   print(user["name"]);
 }
+

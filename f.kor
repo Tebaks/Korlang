@@ -1,0 +1,7 @@
+func NewUser(name,age) {
+  var re = {
+    name : name,
+    age : age
+  };
+  return re;
+}

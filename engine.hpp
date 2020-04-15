@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "tree.hpp"
+#include "korlang.tab.hpp"
 #include "driver.hpp"
 #include "util.hpp"
 using namespace std;
@@ -90,6 +91,9 @@ private:
     case OPERATIONS(LOOP):
       res = executeLoop(node, scope);
       break;
+    case OPERATIONS(IMPORT_STMT):
+      res = resolveImportStatement(node, scope);
+      break;
     case OPERATIONS(TRY_CATCH):
       res = executeTryCatch(node, scope);
       break;
@@ -141,6 +145,14 @@ private:
       break;
     }
     return res;
+  }
+
+  value resolveImportStatement(TreeNode *node, Scope *scope)
+  {
+    FILE *file = fopen(node->val.v.s, "r");
+    TreeNode *nr = getRoot(file);
+    handleStatements(nr, scope);
+    return NIL_VALUE;
   }
 
   value resolveExpression(TreeNode *node, Scope *scope)

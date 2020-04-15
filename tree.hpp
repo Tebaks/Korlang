@@ -52,11 +52,12 @@ enum OPERATIONS
     POST_DEC,
     COMM,
     ARRAY_DEF,
-    ARRAY_ELEM,
+    ARRAY_ELEM, //40
     ARR_ASSIGNMENT,
     KOR_STMT,
+    IMPORT_STMT,
     EXTRACT_STMT,
-    OBJECT_DEF,
+    OBJECT_DEF, //45
     PAIR,
     PAIRS,
 };

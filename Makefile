@@ -1,6 +1,6 @@
 
-korlang: korlang.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp util.hpp
-	g++ -o korlang lex.yy.o korlang.tab.o
+korlang: korlang.tab.o main.cpp lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp util.hpp
+	g++ -o korlang main.cpp lex.yy.o korlang.tab.o
 
 test: korlang int_test if_else_test assign_operators_test logical_operators_test loops_test functions_test error_test
 

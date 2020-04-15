@@ -82,6 +82,7 @@ IGNORED [ \n\r]+
 "extract" {return EXTRACT;}
 "," {return COMMA;}
 ":" {return COLON;}
+"import" {return IMPORT_K;}
 {AND} {return AND;}
 {OR} {return OR;}
 {GTH} {return GTH;}
