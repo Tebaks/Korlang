@@ -300,6 +300,12 @@ constant : INT            {
    temp.use = "string";
    $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
  }
+ |FLOAT{
+   struct value temp;
+   temp.v.f = $1;
+   temp.use = "float";
+   $$ = new TreeNode(temp,OPERATIONS(CONSTANT));
+ }
 
 
 // LOGICAL OPERATORS

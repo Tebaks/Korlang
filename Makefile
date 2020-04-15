@@ -2,7 +2,19 @@
 korlang: korlang.tab.o lex.yy.o driver.hpp engine.hpp scope.hpp tree.hpp bucket.hpp util.hpp
 	g++ -o korlang lex.yy.o korlang.tab.o
 
-test: int_test if_else_test assign_operators_test logical_operators_test loops_test functions_test error_test
+test: korlang int_test if_else_test assign_operators_test logical_operators_test loops_test functions_test error_test
+
+examples: korlang factorial prime fibonacci 
+
+fibonacci: exmaples/fibonacci.kor
+	./korlang exmaples/fibonacci.kor
+
+prime: exmaples/prime.kor
+	./korlang exmaples/prime.kor
+
+factorial: exmaples/factorial.kor
+	./korlang exmaples/factorial.kor
+
 
 
 int_test: int_test.cpp

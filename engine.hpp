@@ -170,6 +170,7 @@ private:
     {
       string name = node->val.v.s;
       value val = scope->getValue(node->val.v.s);
+
       if (val.use.compare("nil") == 0)
       {
         auto panic = driver->createPanic("Variable not found");
@@ -189,6 +190,7 @@ private:
       return right;
     }
     value res = node->mergeValues(left, right);
+
     return res;
   }
 

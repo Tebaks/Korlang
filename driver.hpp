@@ -62,6 +62,10 @@ public:
     {
       cout << val.v.i;
     }
+    else if (s.compare("float") == 0)
+    {
+      cout << val.v.f;
+    }
     else if (s.compare("boolean") == 0)
     {
       if (val.v.i > 0)

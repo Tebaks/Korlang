@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 if true {
   kor {
   if true {
@@ -13,3 +14,7 @@ extern a;
 }
 
 print(a);
+=======
+
+print(("kenan" == "kenan") == true);
+>>>>>>> 3011fcaeb18059135f661f900975caa7826eae4a
