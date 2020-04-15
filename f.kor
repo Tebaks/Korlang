@@ -5,3 +5,11 @@ func NewUser(name,age) {
   };
   return re;
 }
+
+var a = 15;
+
+extract a;
+
+var b = 3;
+
+

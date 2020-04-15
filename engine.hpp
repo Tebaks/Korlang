@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
+#include <future>
 #include "tree.hpp"
 #include "korlang.tab.hpp"
 #include "driver.hpp"
@@ -130,6 +132,9 @@ private:
       break;
     case OPERATIONS(OBJECT_DEF):
       resolveObjectDef(node, scope);
+      break;
+    case OPERATIONS(KORCON):
+      executeKorcon(node, scope);
       break;
     case OPERATIONS(BREAK):
       res.br = 1;
@@ -494,6 +499,10 @@ private:
     }
     return val;
   }
+  value executeKorcon(TreeNode *node, Scope *scope)
+  {
+    return NIL_VALUE;
+  }
   value executeFunction(TreeNode *node, Scope *scope)
   {
     string funcName = node->val.v.s;
@@ -502,6 +511,15 @@ private:
     if (funcName.compare("print") == 0)
     {
       korlang_print(node, scope);
+      return NIL_VALUE;
+    }
+    else if (funcName.compare("sleep") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      if (val.use.compare("integer") == 0)
+      {
+        std::this_thread::sleep_for(std::chrono::seconds(val.v.i));
+      }
       return NIL_VALUE;
     }
     else if (funcName.compare("int") == 0)

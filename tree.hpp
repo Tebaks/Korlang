@@ -60,6 +60,7 @@ enum OPERATIONS
     OBJECT_DEF, //45
     PAIR,
     PAIRS,
+    KORCON,
 };
 struct value
 {

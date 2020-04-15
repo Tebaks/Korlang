@@ -80,6 +80,7 @@ IGNORED [ \n\r]+
 "catch" {return CATCH;}
 "kor" { return KOR;}
 "extract" {return EXTRACT;}
+"korcon" {return KORCON_T;}
 "," {return COMMA;}
 ":" {return COLON;}
 "import" {return IMPORT_K;}
