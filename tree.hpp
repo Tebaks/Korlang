@@ -55,7 +55,7 @@ enum OPERATIONS
     ARRAY_ELEM,
     ARR_ASSIGNMENT,
     KOR_STMT,
-    EXTERN_STMT,
+    EXTRACT_STMT,
 };
 struct value
 {

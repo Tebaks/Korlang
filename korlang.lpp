@@ -79,7 +79,7 @@ IGNORED [ \n\r]+
 "try" {return TRY;}
 "catch" {return CATCH;}
 "kor" { return KOR;}
-"extern" {return EXTERN;}
+"extract" {return EXTRACT;}
 "," {return COMMA;}
 {AND} {return AND;}
 {OR} {return OR;}

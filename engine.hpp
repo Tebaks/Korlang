@@ -121,7 +121,7 @@ private:
     case OPERATIONS(KOR_STMT):
       resolveKorStatement(node, scope);
       break;
-    case OPERATIONS(EXTERN_STMT):
+    case OPERATIONS(EXTRACT_STMT):
       resolveExternStatement(node, scope);
       break;
     case OPERATIONS(BREAK):
