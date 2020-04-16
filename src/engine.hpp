@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <libgen.h>
 #include <thread>
 #include <future>
+#include <unistd.h>
+#define GetCurrentDir getcwd
 #include "tree.hpp"
 #include "korlang.tab.hpp"
 #include "driver.hpp"
@@ -154,7 +157,28 @@ private:
 
   value resolveImportStatement(TreeNode *node, Scope *scope)
   {
-    FILE *file = fopen(node->val.v.s, "r");
+    const char *fname = node->val.v.s;
+    char exePath[PATH_MAX];
+    ssize_t count = readlink("/proc/self/exe", exePath, PATH_MAX);
+    char *path = dirname(exePath);
+    strcat(path, "/");
+    strcat(path, fname);
+    FILE *file = fopen(path, "r");
+    cout << "exePATH  " << exePath << endl;
+    cout << "path   " << path << endl;
+    cout << "bfile " << file << endl;
+
+    if (!file)
+    {
+      char ccwd[PATH_MAX];
+      GetCurrentDir(ccwd, PATH_MAX);
+      strcat(ccwd, "/");
+      strcat(ccwd, fname);
+      file = fopen(fname, "r");
+      cout << "vwdPATH  " << ccwd << endl;
+    }
+    cout << "afile " << file << endl;
+
     TreeNode *nr = getRoot(file);
     auto childscope = scope->fork();
     handleStatements(nr, scope);
