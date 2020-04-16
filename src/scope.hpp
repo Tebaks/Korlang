@@ -67,6 +67,11 @@ public:
     return res;
   }
 
+  Scope *getParent()
+  {
+    return parentScope;
+  }
+
   value getValue(string name)
   {
 

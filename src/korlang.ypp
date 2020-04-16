@@ -260,20 +260,7 @@ struct value temp1;
 }
 | {NOTHING $$ = new TreeNode(temp,OPERATIONS(VAR_LIST));}
 
-dot_chain : VAR {
-  struct value temp;
-  temp.use="string";
-  temp.sval = $1;
-  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
-  $$ = new TreeNode(temp,OPERATIONS(DOT_CALL),NULL,varTree,NULL,NULL);
-}
-|dot_chain DOT VAR{
-  struct value temp;
-  temp.use = "string";
-  temp.sval = $3;
-  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
-  $$= new TreeNode(temp,OPERATIONS(DOT_CALL),$1,varTree,NULL,NULL);
-}
+
 
  
 
@@ -450,7 +437,21 @@ constant : INT            {
 		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
 	;
- 
+  
+ dot_chain : VAR {
+  struct value temp;
+  temp.use="string";
+  temp.sval = $1;
+  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
+  $$ = new TreeNode(temp,OPERATIONS(DOT_CALL),NULL,varTree,NULL,NULL);
+}
+|dot_chain DOT VAR{
+  struct value temp;
+  temp.use = "string";
+  temp.sval = $3;
+  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
+  $$= new TreeNode(temp,OPERATIONS(DOT_CALL),$1,varTree,NULL,NULL);
+}
 
 
 %%

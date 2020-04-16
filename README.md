@@ -17,6 +17,37 @@ var b = "korlang";
 var c = true;
 var b = [1,"ahmet",false];
 ```
+
+### Object
+```go
+var person = {
+    name : "Kenan",
+    age : 22,
+    isOfAge: func(){
+        return person.age > 18;
+    }
+};
+
+print(person.name, person.age, person.isOfAge());
+// kenan 22 true
+```
+-   #### Constructors
+    ```go
+    func newPerson(name,age){
+        var person = {
+            name : "Kenan",
+            age : 22,
+            isOfAge: func(){
+                return person.age > 18;
+            }
+        };
+        return person;
+    }
+
+    var businessMan = newPerson("Jeff Bezos",56);
+    print(businessMan.age);
+    // 56
+    ```
 ### Assign Operations;
 ```go
 var a = 1;
@@ -203,6 +234,14 @@ print("a equals : ",a);
         print("panic occurs : ", err);
     }
     ```
+## Import
+```go
+import "math/rand.kor"
+
+var randomNumber = randomInt(0,100);
+// randomNumber = random integer between 0 and 100
+```
+
 
 ## Example Programs
 

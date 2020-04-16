@@ -37,8 +37,8 @@ functions_test:
 	./korlang tests/functions_test.kor |  ./int_test
 
 # Bison generates a C++ source file and a C++ header file.
-./src/korlang.tab.cpp ./src/korlang.tab.hpp: ./src/korlang.ypp
-	bison -d -o ./src/korlang.tab.cpp ./src/korlang.ypp 
+korlang.tab.cpp korlang.tab.hpp: ./src/korlang.ypp
+	bison -d ./src/korlang.ypp
 
 # Flex generates just a C++ source file.
 src/lex.yy.cpp: ./src/korlang.lpp
@@ -49,7 +49,7 @@ lex.yy.o: ./src/lex.yy.cpp ./src/korlang.tab.hpp
 	g++ -c ./src/lex.yy.cpp
 
 korlang.tab.o: ./src/korlang.tab.cpp
-	g++ -c ./src/korlang.tab.cpp
+	g++ -c ./src/korlang.tab.cpp	
 
 # The following line makes "make" automatically clean up these
 # files for you when they are no longer needed.

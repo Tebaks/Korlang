@@ -5,6 +5,7 @@ print("Please enter -1 to exit.");
 func isPrime(num){
   for var i = 2;i<num;i++;{
     if num % i == 0 {
+      print(num,i,"son");
       return false;
     }
   }

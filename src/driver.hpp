@@ -61,6 +61,10 @@ public:
   {
     return this->scope;
   }
+  void updateFunctionScope(string name, Scope *scope)
+  {
+    functionScopes.updateValue(name, scope);
+  }
 
   void printValue(value val)
   {
