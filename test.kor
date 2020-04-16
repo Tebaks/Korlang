@@ -1,4 +1,4 @@
-import "./math/rand.kor";
+import "math/rand.kor";
 
 var a = randInt(5,10);
 print(a);

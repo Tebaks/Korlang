@@ -23,9 +23,10 @@ private:
   int arr = 0;
   int obj = 0;
   int func = 0;
+  Bucket<Scope *> functionScopes;
 
 public:
-  Driver() : scope(new Scope()) {}
+  Driver() : scope(new Scope()), functionScopes(Bucket<Scope *>()) {}
 
   string generatingArrID()
   {
@@ -37,6 +38,16 @@ public:
   {
     func++;
     return "func$" + to_string(func);
+  }
+
+  void setFunctionScope(string name, Scope *scope)
+  {
+    functionScopes.setValue(name, scope);
+  }
+
+  Scope *getFunctionScope(string name)
+  {
+    return functionScopes.getValue(name);
   }
 
   string generatingObjectID()

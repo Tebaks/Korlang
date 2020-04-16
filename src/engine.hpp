@@ -208,6 +208,7 @@ private:
     if (node->operation == OPERATIONS(AN_FUNC_DEC))
     {
       string functionID = driver->generateFunctionID();
+      driver->setFunctionScope(functionID, scope->fork());
       scope->setFunction(functionID, node);
       value temp;
       temp.use = "function";
@@ -512,6 +513,7 @@ private:
     value val;
     val.use = "function";
     val.sval = funcID;
+    driver->setFunctionScope(funcID, (scope->fork()));
     scope->setFunction(funcID, node);
     scope->setValue(name, val);
     return NIL_VALUE;
@@ -592,13 +594,13 @@ private:
 
     else
     {
-      auto tempValueForF = scope->getValue(funcName);
-      auto fnode = scope->getFunction(tempValueForF.sval);
+      auto fid = scope->getValue(funcName).sval;
+      auto fnode = scope->getFunction(fid);
       if (fnode.isNil())
       {
         return driver->createPanic("Function not found");
       }
-      auto childScope = scope->fork();
+      auto childScope = driver->getFunctionScope(fid);
       auto fi = NodeIterator(fnode.firstChild);
       auto pi = NodeIterator(node->firstChild);
       while (!pi.isEmpty() && !fi.isEmpty())
