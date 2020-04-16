@@ -68,7 +68,7 @@ bool keepgoing = true;
 %token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE 
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
-%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT IMPORT_K
+%token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT IMPORT_K KORCON_T
 
   /* These are the non-terminal names that have values. */
 %type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations anonymous_function_declaration
@@ -160,6 +160,9 @@ $$ = new TreeNode(temp,OPERATIONS(AND_LOGIC),$1,NULL,NULL,NULL);
   struct value temp;
   temp.sval = $2;
   $$ = new TreeNode(temp,OPERATIONS(EXTRACT_STMT));
+}
+|KORCON_T function_call STOP{NOTHING
+$$= new TreeNode(temp,OPERATIONS(KORCON),$2,NULL,NULL,NULL);
 }
 
 
