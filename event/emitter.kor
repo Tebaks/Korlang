@@ -1,0 +1,22 @@
+
+func NewEventEmitter(){
+  var events = {};
+  func emit(name){
+      var f = events[name];
+      f();
+  }
+  func on (name,handler){
+      events[name] = handler;
+  }
+  var res = {
+    on: on,
+    emit : emit
+  };
+  return res;
+}
+
+
+extract NewEventEmitter;
+
+
+

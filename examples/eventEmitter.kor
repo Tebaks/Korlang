@@ -1,0 +1,10 @@
+import "event/emitter.kor";
+
+var ee = NewEventEmitter();
+
+
+ee.on("ping",func(d){
+  print("ping");
+});
+
+ee.emit("ping");
