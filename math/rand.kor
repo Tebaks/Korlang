@@ -1,0 +1,11 @@
+
+func randInt(start,end) {
+  var rawRand = random();
+  var size = end - start;
+  var r = rawRand % size;
+  r += start;
+  return r;
+}
+
+
+extract randInt;
