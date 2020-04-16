@@ -1,7 +1,11 @@
-func NewUser(name,age) {
+func NewUser(name,age,cb) {
   var re = {
     name : name,
     age : age
   };
+  cb(re);
   return re;
 }
+
+
+ extract NewUser;

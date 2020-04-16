@@ -151,6 +151,7 @@ private:
   {
     FILE *file = fopen(node->val.v.s, "r");
     TreeNode *nr = getRoot(file);
+    auto childscope = scope->fork();
     handleStatements(nr, scope);
     return NIL_VALUE;
   }
@@ -180,6 +181,15 @@ private:
     if (node->operation == OPERATIONS(CONSTANT))
     {
       return node->val;
+    }
+    if (node->operation == OPERATIONS(AN_FUNC_DEC))
+    {
+      string functionID = driver->generateFunctionID();
+      scope->setFunction(functionID, node);
+      value temp;
+      temp.use = "function";
+      temp.sval = functionID;
+      return temp;
     }
     if (node->operation == OPERATIONS(VARIABLE))
     {
@@ -475,7 +485,12 @@ private:
   value resolveFunctionDeclaration(TreeNode *node, Scope *scope)
   {
     string name = node->val.v.s;
-    scope->setFunction(name, node);
+    string funcID = driver->generateFunctionID();
+    value val;
+    val.use = "function";
+    val.sval = funcID;
+    scope->setFunction(funcID, node);
+    scope->setValue(name, val);
     return NIL_VALUE;
   }
 
@@ -532,10 +547,11 @@ private:
 
     else
     {
-      auto fnode = scope->getFunction(funcName);
+      auto tempValueForF = scope->getValue(funcName);
+      auto fnode = scope->getFunction(tempValueForF.sval);
       if (fnode.isNil())
       {
-        return NIL_VALUE;
+        return driver->createPanic("Function not found");
       }
       auto childScope = scope->fork();
       auto fi = NodeIterator(fnode.firstChild);
@@ -553,7 +569,6 @@ private:
         fi.done();
         pi.done();
       }
-
       value v = handleStatements(fnode.secondChild, childScope);
 
       if (v.br > 0)

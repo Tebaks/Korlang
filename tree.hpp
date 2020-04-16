@@ -60,6 +60,7 @@ enum OPERATIONS
     OBJECT_DEF, //45
     PAIR,
     PAIRS,
+    AN_FUNC_DEC,
 };
 struct value
 {

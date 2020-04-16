@@ -138,7 +138,7 @@ public:
   {
     if (!functions.isExist(name))
     {
-      this->functions.setValue(name, *node);
+      getMostParentScope()->functions.setValue(name, *node);
       return true;
     }
     return false;

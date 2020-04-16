@@ -71,7 +71,7 @@ bool keepgoing = true;
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT IMPORT_K
 
   /* These are the non-terminal names that have values. */
-%type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations
+%type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations anonymous_function_declaration
 %start program
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -198,6 +198,22 @@ RETURN_T exp STOP {NOTHING
   $$ = new TreeNode(temp,OPERATIONS(RETURN),$2,NULL,NULL,NULL);
 }
 
+// FUNCION CALLS
+function_call : VAR SOP EOP {
+  struct value temp;
+ temp.v.s = $1;
+  $$ = new TreeNode(temp,OPERATIONS(FUNCTION));
+}
+| VAR SOP params EOP {
+  struct value temp;
+  temp.v.s = $1;
+  $$= new TreeNode(temp,OPERATIONS(FUNCTION),$3,NULL,NULL,NULL);
+}
+
+anonymous_function_declaration : FUNC SOP params EOP SOCB stmts EOCB {NOTHING
+  $$= new TreeNode(temp,OPERATIONS(AN_FUNC_DEC),$3,$6,NULL,NULL);
+}
+
 // IF STMT
 if_stmt:
 IF exp SOCB stmts EOCB{NOTHING
@@ -244,19 +260,7 @@ struct value temp1;
 }
 | {NOTHING $$ = new TreeNode(temp,OPERATIONS(VAR_LIST));}
 
- // FUNCION CALL
-function_call : VAR SOP EOP {
-  struct value temp;
-  temp.v.s = $1;
-  $$ = new TreeNode(temp,OPERATIONS(FUNCTION));
-}
-| VAR SOP params EOP {
-  struct value temp;
-  temp.v.s = $1;
-  $$= new TreeNode(temp,OPERATIONS(FUNCTION),$3,NULL,NULL,NULL);
-}
-
-
+ 
 
 params : exp {NOTHING $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),NULL,$1,NULL,NULL); }
 | params COMMA exp { NOTHING 
@@ -265,7 +269,7 @@ params : exp {NOTHING $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),NULL,$1,NULL
 
 exp : ar_exp {$$ = $1;}
 |logical_operations  { $$ = $1; }
-
+| anonymous_function_declaration {$$ = $1;}
 
 ar_exp: ar_exp OPA term      { 
   struct value temp;
