@@ -1,0 +1,7 @@
+var a = float(1);
+print(a);
+var b = 0.2;
+print(b);
+
+var c = a - b;
+print(c);

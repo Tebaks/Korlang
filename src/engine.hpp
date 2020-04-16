@@ -542,6 +542,11 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_toInt(val, scope);
     }
+    else if (funcName.compare("float") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      return driver->korlang_toFloat(val, scope);
+    }
     else if (funcName.compare("input") == 0)
     {
       value val = resolveExpression(node->firstChild->secondChild, scope);

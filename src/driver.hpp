@@ -171,6 +171,37 @@ public:
     temp.use = "integer";
     return temp;
   }
+  value korlang_toFloat(value v, Scope *scope)
+  {
+    if (v.use.compare("string") == 0)
+    {
+      float f = 0;
+      if (v.sval == "")
+      {
+        auto c = v.v.s;
+        f = atof(c);
+      }
+      else
+      {
+        string s = v.sval;
+        f = stof(s);
+      }
+      v.v.f = f;
+      v.use = "float";
+      return v;
+    }
+    else if (v.use.compare("integer") == 0)
+    {
+      float f = static_cast<float>(v.v.i);
+      v.v.f = f;
+      v.use = "float";
+      return v;
+    }
+    else if (v.use.compare("nil") == 0)
+    {
+    }
+    return v;
+  }
   value korlang_toInt(value v, Scope *scope)
   {
 
@@ -194,6 +225,11 @@ public:
     }
     else if (v.use.compare("float") == 0)
     {
+      int i = 0;
+      i = static_cast<int>(v.v.f);
+      v.v.i = i;
+      v.use = "integer";
+      return v;
     }
     else if (v.use.compare("nil") == 0)
     {
