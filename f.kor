@@ -7,15 +7,5 @@ func NewUser(name,age,cb) {
   return re;
 }
 
-<<<<<<< HEAD
 
  extract NewUser;
-=======
-var a = 15;
-
-extract a;
-
-var b = 3;
-
-
->>>>>>> d8ef515e56ddb1e32866648dd64ad83f6e42948b

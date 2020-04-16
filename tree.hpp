@@ -60,11 +60,8 @@ enum OPERATIONS
     OBJECT_DEF, //45
     PAIR,
     PAIRS,
-<<<<<<< HEAD
     AN_FUNC_DEC,
-=======
     KORCON,
->>>>>>> d8ef515e56ddb1e32866648dd64ad83f6e42948b
 };
 struct value
 {

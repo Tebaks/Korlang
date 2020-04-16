@@ -1,17 +1,5 @@
-<<<<<<< HEAD
 import "f.kor";
 
 var ahmet = NewUser("Ahmet",12,func(user){
   print(user["name"]);
 });
-=======
-func test(a){
-  sleep(1);
-  print(a);
-}
-
-
-
-
-
->>>>>>> d8ef515e56ddb1e32866648dd64ad83f6e42948b
