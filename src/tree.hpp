@@ -1,6 +1,7 @@
 #ifndef tree
 #include <iostream>
 #include <cstdlib>
+#include <math.h>
 #define tree
 #define NIL_TREE_NODE TreeNode(true);
 #define NIL_VALUE          \
@@ -402,10 +403,12 @@ public:
             else if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
             {
                 res.v.i = x.v.i + y.v.i;
+                res.use = "integer";
             }
             else
             {
                 res.v.f = x.v.f + y.v.f;
+                res.use = "float";
             }
         }
         if (operation == OPERATIONS(SUB))
@@ -414,13 +417,25 @@ public:
             {
                 return NIL_VALUE; //driver->createPanic("Subtraction with incompatible type.");
             }
-            if (res.use.compare("integer") == 0)
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
             {
                 res.v.i = x.v.i - y.v.i;
+                res.use = "integer";
+            }
+            else if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                res.v.f = x.v.i - y.v.f;
+                res.use = "float";
+            }
+            else if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.f = x.v.f - y.v.i;
+                res.use = "float";
             }
             else
             {
                 res.v.f = x.v.f - y.v.f;
+                res.use = "float";
             }
         }
         if (operation == OPERATIONS(MULTIPLY))
@@ -430,13 +445,24 @@ public:
             {
                 return NIL_VALUE; //driver->createPanic("Multiplication with incompatible type.");
             }
-            if (res.use.compare("integer") == 0)
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
             {
                 res.v.i = x.v.i * y.v.i;
+            }
+            else if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                res.v.f = x.v.i * y.v.f;
+                res.use = "float";
+            }
+            else if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.f = x.v.f * y.v.i;
+                res.use = "float";
             }
             else
             {
                 res.v.f = x.v.f * y.v.f;
+                res.use = "float";
             }
         }
         if (operation == OPERATIONS(DIVIDE))
@@ -446,17 +472,25 @@ public:
             {
                 return NIL_VALUE; //driver->createPanic("Division with incompatible type.");
             }
-            if (y.v.i == 0)
-            {
-                return NIL_VALUE; //driver->createPanic("Division with zero.");
-            }
-            if (res.use.compare("integer") == 0)
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
             {
                 res.v.i = x.v.i / y.v.i;
+                res.use = "integer";
+            }
+            else if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                res.v.f = x.v.i / y.v.f;
+                res.use = "float";
+            }
+            else if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.f = x.v.f / y.v.i;
+                res.use = "float";
             }
             else
             {
                 res.v.f = x.v.f / y.v.f;
+                res.use = "float";
             }
         }
         if (operation == OPERATIONS(MOD))
@@ -465,7 +499,26 @@ public:
             {
                 return NIL_VALUE; //driver->createPanic("Modulus with incompatible type.");
             }
-            res.v.i = x.v.i % y.v.i;
+            if (x.use.compare("integer") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.i = x.v.i % y.v.i;
+                res.use = "integer";
+            }
+            else if (x.use.compare("integer") == 0 && y.use.compare("float") == 0)
+            {
+                res.v.f = fmod(x.v.i, y.v.f);
+                res.use = "float";
+            }
+            else if (x.use.compare("float") == 0 && y.use.compare("integer") == 0)
+            {
+                res.v.f = fmod(x.v.f, y.v.i);
+                res.use = "float";
+            }
+            else
+            {
+                res.v.f = fmod(x.v.f, y.v.f);
+                res.use = "float";
+            }
         }
 
         return res;

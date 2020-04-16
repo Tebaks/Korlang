@@ -7,5 +7,15 @@ func randInt(start,end) {
   return r;
 }
 
+func randFloat(start,end){
+  var rawRand = float(random());
+  var size = end - start;
+  var r = rawRand % size;
+  r += start;
+  return r;
+}
+
+
 
 extract randInt;
+extract randFloat;
