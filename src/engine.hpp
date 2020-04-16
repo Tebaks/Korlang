@@ -25,6 +25,12 @@ public:
   {
     auto scope = driver->getScope();
 
+    string fNames[] = {"print", "append", "len", "array", "random", "input", "sleep", "int", "float", "panic"};
+    for (int x = 0; x < sizeof(fNames) / sizeof(fNames[0]); x++)
+    {
+      driver->createfString(fNames[x], scope);
+    }
+
     for (int i = 0; i < args.size(); ++i)
     {
       string name = "argv";
@@ -540,7 +546,18 @@ private:
   }
   value executeFunction(TreeNode *node, Scope *scope)
   {
-    string funcName = node->val.v.s;
+    bool isID = false;
+    value expVal = resolveExpression(node->secondChild, scope);
+    if (expVal.use.compare("function") == 0)
+    {
+      isID = true;
+    }
+    if (expVal.sval == "")
+    {
+      expVal.sval = expVal.v.s;
+    }
+
+    string funcName = expVal.sval;
 
     // Check for system functions
     if (funcName.compare("print") == 0)
@@ -601,9 +618,14 @@ private:
     else
     {
       auto fid = scope->getValue(funcName).sval;
+      if (isID)
+      {
+        fid = funcName;
+      }
       auto fnode = scope->getFunction(fid);
       if (fnode.isNil())
       {
+        cout << "fnode boş" << endl;
         return driver->createPanic("Function not found");
       }
       auto childScope = driver->getFunctionScope(fid);

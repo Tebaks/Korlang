@@ -76,6 +76,14 @@ public:
     res.br = 3;
     return res;
   }
+  value createfString(string fName, Scope *scope)
+  {
+    value temp;
+    temp.use = "string";
+    temp.sval = fName;
+    scope->setValue(fName, temp);
+    return NIL_VALUE;
+  }
 
   void printValueInline(value val)
   {

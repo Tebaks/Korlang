@@ -1,6 +1,12 @@
+var a ={
+    name : "kenan",
+    age : 12
+};
 
 
-var a = [1,"ahmet",true];
-print(a);
-append(a,"kenan");
-print(a);
+func printIt(name){
+    print(name);
+}
+
+a["ahmet"] = printIt; 
+a["ahmet"]("asd");

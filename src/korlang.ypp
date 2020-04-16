@@ -202,15 +202,13 @@ RETURN_T exp STOP {NOTHING
 }
 
 // FUNCION CALLS
-function_call : VAR SOP EOP {
+function_call : exp SOP EOP {
   struct value temp;
- temp.v.s = $1;
-  $$ = new TreeNode(temp,OPERATIONS(FUNCTION));
+  $$ = new TreeNode(temp,OPERATIONS(FUNCTION),NULL,$1,NULL,NULL);
 }
-| VAR SOP params EOP {
+| exp SOP params EOP {
   struct value temp;
-  temp.v.s = $1;
-  $$= new TreeNode(temp,OPERATIONS(FUNCTION),$3,NULL,NULL,NULL);
+  $$= new TreeNode(temp,OPERATIONS(FUNCTION),$3,$1,NULL,NULL);
 }
 
 anonymous_function_declaration : FUNC SOP params EOP SOCB stmts EOCB {NOTHING
