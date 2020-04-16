@@ -164,10 +164,6 @@ private:
     strcat(path, "/");
     strcat(path, fname);
     FILE *file = fopen(path, "r");
-    cout << "exePATH  " << exePath << endl;
-    cout << "path   " << path << endl;
-    cout << "bfile " << file << endl;
-
     if (!file)
     {
       char ccwd[PATH_MAX];
@@ -175,9 +171,7 @@ private:
       strcat(ccwd, "/");
       strcat(ccwd, fname);
       file = fopen(fname, "r");
-      cout << "vwdPATH  " << ccwd << endl;
     }
-    cout << "afile " << file << endl;
 
     TreeNode *nr = getRoot(file);
     auto childscope = scope->fork();
@@ -565,6 +559,11 @@ private:
     {
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_toInt(val, scope);
+    }
+    else if (funcName.compare("float") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      return driver->korlang_toFloat(val, scope);
     }
     else if (funcName.compare("input") == 0)
     {
