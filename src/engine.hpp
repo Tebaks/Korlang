@@ -489,16 +489,13 @@ private:
 
   value resolveLogic(TreeNode *node, Scope *scope)
   {
-
     if (node == NULL)
     {
       cout << "resolve logic null" << endl;
     }
     if (node->operation == OPERATIONS(VARIABLE))
     {
-
       auto v = scope->getValue(node->val.v.s);
-
       if (v.use.compare("nil") == 0)
       {
         return driver->createPanic("Logic resolve error: variable not found.");
@@ -648,6 +645,7 @@ private:
       auto fnode = scope->getFunction(fid);
       if (fnode.isNil())
       {
+        cout << "fnode boş" << endl;
         return driver->createPanic("Function not found");
       }
       auto childScope = driver->getFunctionScope(fid);
@@ -667,8 +665,6 @@ private:
         pi.done();
       }
       value v = handleStatements(fnode.secondChild, childScope);
-      auto tempScope = childScope->getParent()->fork();
-      driver->updateFunctionScope(fid, tempScope);
 
       if (v.br > 0)
       {

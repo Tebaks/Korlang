@@ -436,7 +436,7 @@ constant : INT            {
 		temp.use = "string";
 		$$ = new TreeNode(temp,OPERATIONS(ASSIGNMENT_OPERATOR));;
 	}
-	;
+	;  
   
  dot_chain : VAR {
   struct value temp;

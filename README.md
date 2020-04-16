@@ -12,42 +12,14 @@ Korlang is a memory first dynamic language. It is easy to implement but with ext
 ## Syntax
 ### Variables
 ```go
-var a = 1;
-var b = "korlang";
-var c = true;
-var b = [1,"ahmet",false];
+var a = 1; // integers
+var b = "korlang"; // strings
+var c = 1.5; // floats
+var d = true; // booleans
+var e = [1,"ahmet",false]; // arrays
+
 ```
 
-### Object
-```go
-var person = {
-    name : "Kenan",
-    age : 22,
-    isOfAge: func(){
-        return person.age > 18;
-    }
-};
-
-print(person.name, person.age, person.isOfAge());
-// kenan 22 true
-```
--   #### Constructors
-    ```go
-    func newPerson(name,age){
-        var person = {
-            name : "Kenan",
-            age : 22,
-            isOfAge: func(){
-                return person.age > 18;
-            }
-        };
-        return person;
-    }
-
-    var businessMan = newPerson("Jeff Bezos",56);
-    print(businessMan.age);
-    // 56
-    ```
 ### Assign Operations;
 ```go
 var a = 1;
@@ -91,9 +63,15 @@ print("x =",x);
   1 >= 2;
   1 == 2;
   1 != 2;
+  "kenan" != "ahmet";
+  // true
+  "jeff" = "jeff";
+  //true
   true && true;
   // true
   true || false;
+
+
     ```
 - #### If Else Statements
   ```go
@@ -131,6 +109,9 @@ for var a = 0; a < 10; a++;{
     // i = 1
     ```
 ### Functions
+
+Korlang functions are first-class functions. They can be used as a argument of an another function, or a return value
+
 ```go
 func messanger (message,from){
     print("you got message: " , message ," from: " , from );
@@ -140,6 +121,7 @@ func sum(x,y) {
     return x+y;
 }
 
+
 messanger("hi","korlang");
 /*
 you got message: hi
@@ -148,7 +130,85 @@ from: korlang
 sum(1+2);
 // 3
 ```
+- #### Functions as parameter
+  ```go
+    func doItNTimes(f,n){
+        for var i = 0; i < n ; i++; {
+            f();
+        }
+    }
 
+    doItNTimes(func(n){
+        print("selam");
+    },5);
+   
+    /* output:
+    * selam
+    * selam
+    * selam
+    * selam
+    * selam
+    */
+
+  ```
+
+- #### Closuring
+
+   ```go
+   func getCounter(){
+       var  i = 0;   // variable 'i' can not be accesible 
+                    // outside of this block.
+       func helper(){
+           i++;
+           return i;
+       }
+       return helper;
+   }
+   
+   var counter = getCounter();
+   print(counter());
+   // output: 1
+   print(i);
+
+   ```
+
+
+### Object
+```go
+var person = {
+    name : "Kenan",
+    age : 22,
+    isOfAge: func(){
+        return person.age > 18;
+    }
+};
+
+print(person.name, person.age, person.isOfAge());
+// kenan 22 true
+```
+-   #### Constructors
+    ```go
+    func newPerson(name,age){
+    var person = {
+        name : name,
+        age : age,
+        isOfAge: func(){
+            return person.age > 18;
+        },
+        greet : func (){
+            print("Hi there, I'm ",person.name);
+        }
+    };
+    return person;
+    }
+
+    var businessMan = newPerson("Jeff Bezos",56);
+    var isAgeOf= businessMan.isOfAge();
+    if isAgeOf {
+        businessMan.greet();
+    }
+    // Hi there, I'm Jeff Bezos
+    ```
 ## kor{} Statement
 
 It has "kor{}" statement lets you conserve variables in curly brackets.
@@ -185,6 +245,37 @@ print(y); // Variable not found.
  print(anotherExternalVar); // Variable Not Found!!
  print(internalVar); // Result: Hi, from kor
  ```
+## Import
+
+Korlang has own module system. 
+
+```go
+import "math/rand.kor" // import rand standart library
+
+var randomNumber = randomInt(0,100);
+// randomNumber = random integer between 0 and 100
+```
+- #### Custom modules
+    Korlang allows to write abstracted modules.
+    
+    ```go
+    // Define a constructor.
+    func NewDog(name){
+        var res = {
+            name :name,
+            makeNoise : func(){
+                print("Woof, Woof, Her biji");
+            }
+        };
+        return res;
+    }
+    // Extract contructor
+    extract NewDog;
+    // then contructor function can be used
+    // outside of this module.
+    ```
+
+
  ## Error Handling
  ```go
 var a = 0;
@@ -219,6 +310,14 @@ print("a equals : ",a);
     print(myArray);
     // [ 0 0 0 0 0 ]
     ```
+- append : append a value to end of an array.
+    ```go
+    var myBFs = ["Hannah Montahna", "Joe Jonas", "Demi Lovato"];
+    // after 12 years
+    append(myBFs,"Billie Elish");
+    print(myBFs);
+    //  ["Hannah Montahna", "Joe Jonas", "Demi Lovato", "Billie Elish"]
+    ```
 
 - len : return length of an array or a string.
   ```go
@@ -234,26 +333,55 @@ print("a equals : ",a);
         print("panic occurs : ", err);
     }
     ```
-## Import
-```go
-import "math/rand.kor"
+- rand : generate a random integer between 0 to 2147483647
+    > **WARNING**: math/rand.kor standard library suggested.
+    > instead of using this directly.
+    ```go
+    var a = rand();
+    var l = a % 10;
+    // l is a int between 0 and 10
+    ```
 
-var randomNumber = randomInt(0,100);
-// randomNumber = random integer between 0 and 100
-```
+- int : cast string or float to int
+    ```go
+    var str = "10";
+    var ival = int(str);
+    for var x = 0; x < ival; x++;{print(x);}
+    // writes numbers from  0 to 10.
+    ```
+- float: cast string or integers to float.
+    ```go
+    var str = "10";
+    var fval = flaot(str);
+    for var x = 0; x < ival; x++;{print(x);}
+    // writes numbers from  0 to 10.
+    ```
+
+##
+
+## Standard Libraries
+
+- ### math/rand.kor
+    - **RandInt(start,end)** : generate a random integer between start and end.  
+    - **RandFloat(start,end)** : generate a random float between start and end.
+
+- ### event/emitter.kor
+    - class **EventEmitter**:
+        - **on(name,handler)** : listen given event and invokes function when the event emitted.
+        - **emit(name)**  : emit an event.
 
 
 ## Example Programs
 
-- Factorial
+- Recursivly factorial computation.
 ```bash
 make factorial
 ```
-- Fibonacci
+- Calculate n-th fibonacci number with bottom up principles
 ```bash
 make fibonacci
 ```
-- Prime
+- Calculate a number is prime or not.
 ```bash
 make prime
 ```
