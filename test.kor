@@ -1,10 +1,6 @@
-import "math/rand.kor";
 
-var a = randInt(5,10);
+
+var a = [1,"ahmet",true];
 print(a);
-
-var b = randFloat(1.2,1.8);
-print(b);
-
-print ( a * b);
-print ( b * a);
+append(a,"kenan");
+print(a);

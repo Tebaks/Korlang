@@ -283,7 +283,7 @@ private:
     value t;
     t.use = "array";
     t.sval = arrName;
-    t.v.i = i;
+    driver->setArraySize(arrName, i);
     scope->setValue(name, t);
     return t;
   }
@@ -562,6 +562,12 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_toInt(val, scope);
     }
+    else if (funcName.compare("append") == 0)
+    {
+      value val = resolveExpression(node->firstChild->secondChild, scope);
+      value arrayVal = resolveExpression(node->firstChild->firstChild->secondChild, scope);
+      return driver->korlang_append(arrayVal, val, scope);
+    }
     else if (funcName.compare("float") == 0)
     {
       value val = resolveExpression(node->firstChild->secondChild, scope);
@@ -647,7 +653,7 @@ private:
           {
             string aname = val.sval;
             cout << "[ ";
-            for (int x = 0; x < val.v.i; x++)
+            for (int x = 0; x < driver->getArraySize(aname).v.i; x++)
             {
               driver->printValueInline(scope->getArrayValue(aname, x));
               cout << "  ";

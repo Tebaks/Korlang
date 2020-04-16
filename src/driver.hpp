@@ -24,6 +24,7 @@ private:
   int obj = 0;
   int func = 0;
   Bucket<Scope *> functionScopes;
+  Bucket<int> arraySizes;
 
 public:
   Driver() : scope(new Scope()), functionScopes(Bucket<Scope *>()) {}
@@ -135,6 +136,7 @@ public:
     res.use = "array";
     res.sval = id;
     res.v.i = n;
+    arraySizes.setValue(id, n);
     return res;
   }
 
@@ -161,13 +163,25 @@ public:
       return createPanic("");
     }
   }
+  value setArraySize(string arrName, int value)
+  {
+    arraySizes.setValue(arrName, value);
+    return NIL_VALUE;
+  }
+  value getArraySize(string arrName)
+  {
+    struct value val;
+    val.use = "integer";
+    val.v.i = arraySizes.getValue(arrName);
+    return val;
+  }
 
   value korlang_len(value v, Scope *scope)
   {
     if (v.use.compare("array") == 0)
     {
       value temp;
-      temp.v.i = v.v.i;
+      temp.v.i = arraySizes.getValue(v.sval);
       temp.use = "integer";
       return temp;
     }
@@ -181,6 +195,15 @@ public:
     temp.v.i = rand();
     temp.use = "integer";
     return temp;
+  }
+  value korlang_append(value arrayVal, value val, Scope *scope)
+  {
+
+    string arrayID = arrayVal.sval;
+    int arrayLast = arraySizes.getValue(arrayID);
+    scope->setArrayValue(arrayID, arrayLast, val);
+    arraySizes.updateValue(arrayID, arrayLast + 1);
+    return arrayVal;
   }
   value korlang_toFloat(value v, Scope *scope)
   {
