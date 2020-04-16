@@ -1,0 +1,12 @@
+print("Please enter -1 to exit");
+var difficulty = 100;
+
+func isUp(num, entered){
+    if(num > entered){
+        print("");
+    }
+    if(num < entered){
+        print("");
+    }
+}
+

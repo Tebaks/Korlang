@@ -377,9 +377,14 @@ public:
             if (res.use.compare("string") == 0)
             {
                 //cout << "x.v.s: " << x.v.s << " y.v.s: " << y.v.s << endl;
-                x.sval = x.v.s;
-                y.sval = y.v.s;
-                //TODO : solve integer concat bug
+                if (x.use.compare("string") == 0)
+                {
+                    x.sval = x.v.s;
+                }
+                if (y.use.compare("string") == 0)
+                {
+                    y.sval = y.v.s;
+                }
                 if (x.use.compare("integer") == 0)
                 {
                     x.sval = to_string(x.v.i);
