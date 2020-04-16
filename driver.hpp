@@ -163,6 +163,14 @@ public:
 
     return NIL_VALUE;
   }
+  value korlang_random(value v, Scope *scope)
+  {
+    srand(time(0));
+    value temp;
+    temp.v.i = rand();
+    temp.use = "integer";
+    return temp;
+  }
   value korlang_toInt(value v, Scope *scope)
   {
 

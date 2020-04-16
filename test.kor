@@ -1,5 +1,11 @@
-import "f.kor";
 
-var ahmet = NewUser("Ahmet",12,func(user){
-  print(user["name"]);
-});
+var b = 3;
+print(b);
+
+var c = random() % 100;
+var d = random() % 5 + 10;
+print(c);
+print(d);
+
+
+

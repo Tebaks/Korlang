@@ -557,6 +557,10 @@ private:
       value val = resolveExpression(node->firstChild->secondChild, scope);
       return driver->korlang_len(val, scope);
     }
+    else if (funcName.compare("random") == 0)
+    {
+      return driver->korlang_random(NIL_VALUE, scope);
+    }
     else if (funcName.compare("array") == 0)
     {
       value val = resolveExpression(node->firstChild->secondChild, scope);
