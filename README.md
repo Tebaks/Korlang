@@ -113,7 +113,7 @@ for var a = 0; a < 10; a++;{
 Korlang functions are first-class functions. They can be used as a argument of an another function, or a return value
 
 ```go
-func messanger (message,from){
+func messenger (message,from){
     print("you got message: " , message ," from: " , from );
 }
 
@@ -264,7 +264,7 @@ var randomNumber = randomInt(0,100);
         var res = {
             name :name,
             makeNoise : func(){
-                print("Woof, Woof, Her biji");
+                print("Woof, Woof");
             }
         };
         return res;
@@ -312,11 +312,11 @@ print("a equals : ",a);
     ```
 - append : append a value to end of an array.
     ```go
-    var myBFs = ["Hannah Montahna", "Joe Jonas", "Demi Lovato"];
+    var myBFs = ["Hannah Montana", "Joe Jonas", "Demi Lovato"];
     // after 12 years
-    append(myBFs,"Billie Elish");
+    append(myBFs,"Billie Eilish");
     print(myBFs);
-    //  ["Hannah Montahna", "Joe Jonas", "Demi Lovato", "Billie Elish"]
+    //  ["Hannah Montana", "Joe Jonas", "Demi Lovato", "Billie Eilish"]
     ```
 
 - len : return length of an array or a string.
@@ -365,6 +365,15 @@ print("a equals : ",a);
     - **RandInt(start,end)** : generate a random integer between start and end.  
     - **RandFloat(start,end)** : generate a random float between start and end.
 
+- ### math/power.kor
+    - **Sqrt(number)** : takes the square root of given number.
+    - **Pow(number,power)** : takes the power of given number.
+
+- ### math/round.kor
+    - **Floor(number)** : rounds the float number to upper integer.
+    - **Ceil(number)** : rounds the float number to lower integer.
+    - **Round(number)** : rounds the float number to closest integer.
+
 - ### event/emitter.kor
     - class **EventEmitter**:
         - **on(name,handler)** : listen given event and invokes function when the event emitted.
@@ -384,6 +393,10 @@ make fibonacci
 - Calculate a number is prime or not.
 ```bash
 make prime
+```
+- Up and down game example
+```bash
+make updowngame
 ```
 - All Examples
 ```bash

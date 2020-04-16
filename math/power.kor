@@ -1,0 +1,25 @@
+fun pow(num, p){
+    for {
+        num *= num;
+        p--;
+        if p <= 1 {
+            break;
+        }
+    }
+    return num;
+}
+
+fun sqrt(num){
+    var temp;
+    var root = num / 2;
+    for {
+        temp = root;
+        root = (temp + (number / temp)) / 2;
+        if temp - root == 0 {
+            break;
+        }
+    }
+}
+
+extract pow;
+extract sqrt;

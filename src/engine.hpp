@@ -436,7 +436,7 @@ private:
     {
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     if (temp.compare("*=") == 0)
@@ -445,7 +445,7 @@ private:
       res = tn->mergeValues(cur, res);
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     if (temp.compare("/=") == 0)
@@ -454,7 +454,7 @@ private:
       res = tn->mergeValues(cur, res);
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     if (temp.compare("-=") == 0)
@@ -463,7 +463,7 @@ private:
       res = tn->mergeValues(cur, res);
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     if (temp.compare("+=") == 0)
@@ -472,7 +472,7 @@ private:
       res = tn->mergeValues(cur, res);
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     if (temp.compare("%=") == 0)
@@ -481,7 +481,7 @@ private:
       res = tn->mergeValues(cur, res);
       if (!scope->updateValue(name, res))
       {
-        return driver->createPanic("assign a undefined variable.");
+        return driver->createPanic("Undefined variable assignment.");
       }
     }
     return NIL_VALUE;
@@ -555,7 +555,7 @@ private:
     value val = resolveExpression(node->thirdChild, scope);
     if (!scope->setValue(name, val))
     {
-      value pnc = driver->createPanic("Variable allready declared.");
+      value pnc = driver->createPanic("Variable already declared.");
       return pnc;
     }
     return val;
