@@ -63,6 +63,7 @@ enum OPERATIONS
     PAIRS,
     AN_FUNC_DEC,
     KORCON,
+    DOT_CALL,
 };
 struct value
 {

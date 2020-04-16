@@ -142,6 +142,9 @@ private:
     case OPERATIONS(OBJECT_DEF):
       resolveObjectDef(node, scope);
       break;
+    case OPERATIONS(DOT_CALL):
+      resolveDotCall(node, scope);
+      break;
     case OPERATIONS(KORCON):
       executeKorcon(node, scope);
       break;
@@ -184,12 +187,29 @@ private:
     handleStatements(nr, scope);
     return NIL_VALUE;
   }
-
+  value resolveDotCall(TreeNode *node, Scope *scope)
+  {
+    auto it = new NodeIterator(node);
+    auto n = it->get();
+    value cur = scope->getValue(n.val.sval);
+    it->done();
+    while (!it->isEmpty())
+    {
+      auto n = it->get();
+      cur = scope->getObjectValue(cur.sval, n.val.sval);
+      it->done();
+    }
+    return cur;
+  }
   value resolveExpression(TreeNode *node, Scope *scope)
   {
     if (node->val.br > 0)
     {
       return node->val;
+    }
+    if (node->operation == OPERATIONS(DOT_CALL))
+    {
+      return resolveDotCall(node, scope);
     }
     if (node->operation == OPERATIONS(INC_DEC))
     {

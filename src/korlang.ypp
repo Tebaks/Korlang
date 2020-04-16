@@ -64,14 +64,14 @@ bool keepgoing = true;
 %token <ival> BOOL
 %token <sym> OPA OPM 
 %token LP RP STOP 
-%token COMMA COLON
+%token COMMA COLON DOT
 %token ASSGN MUL_ASSIGN MOD_ASSIGN DIV_ASSIGN SUB_ASSIGN ADD_ASSIGN POST_INCRE 
 %token AND OR GTH LTH GTHEQ LTHEQ EQ NEQ
 %token SOP EOP SOB EOB SOCB EOCB
 %token RETURN_T IF FOR ELSE WHILE FUNC KOR STRUCT RANGE BREAK_T  TRY CATCH  EXTRACT IMPORT_K KORCON_T
 
   /* These are the non-terminal names that have values. */
-%type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations anonymous_function_declaration
+%type <tval> ar_exp arr_call exp constant stmts factor assignment_operator key_value_pairs key_value_pair stmt term logical_operators logical_or_operations logical_operations function_call params variable_list if_stmt loop_stmt func_stmt inc_dec_operations anonymous_function_declaration dot_chain
 %start program
 
 //-- GRAMMAR RULES ---------------------------------------
@@ -261,6 +261,21 @@ struct value temp1;
 }
 | {NOTHING $$ = new TreeNode(temp,OPERATIONS(VAR_LIST));}
 
+dot_chain : VAR {
+  struct value temp;
+  temp.use="string";
+  temp.sval = $1;
+  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
+  $$ = new TreeNode(temp,OPERATIONS(DOT_CALL),NULL,varTree,NULL,NULL);
+}
+|dot_chain DOT VAR{
+  struct value temp;
+  temp.use = "string";
+  temp.sval = $3;
+  TreeNode *varTree = new TreeNode(temp,OPERATIONS(CONSTANT));
+  $$= new TreeNode(temp,OPERATIONS(DOT_CALL),$1,varTree,NULL,NULL);
+}
+
  
 
 params : exp {NOTHING $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),NULL,$1,NULL,NULL); }
@@ -271,6 +286,8 @@ params : exp {NOTHING $$ = new TreeNode(temp,OPERATIONS(PARAMETERS),NULL,$1,NULL
 exp : ar_exp {$$ = $1;}
 |logical_operations  { $$ = $1; }
 | anonymous_function_declaration {$$ = $1;}
+|dot_chain { $$ =$1;}
+
 
 ar_exp: ar_exp OPA term      { 
   struct value temp;
