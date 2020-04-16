@@ -1,12 +1,41 @@
-print("Please enter -1 to exit");
-var difficulty = 100;
+print("Please enter -1 to exit.");
+var difficulty = 5;
+var tries = 0;
+var entered = 0;
+var rng = 100;
 
-func isUp(num, entered){
-    if(num > entered){
-        print("");
+for {
+  difficulty = int(input("Enter a difficulty: "));
+  
+  if difficulty < 0 {
+    break;
+  }
+
+  var rnd = random() % rng;
+
+    for {
+    entered = int(input("Enter a number: "));
+    
+    if rnd > entered {
+        print("Too Low!");
     }
-    if(num < entered){
-        print("");
+    if rnd < entered {
+        print("Too high!");
     }
-}
+    if rnd == entered {
+        print("Bingo!!!", "You win!");
+        break;
+    }
+
+    tries++;
+
+    if tries > difficulty {
+        print("You lost!", " Try again");
+        tries = 0;
+        break;
+    }
+
+   }
+  
+  }
 
