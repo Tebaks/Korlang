@@ -1,5 +1,5 @@
 korlang
-./korlang
+./int_test
 *.o
 *.yy.*
 *.tab.*
