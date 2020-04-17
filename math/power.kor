@@ -1,7 +1,7 @@
-fun pow(num, p){
+func pow(num, p){
     for {
         num *= num;
-        p--;
+        p-=1;
         if p <= 1 {
             break;
         }
@@ -9,16 +9,18 @@ fun pow(num, p){
     return num;
 }
 
-fun sqrt(num){
-    var temp;
+func sqrt(num){
+    var temp = 0.0;
     var root = num / 2;
     for {
         temp = root;
-        root = (temp + (number / temp)) / 2;
-        if temp - root == 0 {
+        root = (temp + (num / temp)) / 2;
+        if  temp==root {
             break;
         }
+
     }
+    return root;
 }
 
 extract pow;

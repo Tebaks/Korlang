@@ -1,19 +1,5 @@
-func newPerson(name,age){
-    var person = {
-        name : name,
-        age : age,
-        isOfAge: func(d){
-            return person.age > 18;
-        },
-        greet : func (a){
-          print("Hi there, I'm ",person.name);
-        }
-    };
-    return person;
-}
 
-var businessMan = newPerson("Jeff Bezos",56);
-var isAgeOf= businessMan.isOfAge();
-if isAgeOf {
-  businessMan.greet();
-}
+import "math/power.kor";
+
+print(sqrt(15));
+
