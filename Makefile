@@ -37,8 +37,11 @@ functions_test:
 	./korlang tests/functions_test.kor |  ./int_test
 
 # Bison generates a C++ source file and a C++ header file.
-korlang.tab.cpp korlang.tab.hpp: ./src/korlang.ypp
+./src/korlang.tab.cpp ./src/korlang.tab.hpp: ./src/korlang.ypp
 	bison -d ./src/korlang.ypp
+	mv korlang.tab.cpp ./src/korlang.tab.cpp
+	mv korlang.tab.hpp ./src/korlang.tab.hpp
+	
 
 # Flex generates just a C++ source file.
 src/lex.yy.cpp: ./src/korlang.lpp

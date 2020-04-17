@@ -1,5 +1,18 @@
+import "event/emitter.kor";
 
-import "math/power.kor";
+var ee = NewEventEmitter();
 
-print(sqrt(15));
 
+ee.on("pong",func(d){
+  print("pong");
+  sleep(1);
+  ee.emit("ping");
+});
+
+ee.on("ping",func(d){
+  print("ping");
+  sleep(1);
+  ee.emit("pong");
+});
+
+ee.emit("ping");

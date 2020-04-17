@@ -3,8 +3,16 @@ import "event/emitter.kor";
 var ee = NewEventEmitter();
 
 
+ee.on("pong",func(d){
+  print("pong");
+  sleep(1);
+  ee.emit("ping");
+});
+
 ee.on("ping",func(d){
   print("ping");
+  sleep(1);
+  ee.emit("pong");
 });
 
 ee.emit("ping");
