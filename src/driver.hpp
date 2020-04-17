@@ -141,8 +141,7 @@ public:
     string id = generatingArrID();
     for (int i = 0; i < n; i++)
     {
-      string vn = scope->createArrayValueName(id, i);
-      scope->setValue(vn, temp);
+      scope->setArrayValue(id, i, temp);
     }
     value res;
     res.use = "array";

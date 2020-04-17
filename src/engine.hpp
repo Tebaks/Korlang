@@ -651,6 +651,7 @@ private:
       auto childScope = driver->getFunctionScope(fid);
       auto fi = NodeIterator(fnode.firstChild);
       auto pi = NodeIterator(node->firstChild);
+      auto tempScope = childScope->fork();
       while (!pi.isEmpty() && !fi.isEmpty())
       {
 
@@ -659,12 +660,13 @@ private:
 
         value lv = resolveExpression(&p, scope);
         string ln = f.val.v.s;
-        childScope->setValue(ln, lv);
+        tempScope->setValue(ln, lv);
 
         fi.done();
         pi.done();
       }
-      value v = handleStatements(fnode.secondChild, childScope);
+
+      value v = handleStatements(fnode.secondChild, tempScope);
 
       if (v.br > 0)
       {

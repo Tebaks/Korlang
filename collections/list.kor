@@ -1,0 +1,61 @@
+func NewList(){
+  var arr =  array(0);
+  var res = {
+    toArray : func(a){
+      return arr;
+    },
+    add : func(val) {
+      append(arr,val);
+    },
+    get: func(ind){
+      var a = arr;
+      return a[ind];
+    },
+    forEach : func(handler){
+      for var i = 0 ; i < len(arr);i++; {
+        var a = arr;
+        var val = a[i];
+        handler(val);
+      }
+    },
+    map : func(handler){
+      for var i = 0 ; i < len(arr);i++; {
+        var a = arr;
+        var val = a[i];
+        var hr =handler(val);
+        arr[i] = hr;
+      }
+    },
+    remove : func(ind){
+      var tempArr = arr;
+      arr = array(len(tempArr)-1);
+      var j = 0;
+      for var i = 0; i < len(tempArr); i++; {
+        if i != ind {
+          arr[j] = tempArr[i];
+          j++;
+        }
+      }
+    },
+    
+    filter : func(handler){
+      var resArr = NewList();
+      for var i = 0;i < len(arr); i++; {
+        var arrVal = arr[i];
+        var hr = handler(arrVal);
+        if hr {
+          resArr.add(arrVal);
+        }
+      }
+      return resArr;
+    }
+
+  };
+
+  return res;
+}
+
+
+
+
+extract NewList;

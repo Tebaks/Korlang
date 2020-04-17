@@ -1,0 +1,33 @@
+import "collections/list.kor";
+
+
+var l = NewList();
+
+l.add(2);
+l.add(4);
+l.add(5);
+l.add(7);
+l.add(6);
+
+print(l.toArray());
+
+
+l.remove(1);
+print(l.toArray());
+
+
+l = l.filter(func(v){
+  return v % 2 != 0;
+});
+
+print(l.toArray());
+
+
+
+l.map(func(v){
+  return v*2;
+});
+
+print(l.toArray());
+
+
