@@ -1,13 +1,4 @@
-//check if is prime or not.
-func isPrime(num) {
-  for var i = 2; i < num; i++; {
-    if num % i == 0 {
-      return false;
-    }
-  }
-  return true;
-}
-
+import "examples/isprime.kor";
 
 //printing nth prime number.
 func nthPrime(n){

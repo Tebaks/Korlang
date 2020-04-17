@@ -12,6 +12,15 @@ fibonacci: examples/fibonacci.kor
 prime: examples/prime.kor
 	./korlang examples/prime.kor
 
+list : examples/listExample.kor
+	./korlang examples/listExample.kor
+
+event : examples/eventEmitter.kor
+	./korlang examples/eventEmitter.kor
+
+game : examples/updowngame.kor
+	./korlang examples/updowngame.kor
+
 factorial: examples/factorial.kor
 	./korlang examples/factorial.kor
 

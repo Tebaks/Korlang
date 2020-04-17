@@ -17,6 +17,5 @@ func randFloat(start,end){
  
 
 
-
 extract randInt;
 extract randFloat;

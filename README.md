@@ -1,13 +1,59 @@
 # Korlang
 A programming language
 
-Group Members: 
-Ege Yıldır,
-Ahmetcan Özcan,
-Kenan Abbak
+### Group Members:
+- Ahmetcan ÖZCAN
+- Kenan ABBAK
+- Ege YILDIR
 
+
+
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [About](#about)
+- [Install](#install)
+- [Syntax](#syntax)
+  * [Variables](#variables)
+  * [Assign Operations](#assign-operations)
+  * [Post Increment/Decrement](#post-increment/decrement)
+  * [Logical Operations](#logical-operations)
+    - [Primitive Operations](#primitive-operations)
+    - [If Else Statements](#if-else-statements)
+  * [Loops](#loops)
+    - [Breaking Loops](#breaking-loops)
+  * [Functions](#functions)
+    - [Functions As Parameter](#functions-as-parameter)
+    - [Closuring](#closuring)
+- [Objects](#objects)
+    - [Constructors](#constructors)
+- [Kor{} Statements](#kor{}-statements)
+- [Imort](#import)
+    - [Custom Modules](#custom-modules)
+- [Error Handling](#error-handling)
+- [System Functions](#system-functions)
+- [Standard Libraries](#standard-libraries)
+- [Example Programs](#example-programs)
+- [License](#license)
+
+</details>
+
+## About
 Korlang is a memory first dynamic language. It is easy to implement but with extra effort it allows you better memory management. It is easy to learn and easy to read. It has dynamic typing, types are associated with values not variables.
 
+## Install
+
+```bash
+# firstly, clone the repository
+$ git clone http://github.com/Tebaks/Korlang-yacc
+# then open directory
+$ cd Korlang-yacc
+# then build source code using:
+$ make
+
+```
 
 ## Syntax
 ### Variables
@@ -173,7 +219,7 @@ sum(1+2);
    ```
 
 
-### Object
+### Objects
 ```go
 var person = {
     name : "Kenan",
@@ -209,7 +255,7 @@ print(person.name, person.age, person.isOfAge());
     }
     // Hi there, I'm Jeff Bezos
     ```
-## kor{} Statement
+## kor{} Statements
 
 It has "kor{}" statement lets you conserve variables in curly brackets.
 
@@ -382,7 +428,7 @@ print("a equals : ",a);
 
 ## Example Programs
 
-- Recursivly factorial computation.
+- Recursively factorial computation.
 ```bash
 make factorial
 ```
@@ -402,3 +448,7 @@ make updowngame
 ```bash
 make examples
  ````
+
+# LICENSE
+
+MIT licence

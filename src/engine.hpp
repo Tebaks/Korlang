@@ -645,7 +645,6 @@ private:
       auto fnode = scope->getFunction(fid);
       if (fnode.isNil())
       {
-        cout << "fnode boş" << endl;
         return driver->createPanic("Function not found");
       }
       auto childScope = driver->getFunctionScope(fid);
@@ -724,9 +723,13 @@ private:
       {
         auto childScope = scope->fork();
         value tr = handleStatements(node->firstChild, childScope);
-        if (tr.br == 1)
+
+        if (tr.br > 0)
         {
-          tr.br = 0;
+          if (tr.br == 1)
+          {
+            tr.br = 0;
+          }
           return tr;
         }
       }
