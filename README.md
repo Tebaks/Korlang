@@ -13,30 +13,26 @@ A programming language
 <details>
 <summary>Click to expand</summary>
 
-- [About](#about)
-- [Install](#install)
-- [Syntax](#syntax)
-  * [Variables](#variables)
-  * [Assign Operations](#assign-operations)
-  * [Post Increment/Decrement](#post-increment/decrement)
-  * [Logical Operations](#logical-operations)
-    - [Primitive Operations](#primitive-operations)
-    - [If Else Statements](#if-else-statements)
-  * [Loops](#loops)
-    - [Breaking Loops](#breaking-loops)
-  * [Functions](#functions)
-    - [Functions As Parameter](#functions-as-parameter)
-    - [Closuring](#closuring)
-- [Objects](#objects)
-    - [Constructors](#constructors)
-- [Kor{} Statements](#kor{}-statements)
-- [Imort](#import)
-    - [Custom Modules](#custom-modules)
-- [Error Handling](#error-handling)
-- [System Functions](#system-functions)
-- [Standard Libraries](#standard-libraries)
-- [Example Programs](#example-programs)
-- [License](#license)
+- [Korlang](#korlang)
+    - [Group Members:](#group-members)
+  - [Table of Contents](#table-of-contents)
+  - [About](#about)
+  - [Install](#install)
+  - [Syntax](#syntax)
+    - [Variables](#variables)
+    - [Assign Operations;](#assign-operations)
+    - [Post Increment/Decrement](#post-incrementdecrement)
+    - [Logical Operations](#logical-operations)
+    - [Loops](#loops)
+    - [Functions](#functions)
+    - [Objects](#objects)
+  - [kor{} Statements](#kor-statements)
+  - [Import](#import)
+  - [Error Handling](#error-handling)
+  - [System Functions](#system-functions)
+  - [Standard Libraries](#standard-libraries)
+  - [Example Programs](#example-programs)
+- [LICENSE](#license)
 
 </details>
 
@@ -443,6 +439,10 @@ make prime
 - Up and down game example
 ```bash
 make updowngame
+```
+- List example
+```bash
+make list
 ```
 - All Examples
 ```bash
