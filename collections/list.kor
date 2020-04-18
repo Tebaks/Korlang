@@ -1,7 +1,7 @@
 func NewList(){
   var arr =  array(0);
   var res = {
-    toArray : func(a){
+    toArray : func(){
       return arr;
     },
     add : func(val) {
