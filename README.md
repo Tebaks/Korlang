@@ -43,9 +43,9 @@ Korlang is a memory first dynamic language. It is easy to implement but with ext
 
 ```bash
 # firstly, clone the repository
-$ git clone http://github.com/Tebaks/Korlang-yacc
+$ git clone http://github.com/Tebaks/Korlang
 # then open directory
-$ cd Korlang-yacc
+$ cd Korlang
 # then build source code using:
 $ make
 
